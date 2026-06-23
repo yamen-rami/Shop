@@ -2,29 +2,44 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{CartController, CompanyController, HomeController, OfferController, OrderController, ProductController, ProfileController};
-use App\Http\Middleware\Checkout;
+use App\Http\Controllers\{CartController, CatagoryController, CompanyController, ContactController, CouponController, HomeController, OfferController, OrderController, ProductController, ProfileController, TagController};
+use App\Http\Middleware\{AdminCheck, Checkout};
 
-Route::get('/', [HomeController::class, "home"]); 
+Route::get('/', [HomeController::class, "home"]);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth',"admin",'verified'])->name('dashboard');
-
-Route::middleware(["auth" , "admin"])->group(function () {
+})->middleware(['auth', "admin", 'verified'])->name('dashboard');
+// Admin Middleware
+Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource("product" , ProductController::class );
+    Route::resource("product", ProductController::class);
     Route::resource('company', CompanyController::class);
     Route::resource('offer', OfferController::class);
-
+    Route::resource('tag', TagController::class);
+    Route::resource('catagory', CatagoryController::class);
+    Route::get("catagories/products/{catagory}", [ProductController::class, "catagoryProducts"])->name('getProducts');
+    Route::delete("tag/delete/{tag}", [TagController::class, "destroy"])->name("tag.delete");
 });
+// TODO Auth Routes  
+Route::middleware("auth")->group(function () {
+    Route::resource('contact', ContactController::class);
+    Route::resource("order", OrderController::class);
+    Route::get("addCart/{product}", [CartController::class, "addCart"])->name('addCart');
+    Route::get("checkout/", [CartController::class, "show"])->name("checkout");
+    Route::delete("cart/destory/{product}", [CartController::class, "destroy"])->name("cart.destroy");
+    Route::get("cart/getOffer/", [CartController::class, "getOffer"])->name("getOffer");
+    Route::get("offerCoupons", [CouponController::class, "index"])->name("offerCoupons");
+    Route::get("catagoryOffers", [CouponController::class, "catagory"])->name("catagoryOffers");
+    Route::get("home.wishlist", [HomeController::class, "wishlist"])->name("wishlist");
+});
+Route::get("products", [HomeController::class, "products"])->name("products");
+Route::get("home", [HomeController::class, "home"])->name("home");
+Route::get("products", [HomeController::class, "products"])->name("products");
+Route::get("home/product/{product}", [HomeController::class, "showProduct"])->name("showProduct");
+Route::get("home/catgory", [HomeController::class, "categories"])->name("categories");
 
-Route::resource("order", OrderController::class)->middleware("auth");
 
-Route::get("addCart/{product}" , [CartController::class , "addCart"])->name('addCart')->middleware("auth");
-Route::get("home" , [HomeController::class, "home"])->name("home");
-Route::get("checkout/" , [CartController::class, "show"])->name("checkout")->middleware(["auth" , Checkout::class]);
-Route::delete("cart/destory/{cart}" , [CartController::class, "destroy"])->name("cart.destroy");
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -12,10 +12,13 @@ class Cart extends Model
     {
         return $this->belongsTo(User::class);
     }
-    public function product()
+    public function products()
     {
         return $this->belongsToMany(Product::class , "cart_product")
+        
         ->withPivot("quantity")->withTimestamps();
-
+    }
+    public function scopeValid($query){
+        return $query->where("user_id" , auth()->id())->where("created_at" , ">" , now()->subDay());
     }
 }

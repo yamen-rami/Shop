@@ -1,7 +1,8 @@
 <!doctype html>
 
-<html lang="{{ app()->getLocale() }}" class=" layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr" data-skin="default"
-  data-bs-theme="light" data-assets-path="../../assets/" data-template="vertical-menu-template-starter">
+<html lang="{{ app()->getLocale() }}" class=" layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr"
+  data-skin="default" data-bs-theme="light" data-assets-path="../../assets/"
+  data-template="vertical-menu-template-starter">
 
 <head>
   <meta charset="utf-8" />
@@ -107,7 +108,13 @@
           <li class="menu-item ">
             <a href="{{ route("dashboard") }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-smart-home"></i>
-              <div >Dashboard</div>
+              <div>{{ __('dashboard.title') }}</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('catagory.index') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>Catagory</div>
             </a>
           </li>
           <li class="menu-item">
@@ -134,6 +141,30 @@
               <div>Offers</div>
             </a>
           </li>
+          <li class="menu-item">
+            <a href="{{ route('offerCoupons') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>Offer Copouns</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('catagoryOffers') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>Offer Catagories</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('contact.index') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>Contacts</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('tag.index') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>Tags</div>
+            </a>
+          </li>
         </ul>
       </aside>
 
@@ -148,7 +179,7 @@
       <!-- Layout container -->
       <div class="layout-page">
         <!-- Navbar -->
-        <nav 
+        <nav
           class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
@@ -255,7 +286,7 @@
 
         <!-- Content wrapper -->
         <div class="content-wrapper">
-          <!-- Content -->  
+          <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <p class="fs-5 mb-5">{{ $header ?? "" }}</p>
             <!-- DataTable with Buttons -->

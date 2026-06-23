@@ -1,10 +1,9 @@
-
 <x-main-layout>
   <x-slot:title>
-    Companys
+    Companies
   </x-slot:title>
-  <x-slot:header >
-    company 
+  <x-slot:header>
+    Company
   </x-slot:header>
   <div class="card">
     <div class="d-flex justify-between items-center">
@@ -27,9 +26,11 @@
             </button>
           </form>
         </div>
-        <button class="btn btn-primary mr-4">
-          <a class="text-white" href="{{ route('company.create') }}">Create A New company </a>
-        </button>
+        <div class="mx-5">
+          <button class="btn btn-primary mr-4">
+            <a class="text-white" href="{{ route('company.create') }}">Create A New Company </a>
+          </button>
+        </div>
       </div>
     </div>
     <div class="table-responsive text-nowrap">
@@ -61,10 +62,10 @@
               </td>
               <td>{{ Str::limit($company->desc, 40) }}</td>
               <td>
-                @forelse ($company->products as $product )
+                @forelse ($company->products as $product)
                   {{ $product->name }}
                 @empty
-                <p>There is No Products Related To The Company</p>
+                  <p>There is No Products Related To The Company</p>
                 @endforelse
               </td>
               <td>
@@ -91,8 +92,8 @@
                   </div>
                 </div>
               </td>
-              @endforeach
-            </tr>
+          @endforeach
+          </tr>
         </tbody>
       </table>
       {{ $companies->links()}}

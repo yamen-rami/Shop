@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Arr;
 
-use App\Models\Product;
+use App\Models\{Catagory, Product, Tag};
 use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
 
 class ProductController extends Controller
@@ -17,26 +19,42 @@ class ProductController extends Controller
     {
         $sort = $request->sort;
         // ? Get all the products 
-        $products = Product::query()
-        ->where("name", 'LIKE', "%" . $request->search . "%")->orWhere("desc" , "LIKE" , "%" . $request->search ."%")
-        ->orWhere("quantity" , "LIKE" , "%" . $request->search ."%")
-        ->orWhere('price' , "LIKE" , "%" . $request->search ."%")
-        ->orWhere("int_price" ,"LIKE" , "%" . $request->search ."%")
-        ->orderBy("id", $request->sort ?? "desc")
-        ->paginate(30)->withQueryString();
+        $products = Product::query()->with(["companies", "tags", "catagory"])
+            ->where("name", 'LIKE', "%" . $request->search . "%")->orWhere("desc", "LIKE", "%" . $request->search . "%")
+            ->orWhere("quantity", "LIKE", "%" . $request->search . "%")
+            ->orWhere('price', "LIKE", "%" . $request->search . "%")
+            ->orWhere("int_price", "LIKE", "%" . $request->search . "%")
+            ->orderBy("id", $request->sort ?? "desc")
+            ->paginate(30)->withQueryString();
+        $catagories = Catagory::all();
         return view("products.index", [
-            "products" => $products , 
-            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc", 
-        ]); 
+            "products" => $products,
+            "catagories" => $catagories,
+            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
+        ]);
     }
+    public function catagoryProducts(Catagory $catagory)
+    {
+        $products = Product::with(['companies', "tags", "catagory"])
+            ->where("catagory_id", $catagory->id)->paginate(30)->withQueryString();
 
+        flash()->success("Products Has Filtered");
+        $catagories = Catagory::all();
+        return view("products.index", [
+            "products" => $products,
+            "catagories" => $catagories,
+            "sort" =>  "desc"
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
-        return view("products/create");
+        // Get The Tags
+        $tags = Tag::all();
+        $catagories = Catagory::all();
+        return view("products/create", compact("tags", "catagories"));
     }
 
     /**
@@ -44,12 +62,29 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
         $validatedData = $request->validated();
-        // dd($validatedData);
+
+        if ($validatedData["price"] <= $validatedData["int_price"]) {
+            throw ValidationException::withMessages([
+                'int_price' => ["The Int Price Must Be Lower Than Price"]
+            ]);
+        }
+
         $image = $validatedData["image"] ?? null;
+        $validatedData["original_price"] = $validatedData["price"];
         $validatedData["image"] = $image->store('products', "public");
-        Product::create($validatedData);
+        $product = Product::create(Arr::except($validatedData, "tags"));
+        // Attach Tag To Product
+        if (empty($validatedData["tags"])) {
+            $validatedData["tags"] = [];
+        }
+        if ($validatedData["tags"]) {
+            $tags = $validatedData["tags"];
+            foreach ($tags as $tag) {
+                $product->tag($tag);
+            }
+        }
+        flash()->success('Product created successfully!');
         return redirect()->route("product.index");
     }
 
@@ -58,7 +93,15 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-           return view("products.show" , compact('product'));
+        // $products = Product::with("tags")->where("id" , $product->id)
+        $tags = Tag::all();
+        $catagories = Catagory::all();
+
+        return view("products.show", [
+            "product" => $product,
+            "tags" => $tags,
+            "catagories" => $catagories
+        ]);
     }
 
     /**
@@ -67,7 +110,10 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         //
-        return view('products.edit', compact("product"));
+        $tags = Tag::all();
+        $catagories = Catagory::all();
+
+        return view('products.edit', compact("product", "tags", "catagories"));
     }
 
     /**
@@ -77,14 +123,29 @@ class ProductController extends Controller
     {
         //
         $validateData = $request->validated();
-        if ($product->image) {
-            Storage::disk("public")->delete($product->image);
-
+        if ($request->hasFile("image")) {
+            if ($product->image) {
+                Storage::disk("public")->delete($product->image);
+            }
             $path = $validateData["image"]->store('products', 'public');
+            $validateData["image"] = $path;
         }
-        $validateData["image"] = $path;
+        
+        $P = $product->update(Arr::except($validateData, "tags"));
+        $tags = $validateData["tags"] ?? [];
+        if (empty($tags)) {
+            $validateData["tags"] = [];
+        }
+        if ($validateData["tags"]) {
+            if ($product->tags->count() > 0) {
+                $product->tags()->detach();
+            }
+            foreach ($tags as $tag) {
+                $product->tags()->attach($tag);
+            }
+        }
+        flash()->info('Product Updated successfully!');
 
-        $product->update($validateData);
         return redirect()->route("product.index");
     }
 
@@ -96,7 +157,10 @@ class ProductController extends Controller
         // dd($product);
 
         $product->delete();
+        $product->tags()->detach($product->id);
         Storage::disk("public")->delete($product->image);
+        flash()->error('Product Deleted Succesfully!');
+
         return redirect()->back();
     }
 }

@@ -1,10 +1,9 @@
-
 <x-main-layout>
   <x-slot:title>
     Products
   </x-slot:title>
-  <x-slot:header >
-    Product 
+  <x-slot:header>
+    Product
   </x-slot:header>
   <div class="card">
     <div class="d-flex justify-between items-center">
@@ -14,10 +13,26 @@
       <div>
         <form action="{{ route("product.index") }}" method="get">
           <div class="d-flex items-center">
-            <input placeholder="Name Or Desc Product" name="search"  type="text" class="form-control" />
+            <input placeholder="Name Or Desc Product" name="search" type="text" class="form-control" />
             <a class="ml-4 btn btn-danger" href="{{ route("product.index") }}">Clear</a>
           </div>
         </form>
+
+      </div>
+      <div class="dropdown">
+        <button type="button" class="btn  p-0 dropdown-toggle hide-arrow " data-bs-toggle="dropdown">
+          Filtering ^
+        </button>
+        <div class="dropdown-menu">
+          {{-- Show Product --}}
+          @foreach($catagories as $catagory)
+            @if($catagory->products->count() > 0)
+              <a class="dropdown-item" href="{{ route('getProducts', $catagory->id) }}">
+                {{ $catagory->name }}</a>
+            @endif
+          @endforeach
+
+        </div>
       </div>
       <div class="d-flex ">
         <div class="mx-3">
@@ -27,9 +42,11 @@
             </button>
           </form>
         </div>
-        <button class="btn btn-primary mr-4">
-          <a class="text-white" href="{{ route('product.create') }}">Create A New Product </a>
-        </button>
+        <div class="mx-3">
+          <button class="btn btn-primary mr-4">
+            <a class="text-white" href="{{ route('product.create') }}">Create A New Product </a>
+          </button>
+        </div>
       </div>
     </div>
     <div class="table-responsive text-nowrap">
@@ -38,11 +55,13 @@
           <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>Catagory</th>
             <th>Image</th>
             <th>Desc</th>
             <th>Quantity</th>
             <th>Int Price</th>
             <th>Price</th>
+            <th>Tags</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -54,18 +73,36 @@
                 <span class="fw-medium">{{ $product->name }}</span>
               </td>
               <td>
+                @if($product->catagory)
+                  <a href="{{ route("catagory.show", $product->catagory->id) }}"
+                    class="fw-medium">{{ $product->catagory->name }}</a>
+                @else
+                  <span class="fw-medium"></span>
+                @endif
+
+              </td>
+              <td>
                 <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                   <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                     class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
-                    <img src="{{ $product->image }}" alt="Avatar" class="rounded-circle" />
+                    <img src="{{ asset($product->image) }}" alt="Avatar" class="rounded-circle" />
                   </li>
                 </ul>
               </td>
               <td>{{ Str::limit($product->desc, 40) }}</td>
-              
               <td><span class="badge bg-label-primary me-1">{{ $product->quantity }}</span></td>
               <td>{{ $product->int_price }}</td>
               <td>{{ $product->price }}</td>
+              <td>
+                <div class="d-flex">
+                  @foreach ($product->tags as $tag)
+                    <a>
+                      <button type="submit" class="badge bg-label-primary me-1">{{ $tag->name }}</button>
+                    </a>
+                  @endforeach
+                </div>
+              </td>
+
 
               <td>
                 <div class="dropdown">

@@ -1,4 +1,7 @@
 <x-main-layout>
+  <x-slot:title>
+    Dashborad
+  </x-slot:title>
     <div class="row g-6">
                 <!-- Average Daily Sales -->
                 <div class="col-xl-3 col-sm-6">

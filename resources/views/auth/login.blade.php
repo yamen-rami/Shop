@@ -11,7 +11,7 @@
           <h3 class="mb-6">Sign In</h3>
           <div class="mb-6">
             <label class="form-label" for="form-alignment-username">Email</label>
-            <input type="email" name="email" value="{{ old("eamil") }}" id="form-alignment-username"
+            <input type="email" name="email" value="{{ old("email") }}" id="form-alignment-username"
               class="form-control" placeholder="johndoe@email.com" />
             @error('email')
               <p class="text-danger">{{ $message }}</p>
@@ -33,7 +33,7 @@
           </div>
           <div class="mb-6">
             <label class="form-check m-0">
-              <input type="checkbox" name="remeber_me" class="form-check-input" />
+              <input type="checkbox" name="remember" class="form-check-input" />
               <span class="form-check-label">Remember me</span>
             </label>
           </div>

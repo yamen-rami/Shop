@@ -26,9 +26,12 @@
             </button>
           </form>
         </div>
+        <div class="mx-5">
+
         <button class="btn btn-primary mr-4">
           <a class="text-white" href="{{ route('order.create') }}">Create A New Order </a>
         </button>
+        </div>
       </div>
     </div>
     <div class="table-responsive text-nowrap">

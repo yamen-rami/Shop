@@ -1,426 +1,710 @@
-<!doctype html>
-
-<html lang="en" class=" layout-navbar-fixed layout-wide " dir="ltr" data-skin="default" data-bs-theme="light"
-  data-assets-path="../../assets/" data-template="front-pages">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Home Page</title>
-
-  <meta name="description" content="" />
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
-    rel="stylesheet" />
-
-  <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
-
-  <script src="../../assets/vendor/libs/@algolia/autocomplete-js.js"></script>
-
-  <!-- Core CSS -->
-  <!-- build:css assets/vendor/css/theme.css  -->
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/pickr/pickr-themes.css" />
-
-  <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
-  <link rel="stylesheet" href="../../assets/css/demo.css" />
-
-  <link rel="stylesheet" href="../../assets/vendor/css/pages/front-page.css" />
-
-  <!-- Vendors CSS -->
-
-  <!-- endbuild -->
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/nouislider/nouislider.css" />
-  <link rel="stylesheet" href="../../assets/vendor/libs/swiper/swiper.css" />
-
-  <!-- Page CSS -->
-
-  <link rel="stylesheet" href="../../assets/vendor/css/pages/front-page-landing.css" />
-
-  <!-- Helpers -->
-  <script src="../../assets/vendor/js/helpers.js"></script>
-  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-  <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-  <script src="../../assets/vendor/js/template-customizer.js"></script>
-
-  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
-    <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
-    <link rel="stylesheet" href="../../assets/css/demo.css" />
-
-    <link rel="stylesheet" href="../../assets/vendor/css/pages/front-page.css" />
-
-    <!-- Vendors CSS -->
-
-    <!-- endbuild -->
-
-
-    <!-- Page CSS -->
-
-    <link rel="stylesheet" href="../../assets/vendor/css/pages/wizard-ex-checkout.css" />
-
-  <script src="../../assets/js/front-config.js"></script>
-  @vite(["resources/css/app.css", "resources/js/app.js"])
-</head>
-
-<body class="">
-  <script src="../../assets/vendor/js/dropdown-hover.js"></script>
-  <script src="../../assets/vendor/js/mega-dropdown.js"></script>
-  <!-- Navbar: Start -->
-  <nav class="layout-navbar shadow-none py-0">
+<header class="ec-header">
+  <!--Ec Header Top Start -->
+  <div class="header-top">
     <div class="container">
-      <div class="navbar navbar-expand-lg landing-navbar px-3 px-md-8">
-        <!-- Menu logo wrapper: Start -->
-        <div class="navbar-brand app-brand demo d-flex py-0 me-4 me-xl-8 ms-0">
-          <!-- Mobile menu toggle: Start-->
-          <button class="navbar-toggler border-0 px-0 me-4" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <i class="icon-base ti tabler-menu-2 icon-lg align-middle text-heading fw-medium"></i>
-          </button>
-          <!-- Mobile menu toggle: End-->
-          <a href="landing-page.html" class="app-brand-link">
-            <span class="app-brand-logo demo">
-              <span class="text-primary">
-                <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M0.00172773 0V6.85398C0.00172773 6.85398 -0.133178 9.01207 1.98092 10.8388L13.6912 21.9964L19.7809 21.9181L18.8042 9.88248L16.4951 7.17289L9.23799 0H0.00172773Z"
-                    fill="currentColor" />
-                  <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd"
-                    d="M7.69824 16.4364L12.5199 3.23696L16.5541 7.25596L7.69824 16.4364Z" fill="#161616" />
-                  <path opacity="0.06" fill-rule="evenodd" clip-rule="evenodd"
-                    d="M8.07751 15.9175L13.9419 4.63989L16.5849 7.28475L8.07751 15.9175Z" fill="#161616" />
-                  <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M7.77295 16.3566L23.6563 0H32V6.88383C32 6.88383 31.8262 9.17836 30.6591 10.4057L19.7824 22H13.6938L7.77295 16.3566Z"
-                    fill="currentColor" />
-                </svg>
-              </span>
-            </span>
-            <span class="app-brand-text demo menu-text fw-bold ms-2 ps-1">Vuexy</span>
-          </a>
+      <div class="row align-items-center">
+        <!-- Header Top social Start -->
+        <div class="col text-left header-top-left d-none d-lg-block">
+          <div class="header-top-social">
+            <span class="social-text text-upper">Follow us on:</span>
+            <ul class="mb-0">
+              <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a>
+              </li>
+              <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
+              <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a>
+              </li>
+              <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <!-- Menu logo wrapper: End -->
-        <!-- Menu wrapper: Start -->
-        <div class=" navbar-collapse landing-nav-menu" id="navbarSupportedContent">
-          <button class="navbar-toggler border-0 text-heading position-absolute end-0 top-0 scaleX-n1-rtl p-2"
-            type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="icon-base ti tabler-x icon-lg"></i>
-          </button>
-          <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-              <a class="nav-link fw-medium" aria-current="page" href="{{ route("home") }}">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-medium" href="landing-page.html#landingFeatures">Products</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link fw-medium" href="landing-page.html#landingTeam">Offers</a>
-            </li>
-           
-            <li class="nav-item">
-              <a class="nav-link fw-medium" href="landing-page.html#landingContact">Contact us</a>
-            </li>
-            <li class="nav-item mega-dropdown
-  ">
-              <a href="javascript:void(0);"
-                class="nav-link dropdown-toggle navbar-ex-14-mega-dropdown mega-dropdown fw-medium"
-                aria-expanded="false" data-bs-toggle="mega-dropdown" data-trigger="hover">
-                <span data-i18n="Pages">Pages</span>
-              </a>
-              <div class="dropdown-menu p-4 p-xl-8">
-                <div class="row gy-4">
-                  <div class="col-12 col-lg">
-                    <div class="h6 d-flex align-items-center mb-3 mb-lg-5">
-                      <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-primary"><i
-                            class="icon-base ti tabler-layout-grid icon-lg"></i></span>
-                      </div>
-                      <span class="ps-1">Other</span>
-                    </div>
-                    <ul class="nav flex-column">
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="pricing-page.html">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          <span data-i18n="Pricing">Pricing</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="payment-page.html">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          <span data-i18n="Payment">Payment</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="checkout-page.html">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          <span data-i18n="Checkout">Checkout</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="help-center-landing.html">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          <span data-i18n="Help Center">Help Center</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-12 col-lg">
-                    <div class="h6 d-flex align-items-center mb-3 mb-lg-5">
-                      <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-primary"><i
-                            class="icon-base ti tabler-lock-open icon-lg"></i></span>
-                      </div>
-                      <span class="ps-1">Auth Demo</span>
-                    </div>
-                    <ul class="nav flex-column">
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="../vertical-menu-template/auth-login-basic.html"
-                          target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Login (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="../vertical-menu-template/auth-login-cover.html"
-                          target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Login (Cover)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="../vertical-menu-template/auth-register-basic.html"
-                          target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Register (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="../vertical-menu-template/auth-register-cover.html"
-                          target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Register (Cover)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-register-multisteps.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Register (Multi-steps)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-forgot-password-basic.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Forgot Password (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-forgot-password-cover.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Forgot Password (Cover)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-reset-password-basic.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Reset Password (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-reset-password-cover.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Reset Password (Cover)
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-12 col-lg">
-                    <div class="h6 d-flex align-items-center mb-3 mb-lg-5">
-                      <div class="avatar flex-shrink-0 me-3">
-                        <span class="avatar-initial rounded bg-label-primary"><i
-                            class="icon-base ti tabler-file-analytics icon-lg"></i></span>
-                      </div>
-                      <span class="ps-1">Other</span>
-                    </div>
-                    <ul class="nav flex-column">
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link" href="../vertical-menu-template/pages-misc-error.html"
-                          target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Error
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/pages-misc-under-maintenance.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Under Maintenance
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/pages-misc-comingsoon.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Coming Soon
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/pages-misc-not-authorized.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Not Authorized
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-verify-email-basic.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Verify Email (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-verify-email-cover.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Verify Email (Cover)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-two-steps-basic.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Two Steps (Basic)
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link mega-dropdown-link"
-                          href="../vertical-menu-template/auth-two-steps-cover.html" target="_blank">
-                          <i class="icon-base ti tabler-circle me-1 icon-12px"></i>
-                          Two Steps (Cover)
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="col-lg-4 d-none d-lg-block">
-                    <div class="bg-body nav-img-col p-2">
-                      <img src="../../assets/img/front-pages/misc/nav-item-col-img.png" alt="nav item col image"
-                        class="w-100" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </li>
-            @if(Auth::check())
-              @if(auth()->user()->role === "admin")
-                <li class="nav-item">
-                  <a class="nav-link fw-medium" href="{{ route("dashboard") }}" target="_blank">Admin</a>
-                </li>
-              @endif
-            @endif
-            @auth
-              @if(auth()->user()->cart()->count() > 0)
-                <li class="nav-item">
-                  <a class="nav-link fw-medium" href="{{ route("checkout") }}" target="_blank">Checkout</a>
-                </li>
-              @endif
-            @endauth
-          </ul>
+        <!-- Header Top social End -->
+        <!-- Header Top Message Start -->
+        <div class="col text-center header-top-center">
+          <div class="header-top-message text-upper">
+            <span>Free Shipping</span>This Week Order Over - $75
+          </div>
         </div>
-        <div class="landing-menu-overlay d-lg-none"></div>
-        <!-- Menu wrapper: End -->
-        <!-- Toolbar: Start -->
-        <ul class="navbar-nav flex-row align-items-center ms-auto">
-          <!-- Style Switcher -->
-          <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-1">
-            <a class="nav-link dropdown-toggle hide-arrow" id="nav-theme" href="javascript:void(0);"
-              data-bs-toggle="dropdown">
-              <i class="icon-base ti tabler-sun icon-lg theme-icon-active"></i>
-              <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
+        <!-- Header Top Message End -->
+        <!-- Header Top Language Currency -->
+        <div class="col header-top-right d-none d-lg-block">
+          <div class="header-top-lan-curr d-flex justify-content-end">
+            <!-- Currency Start -->
+            <div class="header-top-curr dropdown">
+              <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
+                  class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+              <ul class="dropdown-menu">
+                <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
+                <li><a class="dropdown-item" href="#">EUR €</a></li>
+              </ul>
+            </div>
+            <!-- Currency End -->
+            <!-- Language Start -->
+            <div class="header-top-lan dropdown">
+              <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
+                  class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+              <ul class="dropdown-menu">
+                <li class="active"><a class="dropdown-item" href="#">English</a></li>
+                <li><a class="dropdown-item" href="#">Italiano</a></li>
+              </ul>
+            </div>
+            <!-- Language End -->
+
+          </div>
+        </div>
+        <!-- Header Top Language Currency -->
+        <!-- Header Top responsive Action -->
+        <div class="col d-lg-none ">
+          <div class="ec-header-bottons">
+            <!-- Header User Start -->
+            <div class="ec-header-user dropdown">
+              <button class="dropdown-toggle" data-bs-toggle="dropdown"><i class="fi-rr-user"></i></button>
+              <ul class="dropdown-menu dropdown-menu-right">
+                <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
+                @guest
+                  {{-- ! MOBILE --}}
+                  <li><a class="dropdown-item" href="{{ route("register") }}">Register</a></li>
+                  <li><a class="dropdown-item" href="{{ route("login") }}">Login</a></li>
+                @endguest
+              </ul>
+            </div>
+            <!-- Header User End -->
+            <!-- Header Cart Start -->
+            <a href="{{ route("wishlist") }}" class="ec-header-btn ec-header-wishlist">
+              <div class="header-icon"><i class="fi-rr-heart"></i></div>
+              <span class="ec-header-count"></span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
+            <!-- Header Cart End -->
+            <!-- Header Cart Start -->
+            <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+              <div class="header-icon"><i class="fi-rr-shopping-bag"></i></div>
+              <span class="ec-header-count cart-count-lable">
+                <livewire:count />
+              </span>
+            </a>
+            <!-- Header Cart End -->
+            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
+              <i class="fi fi-rr-apps"></i>
+            </a>
+            <!-- Header menu Start -->
+            <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none">
+              <i class="fi fi-rr-menu-burger"></i>
+            </a>
+            <!-- Header menu End -->
+          </div>
+        </div>
+        <!-- Header Top responsive Action -->
+      </div>
+    </div>
+  </div>
+  <!-- Ec Header Top  End -->
+  <!-- Ec Header Bottom  Start -->
+  <div class="ec-header-bottom d-none d-lg-block">
+    <div class="container position-relative">
+      <div class="row">
+        <div class="ec-flex">
+          <!-- Ec Header Logo Start -->
+          <div class="align-self-center">
+            <div class="header-logo">
+              <a href="index.html"><img src="{{asset("assets/images/logo/logo.png")}}" alt="Site Logo" /><img class="dark-logo"
+                  src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a>
+            </div>
+          </div>
+          <!-- Ec Header Logo End -->
+
+          <!-- Ec Header Search Start -->
+          {{-- <div class="align-self-center">
+            <div class="header-search">
+              <form class="ec-btn-group-form" action="{{ route(" products") }}" method="get">
+                <input class="form-control ec-search-bar" name="search" placeholder="Search products..." type="text">
+                <button class="submit" type="submit"><i class="fi-rr-search"></i></button>
+              </form>
+            </div>
+          </div> --}}
+          <livewire:search />
+          <!-- Ec Header Search End -->
+
+          <!-- Ec Header Button Start -->
+          <div class="align-self-center">
+            <div class="ec-header-bottons">
+
+              <!-- Header User Start -->
+              <div class="ec-header-user dropdown">
+                <button class="dropdown-toggle" data-bs-toggle="dropdown"><i class="fi-rr-user"></i></button>
+                {{--
+                <livewire:count /> --}}
+                <ul class="dropdown-menu dropdown-menu-right">
+                  @guest
+                    {{-- ! LAPTOP --}}
+                    <li><a class="dropdown-item" href="{{ route("register") }}">Register</a></li>
+                    <li><a class="dropdown-item" href="{{ route("login") }}">Login</a></li>
+                  @endguest
+                  @auth
+                    @if(auth()->user()->role == "admin")
+                      <li><a class="dropdown-item" href="{{ route("dashboard") }}">Admin</a></li>
+                    @endif
+
+                  @endauth
+                  <li><a class="dropdown-item" href="checkout.html">Checkout</a></li>
+                </ul>
+              </div>
+              <!-- Header User End -->
+              <!-- Header wishlist Start -->
+              <a href="{{ route("wishlist") }}" class="ec-header-btn ec-header-wishlist">
+                <div class="header-icon"><i class="fi-rr-heart"></i></div>
+                {{-- <span class="ec-header-count"></span> --}}
+              </a>
+              <!-- Header wishlist End -->
+              <!-- Header Cart Start -->
+              <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
+                <div class="header-icon"><i class="fi-rr-shopping-bag"></i></div>
+                <span class="ec-header-count">
+                  <livewire:count />
+                </span>
+              </a>
+              <!-- Header Cart End -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Ec Header Button End -->
+  <!-- Header responsive Bottom  Start -->
+  <div class="ec-header-bottom d-lg-none">
+    <div class="container position-relative">
+      <div class="row ">
+
+        <!-- Ec Header Logo Start -->
+        <div class="col">
+          <div class="header-logo">
+            <a href="index.html"><img src="assets/images/logo/logo.png" alt="Site Logo" /><img class="dark-logo"
+                src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a>
+          </div>
+        </div>
+        <!-- Ec Header Logo End -->
+        <!-- Ec Header Search Start -->
+        <div class="col">
+          <div class="header-search">
+            <form class="ec-btn-group-form" action="#">
+              <input class="form-control ec-search-bar" placeholder="Search products..." type="text">
+              <button class="submit" type="submit"><i class="fi-rr-search"></i></button>
+            </form>
+          </div>
+        </div>
+        <!-- Ec Header Search End -->
+      </div>
+    </div>
+  </div>
+  <!-- Header responsive Bottom  End -->
+  <!-- EC Main Menu Start -->
+  <div id="ec-main-menu-desk" class="d-none d-lg-block sticky-nav">
+    <div class="container position-relative">
+      <div class="row">
+        <div class="col-md-12 align-self-center">
+          <div class="ec-main-menu">
+            <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
+              <i class="fi fi-rr-apps"></i>
+            </a>
+            <ul>
+              <li><a href="{{ route("home") }}">Home</a></li>
+              <li class="dropdown position-static"><a href="javascript:void(0)">Categories</a>
+                <ul class="mega-menu d-block">
+                  <li class="d-flex">
+                    <ul class="d-block">
+                      <li class="menu_title"><a href="javascript:void(0)">Classic
+                          Variation</a></li>
+                      <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a>
+                      </li>
+                      <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a>
+                      </li>
+                      <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a>
+                      </li>
+                      <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a>
+                      </li>
+                      <li><a href="shop-full-width.html">Full width 4 column</a></li>
+                    </ul>
+                    <ul class="d-block">
+                      <li class="menu_title"><a href="javascript:void(0)">Classic
+                          Variation</a></li>
+                      <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3
+                          column</a></li>
+                      <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4
+                          column</a></li>
+                      <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar
+                          3 column</a></li>
+                      <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar
+                          4 column</a></li>
+                      <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a>
+                      </li>
+                    </ul>
+                    <ul class="d-block">
+                      <li class="menu_title"><a href="javascript:void(0)">Columns
+                          Variation</a></li>
+                      <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
+                      <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
+                      <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
+                      <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
+                      <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a>
+                      </li>
+                    </ul>
+                    <ul class="d-block">
+                      <li class="menu_title"><a href="javascript:void(0)">List Variation</a>
+                      </li>
+                      <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
+                      <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
+                      <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a>
+                      </li>
+                      <li><a href="shop-list-banner-right-sidebar.html">Banner right
+                          sidebar</a></li>
+                      <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <ul class="ec-main-banner w-100">
+                      <li><a class="p-0" href="shop-left-sidebar-col-3.html"><img class="img-responsive"
+                            src="assets/images/menu-banner/1.jpg" alt=""></a></li>
+                      <li><a class="p-0" href="shop-left-sidebar-col-4.html"><img class="img-responsive"
+                            src="assets/images/menu-banner/2.jpg" alt=""></a></li>
+                      <li><a class="p-0" href="shop-right-sidebar-col-3.html"><img class="img-responsive"
+                            src="assets/images/menu-banner/3.jpg" alt=""></a></li>
+                      <li><a class="p-0" href="shop-right-sidebar-col-4.html"><img class="img-responsive"
+                            src="assets/images/menu-banner/4.jpg" alt=""></a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="javascript:void(0)">Products</a>
+                <ul class="sub-menu">
+                  <li class="dropdown position-static"><a href="{{ route("products") }}">Products
+
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Product 360
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="product-360-left-sidebar.html">360 left sidebar</a></li>
+                      <li><a href="product-360-right-sidebar.html">360 right sidebar</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Product video
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="product-video-left-sidebar.html">Video left sidebar</a>
+                      </li>
+                      <li><a href="product-video-right-sidebar.html">Video right sidebar</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Product
+                      gallery
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="product-gallery-left-sidebar.html">Gallery left sidebar</a>
+                      </li>
+                      <li><a href="product-gallery-right-sidebar.html">Gallery right
+                          sidebar</a></li>
+                    </ul>
+                  </li>
+                  <li><a href="product-full-width.html">Product full width</a></li>
+                  <li><a href="product-360-full-width.html">360 full width</a></li>
+                  <li><a href="product-video-full-width.html">Video full width</a></li>
+                  <li><a href="product-gallery-full-width.html">Gallery full width</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="javascript:void(0)">Pages</a>
+                <ul class="sub-menu">
+                  <li><a href="about-us.html">About Us</a></li>
+                  <li><a href="contact-us.html">Contact Us</a></li>
+                  <li><a href="cart.html">Cart</a></li>
+                  <li><a href="checkout.html">Checkout</a></li>
+                  <li><a href="compare.html">Compare</a></li>
+                  <li><a href="faq.html">FAQ</a></li>
+                  @guest
+                    <li><a href="{{ route("login") }}">Login</a></li>
+                    <li><a href="{{ route("register") }}">Register</a></li>
+                  @endguest
+                  <li><a href="track-order.html">Track Order</a></li>
+                  <li><a href="terms-condition.html">Terms Condition</a></li>
+                  <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><span class="main-label-note-new" data-toggle="tooltip" title="NEW"></span><a
+                  href="javascript:void(0)">Others</a>
+                <ul class="sub-menu">
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Mail
+                      Confirmation
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="email-template-confirm-1.html">Mail Confirmation 1</a></li>
+                      <li><a href="email-template-confirm-2.html">Mail Confirmation 2</a></li>
+                      <li><a href="email-template-confirm-3.html">Mail Confirmation 3</a></li>
+                      <li><a href="email-template-confirm-4.html">Mail Confirmation 4</a></li>
+                      <li><a href="email-template-confirm-5.html">Mail Confirmation 5</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Mail Reset
+                      password
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="email-template-forgot-password-1.html">Reset password 1</a>
+                      </li>
+                      <li><a href="email-template-forgot-password-2.html">Reset password 2</a>
+                      </li>
+                      <li><a href="email-template-forgot-password-3.html">Reset password 3</a>
+                      </li>
+                      <li><a href="email-template-forgot-password-4.html">Reset password 4</a>
+                      </li>
+                      <li><a href="email-template-forgot-password-5.html">Reset password 5</a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Mail
+                      Promotional
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="email-template-offers-1.html">Offer mail 1</a></li>
+                      <li><a href="email-template-offers-2.html">Offer mail 2</a></li>
+                      <li><a href="email-template-offers-3.html">Offer mail 3</a></li>
+                      <li><a href="email-template-offers-4.html">Offer mail 4</a></li>
+                      <li><a href="email-template-offers-5.html">Offer mail 5</a></li>
+                      <li><a href="email-template-offers-6.html">Offer mail 6</a></li>
+                      <li><a href="email-template-offers-7.html">Offer mail 7</a></li>
+                      <li><a href="email-template-offers-8.html">Offer mail 8</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static">
+                    <span class="label-note-hot"></span>
+                    <a href="javascript:void(0)">Vendor account pages
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
+                      <li><a href="vendor-profile.html">Vendor Profile</a></li>
+                      <li><a href="vendor-uploads.html">Vendor Uploads</a></li>
+                      <li><a href="vendor-settings.html">Vendor Settings</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static">
+                    <span class="label-note-trending"></span>
+                    <a href="javascript:void(0)">User account pages
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="user-profile.html">User Profile</a></li>
+                      <li><a href="user-history.html">History</a></li>
+                      <li><a href="wishlist.html">Wishlist</a></li>
+                      <li><a href="track-order.html">Track Order</a></li>
+                      <li><a href="user-invoice.html">Invoice</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static"><a href="javascript:void(0)">Construction
+                      pages
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="404-error-page.html">404 error page</a></li>
+                      <li><a href="under-maintenance.html">maintanence page</a></li>
+                      <li><a href="coming-soon.html">Coming soon page</a></li>
+                    </ul>
+                  </li>
+                  <li class="dropdown position-static">
+                    <span class="label-note-new"></span>
+                    <a href="javascript:void(0)">Vendor Catalog pages
+                      <i class="ecicon eci-angle-right"></i></a>
+                    <ul class="sub-menu sub-menu-child">
+                      <li><a href="catalog-single-vendor.html">Catalog Single Vendor</a></li>
+                      <li><a href="catalog-multi-vendor.html">Catalog Multi Vendor</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="javascript:void(0)">Blog</a>
+                <ul class="sub-menu">
+                  <li><a href="blog-left-sidebar.html">Blog left sidebar</a></li>
+                  <li><a href="blog-right-sidebar.html">Blog right sidebar</a></li>
+                  <li><a href="blog-detail-left-sidebar.html">Blog detail left sidebar</a></li>
+                  <li><a href="blog-detail-right-sidebar.html">Blog detail right sidebar</a></li>
+                  <li><a href="blog-full-width.html">Blog full width</a></li>
+                  <li><a href="blog-detail-full-width.html">Blog detail full width</a></li>
+                </ul>
+              </li>
+              <li class="dropdown"><a href="javascript:void(0)">Elements</a>
+                <ul class="sub-menu">
+                  <li><a href="elemets-products.html">Products</a></li>
+                  <li><a href="elemets-typography.html">Typography</a></li>
+                  <li><a href="elemets-title.html">Titles</a></li>
+                  <li><a href="elemets-categories.html">Categories</a></li>
+                  <li><a href="elemets-buttons.html">Buttons</a></li>
+                  <li><a href="elemets-tabs.html">Tabs</a></li>
+                  <li><a href="elemets-accordions.html">Accordions</a></li>
+                  <li><a href="elemets-blog.html">Blogs</a></li>
+                </ul>
+              </li>
+              <li><a href="offer.html">Hot Offers</a></li>
+              <li class="dropdown scroll-to"><a href="javascript:void(0)"><i
+                    class="fi fi-rr-sort-amount-down-alt"></i></a>
+                <ul class="sub-menu">
+                  <li class="menu_title">Scroll To Section</li>
+                  <li><a href="javascript:void(0)" data-scroll="collection" class="nav-scroll">Top
+                      Collection</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="categories" class="nav-scroll">Categories</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="offers" class="nav-scroll">Offers</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="vendors" class="nav-scroll">Top
+                      Vendors</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="services" class="nav-scroll">Services</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="arrivals" class="nav-scroll">New
+                      Arrivals</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="reviews" class="nav-scroll">Client
+                      Review</a></li>
+                  <li><a href="javascript:void(0)" data-scroll="insta" class="nav-scroll">Instagram Feed</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Ec Main Menu End -->
+  <!-- ekka Mobile Menu Start -->
+  <div id="ec-mobile-menu" class="ec-side-cart ec-mobile-menu">
+    <div class="ec-menu-title">
+      <span class="menu_title">My Menu</span>
+      <button class="ec-close">×</button>
+    </div>
+    <div class="ec-menu-inner">
+      <div class="ec-menu-content">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="javascript:void(0)">Categories</a>
+            <ul class="sub-menu">
               <li>
-                <button type="button" class="dropdown-item align-items-center active" data-bs-theme-value="light"
-                  aria-pressed="false">
-                  <span><i class="icon-base ti tabler-sun icon-md me-3" data-icon="sun"></i>Light</span>
-                </button>
+                <a href="javascript:void(0)">Classic Variation</a>
+                <ul class="sub-menu">
+                  <li><a href="shop-left-sidebar-col-3.html">Left sidebar 3 column</a></li>
+                  <li><a href="shop-left-sidebar-col-4.html">Left sidebar 4 column</a></li>
+                  <li><a href="shop-right-sidebar-col-3.html">Right sidebar 3 column</a></li>
+                  <li><a href="shop-right-sidebar-col-4.html">Right sidebar 4 column</a></li>
+                  <li><a href="shop-full-width.html">Full width 4 column</a></li>
+                </ul>
               </li>
               <li>
-                <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="dark"
-                  aria-pressed="true">
-                  <span><i class="icon-base ti tabler-moon-stars icon-md me-3" data-icon="moon-stars"></i>Dark</span>
-                </button>
+                <a href="javascript:void(0)">Classic Variation</a>
+                <ul class="sub-menu">
+                  <li><a href="shop-banner-left-sidebar-col-3.html">Banner left sidebar 3
+                      column</a></li>
+                  <li><a href="shop-banner-left-sidebar-col-4.html">Banner left sidebar 4
+                      column</a></li>
+                  <li><a href="shop-banner-right-sidebar-col-3.html">Banner right sidebar 3
+                      column</a></li>
+                  <li><a href="shop-banner-right-sidebar-col-4.html">Banner right sidebar 4
+                      column</a></li>
+                  <li><a href="shop-banner-full-width.html">Banner Full width 4 column</a></li>
+                </ul>
               </li>
               <li>
-                <button type="button" class="dropdown-item align-items-center" data-bs-theme-value="system"
-                  aria-pressed="false">
-                  <span><i class="icon-base ti tabler-device-desktop-analytics icon-md me-3"
-                      data-icon="device-desktop-analytics"></i>System</span>
-                </button>
+                <a href="javascript:void(0)">Columns Variation</a>
+                <ul class="sub-menu">
+                  <li><a href="shop-full-width-col-3.html">3 Columns full width</a></li>
+                  <li><a href="shop-full-width-col-4.html">4 Columns full width</a></li>
+                  <li><a href="shop-full-width-col-5.html">5 Columns full width</a></li>
+                  <li><a href="shop-full-width-col-6.html">6 Columns full width</a></li>
+                  <li><a href="shop-banner-full-width-col-3.html">Banner 3 Columns</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="javascript:void(0)">List Variation</a>
+                <ul class="sub-menu">
+                  <li><a href="shop-list-left-sidebar.html">Shop left sidebar</a></li>
+                  <li><a href="shop-list-right-sidebar.html">Shop right sidebar</a></li>
+                  <li><a href="shop-list-banner-left-sidebar.html">Banner left sidebar</a></li>
+                  <li><a href="shop-list-banner-right-sidebar.html">Banner right sidebar</a></li>
+                  <li><a href="shop-list-full-col-2.html">Full width 2 columns</a></li>
+                </ul>
+              </li>
+              <li><a class="p-0" href="shop-left-sidebar-col-3.html"><img class="img-responsive"
+                    src="assets/images/menu-banner/1.jpg" alt=""></a>
               </li>
             </ul>
           </li>
-          <!-- / Style Switcher-->
-
-          <!-- navbar button: Start -->
-          <li>
-            @guest
-              <a href="{{ route("register") }}" class="btn btn-primary" target="_blank"><span
-                  class="tf-icons icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span
-                  class="d-none d-md-block">Register</span></a>
-              <a href="{{ route("login") }}" class="btn btn-primary" target="_blank"><span
-                  class="tf-icons icon-base ti tabler-login scaleX-n1-rtl me-md-1"></span><span
-                  class="d-none d-md-block">Login</span></a>
-            @endguest
-
+          <li><a href="javascript:void(0)">Products</a>
+            <ul class="sub-menu">
+              <li><a href="javascript:void(0)">Product page</a>
+                <ul class="sub-menu">
+                  <li><a href="product-left-sidebar.html">Product left sidebar</a></li>
+                  <li><a href="product-right-sidebar.html">Product right sidebar</a></li>
+                </ul>
+              </li>
+              <li><a href="javascript:void(0)">Product 360</a>
+                <ul class="sub-menu">
+                  <li><a href="product-360-left-sidebar.html">360 left sidebar</a></li>
+                  <li><a href="product-360-right-sidebar.html">360 right sidebar</a></li>
+                </ul>
+              </li>
+              <li>
+                <a href="javascript:void(0)">Product vodeo</a>
+                <ul class="sub-menu">
+                  <li><a href="product-video-left-sidebar.html">vodeo left sidebar</a></li>
+                  <li><a href="product-video-right-sidebar.html">vodeo right sidebar</a></li>
+                </ul>
+              </li>
+              <li><a href="javascript:void(0)">Product gallery</a>
+                <ul class="sub-menu">
+                  <li><a href="product-gallery-left-sidebar.html">Gallery left sidebar</a></li>
+                  <li><a href="product-gallery-right-sidebar.html">Gallery right sidebar</a></li>
+                </ul>
+              </li>
           </li>
-          <!-- navbar button: End -->
+          <li><a href="product-full-width.html">Product full width</a></li>
+          <li><a href="product-360-full-width.html">360 full width</a></li>
+          <li><a href="product-video-full-width.html">Video full width</a></li>
+          <li><a href="product-gallery-full-width.html">Gallery full width</a></li>
         </ul>
-        <!-- Toolbar: End -->
+        </li>
+        <li><a href="javascript:void(0)">Others</a>
+          <ul class="sub-menu">
+            <li><a href="javascript:void(0)">Mail Confirmation</a>
+              <ul class="sub-menu">
+                <li><a href="email-template-confirm-1.html">Mail Confirmation 1</a></li>
+                <li><a href="email-template-confirm-2.html">Mail Confirmation 2</a></li>
+                <li><a href="email-template-confirm-3.html">Mail Confirmation 3</a></li>
+                <li><a href="email-template-confirm-4.html">Mail Confirmation 4</a></li>
+                <li><a href="email-template-confirm-5.html">Mail Confirmation 5</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Mail Reset password</a>
+              <ul class="sub-menu">
+                <li><a href="email-template-forgot-password-1.html">Reset password 1</a></li>
+                <li><a href="email-template-forgot-password-2.html">Reset password 2</a></li>
+                <li><a href="email-template-forgot-password-3.html">Reset password 3</a></li>
+                <li><a href="email-template-forgot-password-4.html">Reset password 4</a></li>
+                <li><a href="email-template-forgot-password-5.html">Reset password 5</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Mail Promotional</a>
+              <ul class="sub-menu">
+                <li><a href="email-template-offers-1.html">Offer Mail 1</a></li>
+                <li><a href="email-template-offers-2.html">Offer Mail 2</a></li>
+                <li><a href="email-template-offers-3.html">Offer Mail 3</a></li>
+                <li><a href="email-template-offers-4.html">Offer Mail 4</a></li>
+                <li><a href="email-template-offers-5.html">Offer Mail 5</a></li>
+                <li><a href="email-template-offers-6.html">Offer Mail 6</a></li>
+                <li><a href="email-template-offers-7.html">Offer Mail 7</a></li>
+                <li><a href="email-template-offers-8.html">Offer Mail 8</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Vendor Account Pages</a>
+              <ul class="sub-menu">
+                <li><a href="vendor-dashboard.html">Vendor Dashboard</a></li>
+                <li><a href="vendor-profile.html">Vendor Profile</a></li>
+                <li><a href="vendor-uploads.html">Vendor Uploads</a></li>
+                <li><a href="vendor-settings.html">Vendor Settings</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">User Account Pages</a>
+              <ul class="sub-menu">
+                <li><a href="user-profile.html">User Profile</a></li>
+                <li><a href="user-history.html">User History</a></li>
+                <li><a href="wishlist.html">Wishlist</a></li>
+                <li><a href="track-order.html">Track Order</a></li>
+                <li><a href="user-invoice.html">User Invoice</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Construction Pages</a>
+              <ul class="sub-menu">
+                <li><a href="404-error-page.html">404 Error Page</a></li>
+                <li><a href="under-maintenance.html">Maintenance Page</a></li>
+                <li><a href="coming-soon.html">Comming Soon Page</a></li>
+              </ul>
+            </li>
+            <li><a href="javascript:void(0)">Vendor Catalog Pages</a>
+              <ul class="sub-menu">
+                <li><a href="catalog-single-vendor.html">Catalog Single Vendor</a></li>
+                <li><a href="catalog-multi-vendor.html">Catalog Multi Vendor</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li><a href="javascript:void(0)">Pages</a>
+          <ul class="sub-menu">
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="contact-us.html">Contact Us</a></li>
+            <li><a href="cart.html">Cart</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li><a href="compare.html">Compare</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            @guest
+
+              <li><a href="{{ route("login") }}">Login</a></li>
+              <li><a href="{{ route("register") }}">Register</a></li>
+            @endguest
+            <li><a href="track-order.html">Track Order</a></li>
+            <li><a href="terms-condition.html">Terms Condition</a></li>
+            <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          </ul>
+        </li>
+        <li class="dropdown"><a href="javascript:void(0)">Blog</a>
+          <ul class="sub-menu">
+            <li><a href="blog-left-sidebar.html">Blog left sidebar</a></li>
+            <li><a href="blog-right-sidebar.html">Blog right sidebar</a></li>
+            <li><a href="blog-detail-left-sidebar.html">Blog detail left sidebar</a></li>
+            <li><a href="blog-detail-right-sidebar.html">Blog detail right sidebar</a></li>
+            <li><a href="blog-full-width.html">Blog full width</a></li>
+            <li><a href="blog-detail-full-width.html">Blog detail full width</a></li>
+          </ul>
+        </li>
+        <li class="dropdown"><a href="javascript:void(0)">Elements</a>
+          <ul class="sub-menu">
+            <li><a href="elemets-products.html">Products</a></li>
+            <li><a href="elemets-typography.html">Typography</a></li>
+            <li><a href="elemets-title.html">Titles</a></li>
+            <li><a href="elemets-categories.html">Categories</a></li>
+            <li><a href="elemets-buttons.html">Buttons</a></li>
+            <li><a href="elemets-tabs.html">Tabs</a></li>
+            <li><a href="elemets-accordions.html">Accordions</a></li>
+            <li><a href="elemets-blog.html">Blogs</a></li>
+          </ul>
+        </li>
+        <li><a href="offer.html">Hot Offers</a></li>
+        </ul>
+      </div>
+      <div class="header-res-lan-curr">
+        <div class="header-top-lan-curr">
+          <!-- Language Start -->
+          <div class="header-top-lan dropdown">
+            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
+                class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+            <ul class="dropdown-menu">
+              <li class="active"><a class="dropdown-item" href="#">English</a></li>
+              <li><a class="dropdown-item" href="#">Italiano</a></li>
+            </ul>
+          </div>
+          <!-- Language End -->
+          <!-- Currency Start -->
+          <div class="header-top-curr dropdown">
+            <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
+                class="ecicon eci-caret-down" aria-hidden="true"></i></button>
+            <ul class="dropdown-menu">
+              <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
+              <li><a class="dropdown-item" href="#">EUR €</a></li>
+            </ul>
+          </div>
+          <!-- Currency End -->
+        </div>
+        <!-- Social Start -->
+        <div class="header-res-social">
+          <div class="header-top-social">
+            <ul class="mb-0">
+              <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a>
+              </li>
+              <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
+              <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a>
+              </li>
+              <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <!-- Social End -->
       </div>
     </div>
-  </nav>
-  <main class="m-5 pt-5">
-    {{ $slot }}
-
-  </main>
-
-  <script src="../../assets/vendor/libs/popper/popper.js"></script>
-  <script src="../../assets/vendor/js/bootstrap.js"></script>
-  <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
-
-  <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
-
-  <!-- endbuild -->
-
-  <!-- Vendors JS -->
-  <script src="../../assets/vendor/libs/nouislider/nouislider.js"></script>
-  <script src="../../assets/vendor/libs/swiper/swiper.js"></script>
-
-  <!-- Main JS -->
-
-  <script src="../../assets/js/front-main.js"></script>
-
-  <!-- Page JS -->
-  <script src="../../assets/js/front-page-landing.js"></script>
-</body>
-
-</html>
-</body>
+  </div>
+  <!-- ekka mobile Menu End -->
+</header>

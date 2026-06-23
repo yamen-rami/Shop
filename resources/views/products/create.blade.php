@@ -18,24 +18,65 @@
             {{-- ? Desc --}}
             <x-form.textarea type="text" value="Description" feild="desc"></x-form.textarea>
             {{-- ? Price --}}
-            <x-form.input type="number"  value="Price" feild="price"></x-form.input>
-            <x-form.input type="number" value="Int Price" feild="int_price"></x-form.input>
+            <x-form.input type="number" step="any" value="Price" feild="price"></x-form.input>
+            <x-form.input type="number" step="any" value="Int Price" feild="int_price"></x-form.input>
 
             <x-form.input type="number" value="Quantity" feild="quantity"></x-form.input>
+
             <x-form.input type="file" value="Image" feild="image"></x-form.input>
-            
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Select Tags</label>
 
-
-            <div class="row justify-content-end">
               <div class="col-sm-10">
-                <button type="submit" class="btn btn-primary">Send</button>
+                <div>
+
+                  <select class="bg-black text-white" name="tags[]" multiple>
+                    <option value="">Select Tags</option>
+                    @foreach ($tags as $tag)
+                      <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                @error("tags")
+                  <p class="text-danger">
+                    {{ $message }}
+                  </p>
+                @enderror
+              </div>
+
+            </div>
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Select Catagory</label>
+              <div class="col-sm-10">
+                <div>
+                  <select class="bg-black text-white" name="catagory_id">
+                    <option value="">Select Catagory </option>
+                    @foreach ($catagories as $catagory)
+                      <option value="{{ $catagory->id }}">{{ $catagory->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                @error("catagory")
+                  <p class="text-danger">
+                    {{ $message }}
+                  </p>
+                @enderror
               </div>
             </div>
-          </form>
+
         </div>
+
+
+        <div class="row justify-content-end">
+          <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Send</button>
+          </div>
+        </div>
+        </form>
       </div>
     </div>
-    <!-- Basic with Icons -->
+  </div>
+  <!-- Basic with Icons -->
 
   </div>
 </x-main-layout>

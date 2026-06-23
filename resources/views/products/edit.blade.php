@@ -2,6 +2,7 @@
   Edit Product {{ $product->name }}
 @endsection
 <x-main-layout>
+
   <x-slot:header>
     Editing {{ $product->name }}
   </x-slot:header>
@@ -14,7 +15,7 @@
           <small class="text-body-secondary float-end">Product</small>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route("product.update" , $product) }}" enctype="multipart/form-data">
+          <form method="POST" action="{{ route("product.update", $product) }}" enctype="multipart/form-data">
             @csrf
             @method("PATCH")
             <div class="d-flex justify-content-between">
@@ -34,14 +35,62 @@
             {{-- ? Desc --}}
             <x-form.textarea type="text" edit="{{ $product->desc }}" value="Description" feild="desc"></x-form.textarea>
             {{-- ? Price --}}
-            <x-form.input type="number" edit="{{ $product->price }}" value="Price" feild="price"></x-form.input>
-            <x-form.input type="number" edit="{{ $product->int_price }}" value="Int Price"
+            <x-form.input type="number" step="any" edit="{{ $product->price }}" value="Price"
+              feild="price"></x-form.input>
+            <x-form.input type="number" step="any" edit="{{ $product->int_price }}" value="Int Price"
               feild="int_price"></x-form.input>
             {{-- The Edit refrese to the actual value cause of the name that i have created before --}}
             <x-form.input type="number" edit="{{ $product->quantity }}" value="Quantity"
               feild="quantity"></x-form.input>
             <x-form.input type="file" value="Image" feild="image"></x-form.input>
 
+
+            {{-- <x-form.input type="text" value="Tags" feild="tags"></x-form.input> --}}
+
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Tags</label>
+              <div class="col-sm-10">
+                @foreach ($product->tags as $tag)
+                  <span class="badge bg-label-primary me-1">{{ $tag->name }}</span>
+                @endforeach
+
+              </div>
+            </div>
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Select Products</label>
+              <div class="col-sm-10">
+                <select class="bg-black text-white" name="tags[]" multiple>
+                  <option value="">Select Products</option>
+                  @foreach ($tags as $tag)
+                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                  @endforeach
+                </select>
+                @error("tags")
+                  <p class="text-danger">
+                    {{ $message }}
+                  </p>
+                @enderror
+              </div>
+            </div>
+            {{-- ! Catagory --}}
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Select Catagory</label>
+              <div class="col-sm-10">
+                <div>
+                  <select class="bg-black text-white" name="catagory_id">
+                    <option value="">{{ $product->catagory->name ?? "Select Products" }}</option>
+                    @foreach ($catagories as $catagory)
+                      <option value="{{ $catagory->id }}">{{ $catagory->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                @error("catagory_id")
+                  <p class="text-danger">
+                    {{ $message }}
+                  </p>
+                @enderror
+              </div>
+            </div>
 
 
             <div class="row justify-content-end">

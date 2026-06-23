@@ -20,7 +20,7 @@ class Checkout
             return redirect()->route("login");
         }
         $cart = auth()->user()->cart ; 
-        if(!$cart || $cart->count() === 0){
+        if(!$cart || $cart->count() === 0 || $cart->products()->count() === 0){
             return redirect()->route("home");
         }
         return $next($request);

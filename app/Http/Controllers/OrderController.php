@@ -17,7 +17,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $sort = $request->sort ?? "desc";
-        $orders = Order::with(["products"])
+        $orders = Order::with(["products" , "user"])
             ->where("name", "LIKE", "%" . $request->search . "%")
             ->orWhere("qunatity", $request->search)->orderBy("id", $sort)->paginate(30);
         return view(
@@ -56,7 +56,6 @@ class OrderController extends Controller
                 "quantity" => ["Sorry there is only $product->quantity for $product->name "],
             ]);
         } else {
-
             $quantity = $product->quantity - $order->quantity;
             $product->update([
                 "quantity" => $quantity,

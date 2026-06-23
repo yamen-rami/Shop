@@ -22,7 +22,7 @@ class CompanyController extends Controller
             ->orderBy("id", $sort)
             ->where("name", "like", "%" . $request->search . "%")
             ->orWhere("desc", "like", "%" . $request->search . "%")
-            ->latest()->paginate(50);
+            ->latest()->paginate(30);
         return view("companies.index", [
             "companies" => $companies,
             "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc"
@@ -53,7 +53,11 @@ class CompanyController extends Controller
             $data["image"] = $path;
         }
         $company = Company::create(SupportArr::except($data, "product_id"));
+        flash()->success("Company Created Succefully");
+        $product = Product::where("id" , $data["product_id"])->first();
+        $productName = $product->name;
         $company->products()->attachOrFail($data["product_id"]);
+        flash()->success("It's Been Linked to the Product : $productName");
         return redirect()->route("company.index");
     }
 
@@ -66,6 +70,7 @@ class CompanyController extends Controller
         return view("companies.show" , [
             'company' => $company ,
         ]);
+
     }
 
     /**

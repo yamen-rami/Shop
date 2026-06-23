@@ -19,9 +19,11 @@
               <p class="card-text"><strong>Price : </strong>{{ $product->price }}</p>
               <p class="card-text"><strong>Int Price : </strong>{{ $product->int_price }}</p>
               <p class="card-text"><strong>Quantity : </strong>{{ $product->quantity }}</p>
-
-
-             
+              
+              <p class="card-text"><strong>Tags : </strong> </p>
+              @foreach($product->tags as $tag)
+              <td><span class="badge bg-label-primary me-1">{{ $tag->name }}</span></td>
+              @endforeach
               <p class="card-text"><small class="text-body-secondary"> <strong> Created At : </strong>{{ $product->created_at }}</small></p>
             </div>
           </div>

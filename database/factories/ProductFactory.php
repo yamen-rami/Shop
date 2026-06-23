@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-use App\Models\Product;
+use App\Models\{Catagory, Product, Tag};
 
 /**
  * @extends Factory<Product>
@@ -22,10 +22,12 @@ class ProductFactory extends Factory
             //
             "name" => fake()->name , 
             "desc" => fake()->realText(10) ,
+            "catagory_id" => Catagory::factory()->create() ,
             "price" => fake()->numberBetween(10 , 100) , 
+            "original_price" => fake()->numberBetween(10 , 100) , 
             "int_price" => fake()->numberBetween(8 , 80 ), 
             "quantity" => fake()->numberBetween(10 , 100),
-            "image" => fake()->imageUrl,
+            "image" => asset("assets/images/about/about-1.jpg"),
         ];
     }
 }

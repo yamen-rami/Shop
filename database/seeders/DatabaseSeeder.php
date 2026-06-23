@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use App\Models\{Company, Order, Product, User};
+use App\Models\{Catagory, Company, Contact, Offer, Order, Product, User};
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,15 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        
-        // Product::factory(100)->create();
-        Order::factory(100)->create();
-        // Company::factory(100)->create();
+        Product::factory(100)->create();
 
     }
 }
