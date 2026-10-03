@@ -24,7 +24,7 @@ class CatagoryController extends Controller
         return view("catagory.show", [
             "catagory" => $catagory,
             "products" => $products,
-            "offer" => $offer , 
+            "offer" => $offer ,
         ]);
     }
     public function create()
