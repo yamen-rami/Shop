@@ -1,5 +1,7 @@
-<x-app>
-  <x-home.navbar />
+@extends('layouts.storefront')
+
+@section('content')
+  <x-home.navbar /> 
   <div class="ec-side-cart-overlay"></div>
   <div id="ec-side-cart" class="ec-side-cart">
     <div class="ec-cart-inner">
@@ -445,4 +447,4 @@
   </div>
   <x-category></x-category>
 
-</x-app>
+@endsection

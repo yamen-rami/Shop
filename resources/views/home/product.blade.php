@@ -1,4 +1,6 @@
-<x-app>
+@extends('layouts.storefront')
+
+@section('content')
   @inject("offerService" , "App\Services\OfferService")
   {{-- <x-loader></x-loader> --}}
   <x-home.navbar />
@@ -476,4 +478,4 @@
     <!--/ End Right Floating Button-->
   </div>
   <x-category />
-</x-app>
+@endsection

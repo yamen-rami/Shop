@@ -1,39 +1,18 @@
-<x-guest-layout>
+@extends('layouts.auth')
+
+@section('title', __('Reset Password'))
+@section('auth-description', __('Choose a new password for your account.'))
+
+@section('auth-content')
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
-
-        <!-- Password Reset Token -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
+        <x-auth.field name="email" :label="__('Email Address')" type="email" :value="old('email', $request->email)" autocomplete="username" autofocus />
+        <x-auth.field name="password" :label="__('New Password')" type="password" autocomplete="new-password" />
+        <x-auth.field name="password_confirmation" :label="__('Confirm Password')" type="password" autocomplete="new-password" />
+        <span class="ec-login-wrap ec-login-btn">
+            <button class="btn btn-primary" type="submit">{{ __('Reset Password') }}</button>
+            <a href="{{ route('login') }}" class="btn btn-secondary">{{ __('Back to Login') }}</a>
+        </span>
     </form>
-</x-guest-layout>
+@endsection

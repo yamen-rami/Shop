@@ -1,7 +1,11 @@
-<x-app>
-  <x-slot:title>
-    Wishlist
-  </x-slot:title>
+@extends('layouts.storefront')
+
+@section('title')
+Wishlist
+@endsection
+
+@section('content')
+
 
   <x-loader>
 
@@ -94,4 +98,4 @@
   <livewire:show />
 
   <x-category></x-category>
-</x-app>
+@endsection

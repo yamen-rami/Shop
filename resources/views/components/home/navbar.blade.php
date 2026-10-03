@@ -34,8 +34,8 @@
               <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">{{ __("home.lang") }} <i
                   class="ecicon eci-caret-down" aria-hidden="true"></i></button>
               <ul class="dropdown-menu">
-                <li class="active"><a class="dropdown-item" href="locale/en">English</a></li>
-                <li><a class="dropdown-item" href="locale/ar">Arabic</a></li>
+                <li class="active"><a class="dropdown-item" href="{{ url('locale/en') }}">English</a></li>
+                <li><a class="dropdown-item" href="{{ url('locale/ar') }}">Arabic</a></li>
               </ul>
             </div>
             <!-- Language End -->
@@ -56,10 +56,11 @@
                   <li><a class="dropdown-item" href="{{ route("login") }}">{{ __("home.login") }}</a></li>
                 @endguest
                 @auth
-                  <form method="post" action="{{ route("logout") }}">
+                  <li><a class="dropdown-item" href="{{ route('password.edit') }}">{{ __('Update Password') }}</a></li>
+                  <li><form method="post" action="{{ route('logout') }}">
                     @csrf
-                    <li><a class="dropdown-item">{{ __('home.logout') }}</a></li>
-                  </form>
+                    <button type="submit" class="dropdown-item">{{ __('home.logout') }}</button>
+                  </form></li>
                 @endauth
               </ul>
             </div>
@@ -102,7 +103,7 @@
           <div class="align-self-center">
             <div class="header-logo">
               <a href="{{ route("home") }}"><img src="{{asset("assets/images/logo/logo.png")}}" alt="Site Logo" /><img
-                  class="dark-logo" src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a>
+                  class="dark-logo" src="{{ asset('assets/images/logo/dark-logo.png') }}" alt="Site Logo" style="display: none;" /></a>
             </div>
           </div>
           <!-- Ec Header Logo End -->
@@ -140,10 +141,11 @@
                     @endif
                   @endauth
                   @auth
-                    <form method="post" action="{{ route("logout") }}">
+                    <li><a class="dropdown-item" href="{{ route('password.edit') }}">{{ __('Update Password') }}</a></li>
+                    <li><form method="post" action="{{ route('logout') }}">
                       @csrf
-                      <button><a class="dropdown-item">{{ __("home.logout") }}</a></button>
-                    </form>
+                      <button type="submit" class="dropdown-item">{{ __('home.logout') }}</button>
+                    </form></li>
                   @endauth
                 </ul>
               </div>
@@ -185,8 +187,8 @@
         <!-- Ec Header Logo Start -->
         <div class="col">
           <div class="header-logo">
-            <a href="index.html"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="Site Logo" /><img class="dark-logo"
-                src="assets/images/logo/dark-logo.png" alt="Site Logo" style="display: none;" /></a>
+            <a href="{{ route('home') }}"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="Site Logo" /><img class="dark-logo"
+                src="{{ asset('assets/images/logo/dark-logo.png') }}" alt="Site Logo" style="display: none;" /></a>
           </div>
         </div>
         <!-- Ec Header Logo End -->
@@ -250,8 +252,8 @@
             <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
                 class="ecicon eci-caret-down" aria-hidden="true"></i></button>
             <ul class="dropdown-menu">
-              <li class="active"><a class="dropdown-item" href="locale/en">English</a></li>
-              <li><a class="dropdown-item" href="locale/ar">Arabic</a></li>
+              <li class="active"><a class="dropdown-item" href="{{ url('locale/en') }}">English</a></li>
+              <li><a class="dropdown-item" href="{{ url('locale/ar') }}">Arabic</a></li>
             </ul>
           </div>
           <!-- Language End -->

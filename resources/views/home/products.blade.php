@@ -1,7 +1,11 @@
-<x-app>
-  <x-slot:title>
-    {{ __("home.products") }}
-  </x-slot:title>
+@extends('layouts.storefront')
+
+@section('title')
+{{ __("home.products") }}
+@endsection
+
+@section('content')
+
   <x-loader>
 
   </x-loader>
@@ -89,4 +93,4 @@
 
   <x-footer></x-footer>
   <x-home.menu></x-home.menu>
-</x-app>
+@endsection

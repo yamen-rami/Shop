@@ -1,4 +1,6 @@
-<x-app>
+@extends('layouts.storefront')
+
+@section('content')
   <x-home.navbar />
   <section class="ec-under-maintenance">
 
@@ -20,4 +22,4 @@
     </div>
   </section>
   <x-footer></x-footer>
-</x-app>
+@endsection

@@ -1,4 +1,6 @@
-<x-app>
+@extends('layouts.storefront')
+
+@section('content')
   <x-loader>
   </x-loader>
   <x-home.navbar />
@@ -185,4 +187,4 @@
     <x-cart />
 
 
-</x-app>
+@endsection

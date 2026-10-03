@@ -30,6 +30,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::view('password', 'auth.update-password')->name('password.edit');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

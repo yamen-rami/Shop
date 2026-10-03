@@ -1,7 +1,11 @@
-<x-app>
-  <x-slot:title>
-    {{ __("home.contact us") }}
-  </x-slot:title>
+@extends('layouts.storefront')
+
+@section('title')
+{{ __("home.contact us") }}
+@endsection
+
+@section('content')
+
   {{-- <x-navbar /> --}}
   <x-home.navbar ></x-home.navbar>
   <x-loader />
@@ -51,4 +55,4 @@
   </section>
   <x-category></x-category>
   <x-footer />
-</x-app>
+@endsection
