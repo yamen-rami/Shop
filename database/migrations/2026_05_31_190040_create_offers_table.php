@@ -18,12 +18,12 @@ return new class extends Migration
             $table->string("name");
             $table->string("code")->nullable();
             $table->enum("discount_type" , ["percentage" , "fixed_amount"]);
-            $table->foreignIdFor(Catagory::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->enum("type" , ["global","coupon","categories","products"]);
+            // $table->foreignIdFor(Catagory::class)->nullable()->constrained()->cascadeOnDelete();
             $table->decimal("discount_value");
             $table->timestamp('start_date');
             $table->timestamp('end_date');
             $table->boolean('is_active')->default(false);
-            $table->boolean('apply_to_all')->default(true);
             $table->timestamps();
         });
     }

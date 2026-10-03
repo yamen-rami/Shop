@@ -25,7 +25,7 @@ class CouponController extends Controller
     public function catagory(Request $request)
     {
         $sort = $request->sort ?? "desc";
-        $couponOffers = Offer::with("catagory")->whereNotNull("catagory_id")
+        $couponOffers = Offer::with("categories")->catagory()
             ->where("name", "LIKE", '%' . $request->search . '%')
             ->orderBy("id", $sort)
             ->paginate(30)->withQueryString();

@@ -23,11 +23,11 @@ class OfferFactory extends Factory
             "name" => fake()->name,
             "code" => fake()->unique()->name,
             "discount_value" => fake()->numberBetween(10, 100),
+            "type" => "global" , 
             "is_active" => false,
             "discount_type" => "percentage",
             "start_date" => fake()->date(),
             "end_date" => fake()->date(),
-
         ];
     }
 }

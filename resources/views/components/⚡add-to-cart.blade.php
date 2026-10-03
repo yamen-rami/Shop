@@ -32,8 +32,8 @@ new class extends Component {
 };
 ?>
 
-<div class="ec-quickview-cart ">
+<div class="ec-quickview-cart  ">
     <button class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close"
         wire:click='addCart({{ $this->product->id }})'>
-        <i class="fi-rr-shopping-basket"></i>Add To Cart</button>
+        <i class="fi-rr-shopping-basket"></i><span class="ml-3">{{ __("home.addToCart") }} </span></button>
 </div>

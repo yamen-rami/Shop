@@ -37,8 +37,8 @@
             <x-form.input type="file" value="Image" feild="image"></x-form.input>
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Products</label>
-              <div class="col-sm-10">
-                <select class="bg-black text-white rounded" name="product_id">
+              <div class="col-sm-10 col-lg-4">
+                <select class="select-product" name="product_id">
                   @if($company->products)
                     @foreach ($company->products as $product)
                       <option value="{{ $product->id ?? null }}">{{ $product->name ?? "There Is No Previous Records" }}
@@ -46,7 +46,6 @@
                     @endforeach
                   @else
                     <option value="">There Is No Records</option>
-
                   @endif
                   @foreach ($products as $product)
                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -69,3 +68,8 @@
 
   </div>
 </x-main-layout>
+@script
+  <script type="text/javascript" >
+    $(".select-product").select2();
+  </script>
+@endScript

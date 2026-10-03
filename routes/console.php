@@ -8,5 +8,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command("app:offers:activate")->daily();
-Schedule::command("app:cart:delete-old")->hourly();
+Schedule::command("app:cart:delete-old")->everySecond();
 

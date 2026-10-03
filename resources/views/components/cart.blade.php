@@ -8,7 +8,7 @@
     </div>
 
     <span class="ec-cart-count cart-count-lable">
-      <p style="z-index: 100"> <livewire:count /></p>
+      <p style="z-index: 100">{{ $cartCount }}</p>
      
     </span>
 

@@ -1,3 +1,4 @@
+@inject('offerService', 'App\Services\OfferService')
 <x-main-layout>
   <x-slot:title>
     Products
@@ -17,7 +18,11 @@
             <a class="ml-4 btn btn-danger" href="{{ route("product.index") }}">Clear</a>
           </div>
         </form>
-
+      </div>
+      <div>
+        <form action="{{ route("product.index") }}" method="get">
+          <button name="featured"  value="{{ $featured ?? "featured" }}" class="text-white btn btn-primary">{{ $featured ?? "Featured" }}</button>
+        </form>
       </div>
       <div class="dropdown">
         <button type="button" class="btn  p-0 dropdown-toggle hide-arrow " data-bs-toggle="dropdown">
@@ -31,7 +36,6 @@
                 {{ $catagory->name }}</a>
             @endif
           @endforeach
-
         </div>
       </div>
       <div class="d-flex ">
@@ -58,9 +62,13 @@
             <th>Catagory</th>
             <th>Image</th>
             <th>Desc</th>
+            <th>Featured</th>
             <th>Quantity</th>
             <th>Int Price</th>
             <th>Price</th>
+            <th>Store Price</th>
+            <th>Current Offer</th>
+            <th>Company</th>
             <th>Tags</th>
             <th>Actions</th>
           </tr>
@@ -70,7 +78,7 @@
             <tr>
               <td>{{ $product->id}}</td>
               <td>
-                <span class="fw-medium">{{ $product->name }}</span>
+                <span class="fw-medium">{{ Str::limit($product->name, 15) }}</span>
               </td>
               <td>
                 @if($product->catagory)
@@ -79,20 +87,33 @@
                 @else
                   <span class="fw-medium"></span>
                 @endif
-
               </td>
               <td>
                 <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                   <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
-                    class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                    class="avatar avatar-xs pull-up" title="{{ $product->name }}">
                     <img src="{{ asset($product->image) }}" alt="Avatar" class="rounded-circle" />
                   </li>
                 </ul>
               </td>
-              <td>{{ Str::limit($product->desc, 40) }}</td>
+              {{-- {{ $offerService->getDiscount($product , $products_offers)}} --}}
+              <td>{{ Str::limit($product->desc,15 ) }}</td>
+              <td>{{ $product->featured == "on" ? "Featured" : "Not Featured" }}</td>
+
               <td><span class="badge bg-label-primary me-1">{{ $product->quantity }}</span></td>
               <td>{{ $product->int_price }}</td>
               <td>{{ $product->price }}</td>
+              <td>{{$offerService->getDiscount($product, $products_offers)["best"]}}</td>
+                <td>{{$offerService->offerType($offerService->getDiscount($product, $products_offers)["offer"])}}</td>
+              <td>
+                <div class="d-flex">
+                  @foreach ($product->companies as $company)
+                    <a href="{{ route("company.show" , $company->id) }}" >
+                      <button type="submit" class="badge bg-label-primary me-1">{{ $company->name }}</button>
+                    </a>
+                  @endforeach
+                </div>
+              </td>
               <td>
                 <div class="d-flex">
                   @foreach ($product->tags as $tag)
@@ -109,14 +130,12 @@
                   <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                     <i class="icon-base ti tabler-dots-vertical"></i>
                   </button>
-                  <div class="dropdown-menu">
+                  <div class=" dropdown-menu">
                     {{-- Show Product --}}
                     <a class="dropdown-item" href="{{ route('product.show', $product) }}"><i
                         class="icon-base ti tabler-pencil me-1"></i>
-                      Show</a>
-                    {{-- Edit Product --}}
-                    <a class="dropdown-item" href="{{ route('product.edit', $product) }}"><i
-                        class="icon-base ti tabler-pencil me-1"></i>
+                      Show</a> {{-- Edit Product --}} <a class="dropdown-item"
+                      href="{{ route('product.edit', $product) }}"><i class="icon-base ti tabler-pencil me-1"></i>
                       Edit</a>
                     {{-- Delete Product --}}
                     <form action="{{ route("product.destroy", $product->id) }}" method="POST">

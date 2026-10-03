@@ -3,12 +3,12 @@
     Offers
   </x-slot:title>
   <x-slot:header>
-    Offers
+    Categoery Offers
   </x-slot:header>
   <div class="card">
     <div class="d-flex justify-between items-center">
       <div>
-        <h5 class="card-header">offer Tabel</h5>
+        <h5 class="card-header">Category Offers Tabel</h5>
       </div>
       <div>
         <form action="{{ route("catagoryOffers") }}" method="get">
@@ -42,7 +42,6 @@
             <th>Name</th>
             <th>Catagory</th>
 
-            <th>Code</th>
             <th>Discount Type</th>
             <th>Discount Value</th>
             <th>Start Date</th>
@@ -60,14 +59,14 @@
                 <span class="fw-medium">{{ $offer->name }}</span>
               </td>
               <td class="small">
-                @if($offer->catagory)
-                  <a href="{{ route("catagory.show", $offer->catagory->id) }}"
-                    class="fw-medium">{{ $offer->catagory->name ?? " " }}</a>
-                @else
-                  <span class="fw-medium">{{ $offer->catagory->name ?? " " }}</span>
+                {{-- @dd($offers) --}}
+                @if($offer->categories)
+                  @foreach($offer->categories as $catagory)
+                    <a href="{{ route("catagory.show", $catagory->id) }}"
+                      class="fw-medium">{{ $catagory->name ?? " " }}</a>
+                  @endforeach
                 @endif
               </td>
-              <td class=" text-green small">{{ $offer->code }}</td>
               <td>
                 <span class="fw-medium">{{ $offer->discount_type }}</span>
               </td>
@@ -80,11 +79,10 @@
               <td>
                 <span class="fw-medium">{{ $offer->end_date }}</span>
               </td>
-              @if($offer->start_date <= date("Y-m-d") && date("Y-m-d") < $offer->end_date)
+              @if($offer->is_active = 1)
                 <td><span class="badge bg-label-primary me-1">Active</span></td>
               @else
                 <td><span class="badge bg-label-danger me-1">Not Active</span></td>
-
               @endif
               <td>
                 <div class="dropdown">

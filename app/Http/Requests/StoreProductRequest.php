@@ -30,6 +30,7 @@ class StoreProductRequest extends FormRequest
             "tags.*" => 'exists:tags,id',
             "int_price" => 'required|numeric',
             "price" => 'required|numeric',
+            "featured" => 'nullable',
             "quantity" => 'required|integer|min:1',
             "image" => 'required|image',
         ];

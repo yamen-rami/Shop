@@ -5,7 +5,10 @@ use App\Models\{Product, Cart, Favoriate};
 new class extends Component {
     public ?Product $product = null;
     public $favoriate;
-
+    public $products_offer ;
+    public function mount($products_offer){
+        $this->products_offer  =$products_offer;
+    }
     public function addCart(Product $product)
     {
         if (!auth()->check()) {
@@ -36,6 +39,8 @@ new class extends Component {
     }
 };
 ?>
+@inject('offerService', 'App\Services\OfferService')
+
 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" wire:key="{{ $product->id }}">
     @if($product)
         <div class="ec-product-inner">
@@ -67,11 +72,11 @@ new class extends Component {
                 <div class="d-flex">
                     <span>Price :</span>
                     <span class="ec-price">
-                        @if($product->price == $product->discount_price)
-                            <span class="new-price ">${{ $product->discount_price }}</span>
+                        @if($product->price == $offerService->getDiscount($product , $products_offer))
+                            <span class="new-price ">${{ $product->price }}</span>
                         @else
-                            <span class="old-price text-danger fs-5">{{ $product->price }}</span>
-                            <span class="new-price  fs-5">{{ $product->discount_price }}</span>
+                            <span class="old-price text-danger fs-5 pl-2">{{ $product->price }}</span>
+                            <span class="new-price  fs-5">{{ $offerService->getDiscount($product , $products_offer)["best"] }}</span>
                         @endif
                     </span>
                 </div>

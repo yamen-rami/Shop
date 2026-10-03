@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Arr;
 
-use App\Models\{Catagory, Product, Tag};
+use App\Models\{Catagory, Offer, Product, Tag};
 use App\Http\Requests\{StoreProductRequest, UpdateProductRequest};
 
 class ProductController extends Controller
@@ -19,14 +19,28 @@ class ProductController extends Controller
     {
         $sort = $request->sort;
         // ? Get all the products 
-        $products = Product::query()->with(["companies", "tags", "catagory"])
+        if ($request->featured) {
+            $trueOrFalse = $request->featured === "featured";
+            $products = Product::with(["catagory", 'tags', "companies"])->where("featured", "=", $trueOrFalse ?"on" : 0)
+                ->orderBy("id", $request->sort ?? "desc")
+                ->paginate(30)->withQueryString();
+            $catagories = Catagory::with("products")->limit(10)->get();
+            return view("products.index", [
+                "products" => $products,
+                "catagories" => $catagories,
+                "featured" => $request->featured === "not" ? $featured = "featured" : $featured = "not",
+                "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
+            ]);
+        }
+        $products = Product::query()->with(["catagory", 'tags', "companies"])
             ->where("name", 'LIKE', "%" . $request->search . "%")->orWhere("desc", "LIKE", "%" . $request->search . "%")
             ->orWhere("quantity", "LIKE", "%" . $request->search . "%")
             ->orWhere('price', "LIKE", "%" . $request->search . "%")
             ->orWhere("int_price", "LIKE", "%" . $request->search . "%")
             ->orderBy("id", $request->sort ?? "desc")
             ->paginate(30)->withQueryString();
-        $catagories = Catagory::all();
+        $catagories = Catagory::with("products")->limit(10)->get();
+
         return view("products.index", [
             "products" => $products,
             "catagories" => $catagories,
@@ -39,7 +53,7 @@ class ProductController extends Controller
             ->where("catagory_id", $catagory->id)->paginate(30)->withQueryString();
 
         flash()->success("Products Has Filtered");
-        $catagories = Catagory::all();
+        $catagories = Catagory::with("products")->limit(10)->get();
         return view("products.index", [
             "products" => $products,
             "catagories" => $catagories,
@@ -54,6 +68,7 @@ class ProductController extends Controller
         // Get The Tags
         $tags = Tag::all();
         $catagories = Catagory::all();
+
         return view("products/create", compact("tags", "catagories"));
     }
 
@@ -69,6 +84,7 @@ class ProductController extends Controller
                 'int_price' => ["The Int Price Must Be Lower Than Price"]
             ]);
         }
+
 
         $image = $validatedData["image"] ?? null;
         $validatedData["original_price"] = $validatedData["price"];
@@ -88,6 +104,8 @@ class ProductController extends Controller
         return redirect()->route("product.index");
     }
 
+    // ? first return false or on 
+    // ? get 
     /**
      * Display the specified resource.
      */
@@ -96,7 +114,6 @@ class ProductController extends Controller
         // $products = Product::with("tags")->where("id" , $product->id)
         $tags = Tag::all();
         $catagories = Catagory::all();
-
         return view("products.show", [
             "product" => $product,
             "tags" => $tags,
@@ -130,7 +147,9 @@ class ProductController extends Controller
             $path = $validateData["image"]->store('products', 'public');
             $validateData["image"] = $path;
         }
-        
+        if (!$request->featured) {
+            $validateData["featured"] = false;
+        }
         $P = $product->update(Arr::except($validateData, "tags"));
         $tags = $validateData["tags"] ?? [];
         if (empty($tags)) {

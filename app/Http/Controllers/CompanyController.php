@@ -48,13 +48,14 @@ class CompanyController extends Controller
     {
         //
         $data = $request->validated();
+
         if ($data["image"]) {
             $path = $data["image"]->store("companies", "public");
             $data["image"] = $path;
         }
         $company = Company::create(SupportArr::except($data, "product_id"));
         flash()->success("Company Created Succefully");
-        $product = Product::where("id" , $data["product_id"])->first();
+        $product = Product::where("id", $data["product_id"])->first();
         $productName = $product->name;
         $company->products()->attachOrFail($data["product_id"]);
         flash()->success("It's Been Linked to the Product : $productName");
@@ -67,10 +68,9 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         // ? show company 
-        return view("companies.show" , [
-            'company' => $company ,
+        return view("companies.show", [
+            'company' => $company,
         ]);
-
     }
 
     /**
@@ -92,14 +92,17 @@ class CompanyController extends Controller
     public function update(UpdateCompanyRequest $request, Company $company)
     {
         $data = $request->validated();
-        if ($data['image']) {
-            if ($company->image) {
-                Storage::disk()->delete($company->image);
+        if ($request->image) {
+
+            if ($data['image']) {
+                if ($company->image) {
+                    Storage::disk()->delete($company->image);
+                }
+                $path = $data['image']->store("companies", "public");
+                $data["image"] = $path;
             }
-            $path = $data['image']->store("companies" , "public");
-            $data["image"] = $path;
         }
-        $c = $company->update(SupportArr::except($data, "product_id")); 
+        $c = $company->update(SupportArr::except($data, "product_id"));
         //
         $company->products()->sync($data['product_id']);
         return redirect()->route("company.index");

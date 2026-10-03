@@ -23,11 +23,12 @@ class ProductFactory extends Factory
             "name" => fake()->name , 
             "desc" => fake()->realText(10) ,
             "catagory_id" => Catagory::factory()->create() ,
+            "featured" => false ,
             "price" => fake()->numberBetween(10 , 100) , 
             "original_price" => fake()->numberBetween(10 , 100) , 
             "int_price" => fake()->numberBetween(8 , 80 ), 
             "quantity" => fake()->numberBetween(10 , 100),
-            "image" => asset("assets/images/about/about-1.jpg"),
+            "image" => asset("assets/images/service/man.png"),
         ];
     }
 }

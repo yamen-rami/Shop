@@ -1,4 +1,7 @@
 <x-app>
+  <x-slot:title>
+    {{ __("home.products") }}
+  </x-slot:title>
   <x-loader>
 
   </x-loader>
@@ -12,7 +15,7 @@
     <div class="ec-cart-inner">
       <div class="ec-cart-top">
         <div class="ec-cart-title">
-          <span class="cart_title">My Cart</span>
+          <span class="cart_title">{{ __("home.myCart") }}</span>
           <button class="ec-close">×</button>
         </div>
         <livewire:home></livewire:home>
@@ -51,12 +54,24 @@
         <div class="col-md-12 text-center">
           <div class="section-title">
             <h2 class="ec-bg-title">Products</h2>
-            <h2 class="ec-title">Products</h2>
-            <p class="sub-title">Browse The Collection of Top Categories</p>
+            <h2 class="ec-title">{{ __("home.ourProducts") }}</h2>
+            <p class="sub-title">{{ __("home.browse") }}</p>
           </div>
         </div>
+        <div class="d-grid justify-content-center col-lg-12">
+          <form action="{{ route("products") }}">
+
+            <div class="header-search d-flex mb-5">
+
+              <input type="text" class="form-control ec-search-bar border-none" placeholder="{{ __("home.search") }}"
+                name="search">
+              <button class="text-light bg-primary">{{ __("home.buttonSearch") }}</button>
+            </div>
+          </form>
+
+        </div>
         @foreach($products as $product)
-          <livewire:cards :product="$product" />
+          <livewire:cards :product="$product" :products_offer="$offers" wire:key='$product->id' />
         @endforeach
       </div>
       {{ $products->links() }}
@@ -70,8 +85,8 @@
   <livewire:show />
   <!-- Footer Area End -->
   <x-category />
-
+  <x-cart></x-cart>
 
   <x-footer></x-footer>
-
+  <x-home.menu></x-home.menu>
 </x-app>

@@ -11,58 +11,31 @@
   <meta name="robots" content="noindex, nofollow" />
   <title>{{$title ?? "page" }}</title>
   <meta name="description" content="" />
-
   <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
-
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&ampdisplay=swap"
     rel="stylesheet" />
-
-  <link rel="stylesheet" href="../../assets/vendor/fonts/iconify-icons.css" />
-
-  <script src="../../assets/vendor/libs/@algolia/autocomplete-js.js"></script>
-
-  <!-- Core CSS -->
-  <!-- build:css assets/vendor/css/theme.css  -->
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/pickr/pickr-themes.css" />
-
-  <link rel="stylesheet" href="../../assets/vendor/css/core.css" />
-  <link rel="stylesheet" href="../../assets/css/demo.css" />
-
-  <!-- Vendors CSS -->
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-
-  <!-- endbuild -->
-
-  <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
-  <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
-  <link rel="stylesheet" href="../../assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
-  <link rel="stylesheet" href="../../assets/vendor/libs/flatpickr/flatpickr.css" />
-  <!-- Row Group CSS -->
-  <link rel="stylesheet" href="../../assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css" />
-  <!-- Form Validation -->
-  <link rel="stylesheet" href="../../assets/vendor/libs/@form-validation/form-validation.css" />
-
-  <!-- Page CSS -->
-
-  <!-- Helpers -->
-  <script src="../../assets/vendor/js/helpers.js"></script>
-  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-
-  <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-  <script src="../../assets/vendor/js/template-customizer.js"></script>
-  <link rel="stylesheet" href="../../assets/vendor/css/pages/cards-advance.css" />
-
-  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
-  <script src="../../assets/js/config.js"></script>
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}" />
+  <script src="{{ asset('assets/vendor/libs/@algolia/autocomplete-js.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-rowgroup-bs5/rowgroup.bootstrap5.css') }}" />
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/form-validation.css') }}" />
+  <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+  <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
+  <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/cards-advance.css') }}" />
+  <script src="{{ asset('assets/js/config.js') }}"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+   <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
   @vite(['resources/css/app.css', "resources/js/app.js"])
 
 </head>
@@ -114,55 +87,63 @@
           <li class="menu-item">
             <a href="{{ route('catagory.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Catagory</div>
+              <div>{{ __("dashboard.category") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('product.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Products</div>
+              <div>{{ __("dashboard.products") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('company.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Companies</div>
+              <div>{{ __("dashboard.companies") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('order.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Orders</div>
+              <div>{{ __("dashboard.orders") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('offer.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Offers</div>
+              <div>{{ __("dashboard.offers") }}</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="{{ route('productsOffer') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-app-window"></i>
+              <div>{{ __("dashboard.productsOffers") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('offerCoupons') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Offer Copouns</div>
+              <div>{{ __("dashboard.couponOffers") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('catagoryOffers') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Offer Catagories</div>
+              <div>
+                {{ __("dashboard.categoriesOffers") }}
+              </div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('contact.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Contacts</div>
+              <div>{{ __("home.contact us") }}</div>
             </a>
           </li>
           <li class="menu-item">
             <a href="{{ route('tag.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-app-window"></i>
-              <div>Tags</div>
+              <div>{{ __("dashboard.tags") }}</div>
             </a>
           </li>
         </ul>
@@ -306,45 +287,46 @@
       <div class="drag-target"></div>
     </div>
 
-    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js')}}"></script>
 
-    <script src="../../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../../assets/vendor/js/bootstrap.js"></script>
-    <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js')}}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/node-waves/node-waves.js')}}"></script>
 
-    <script src="../../assets/vendor/libs/pickr/pickr.js"></script>
+    <script src="{{ asset('assets/vendor/libs/pickr/pickr.js')}}"></script>
 
-    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js')}}"></script>
 
-    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-
-    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-
-    <script src="../../assets/vendor/js/menu.js"></script>
+    <script src="{{ asset('assets/vendor/libs/hammer/hammer.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js')}}"></script>
+    <script src="{{ asset('assets/vendor/js/menu.js')}}"></script>
 
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
     <!-- Flat Picker -->
-    <script src="../../assets/vendor/libs/moment/moment.js"></script>
-    <script src="../../assets/vendor/libs/flatpickr/flatpickr.js"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
     <!-- Form Validation -->
-    <script src="../../assets/vendor/libs/@form-validation/popular.js"></script>
-    <script src="../../assets/vendor/libs/@form-validation/bootstrap5.js"></script>
-    <script src="../../assets/vendor/libs/@form-validation/auto-focus.js"></script>
+    <script src="{{ asset('assets/vendor/libs/@form-validation/popular.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/@form-validation/bootstrap5.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/@form-validation/auto-focus.js')}}"></script>
 
-    <script src="../../assets/vendor/libs/apex-charts/apexcharts.js"></script>
-    <script src="../../assets/vendor/libs/swiper/swiper.js"></script>
-    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
+    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/swiper/swiper.js')}}"></script>
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js')}}"></script>
 
     <!-- Main JS -->
 
-    <script src="../../assets/js/main.js"></script>
 
     <!-- Page JS -->
-    <script src="../../assets/js/tables-datatables-basic.js"></script>
-    <script src="../../assets/js/dashboards-analytics.js"></script>
+    <script src="{{ asset('assets/js/tables-datatables-basic.js')}}"></script>
+    <script src="{{ asset('assets/js/dashboards-analytics.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('assets/js/main.js')}}"></script>
 
 </body>
 

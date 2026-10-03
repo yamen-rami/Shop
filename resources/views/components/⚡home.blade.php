@@ -2,58 +2,47 @@
 
 use Livewire\Component;
 use Livewire\Attributes\{On, Computed};
-use App\Models\{Product, Cart};
+use App\Models\{Product, Cart, Offer};
+use App\Services\CartService;
 new class extends Component {
-  #[Computed()]
-  public function products()
-  {
-    return Product::with(["tags", "catagory", "companies", "catagoryOffer", "globalOffer"])
-      ->where("quantity", ">", 0)
-      ->get();
-  }
 
-  #[Computed()]
+  #[Computed]
   public function cart()
   {
-    return Cart::with("products")->valid()
-      ->first();
+    return Cart::with("products")->where("user_id", auth()->id())
+      ->valid()->first();
   }
 
-
-  #[Computed()]
+  #[Computed]
   public function getCount()
   {
-    $count = 0;
     if (!$this->cart) {
-      return;
+      return 0;
     }
-    foreach ($this->cart->products as $product) {
-      $count += $product->pivot->quantity;
-    }
-
-    return $count;
+    // ✅ Use collection sum instead of loop
+    return $this->cart->products->sum('pivot.quantity');
   }
-  #[Computed()]
 
+  #[Computed]
   public function totalPrice()
   {
     if (!$this->cart) {
-      return;
+      return 0;
     }
-    return $this->cart->products->sum(function ($product) {
-      return $product->discount_price * $product->pivot->quantity;
-    });
+    $offers = Offer::with("products")->active()->get();
+    return app(CartService::class)->totalPrice($this->cart->products, $offers);
+    // ✅ Use collection sum with closure
+    return $this->cart->products->sum(fn($product) => $product->discount_price * $product->pivot->quantity);
   }
 
-  #[Computed()]
+  #[Computed]
   public function originalPrice()
   {
     if (!$this->cart) {
-      return;
+      return 0;
     }
-    return $this->cart->products->sum(function ($product) {
-      return $product->price * $product->pivot->quantity;
-    });
+    // return $this->cart->products->sum(fn($product) => $product->price * $product->pivot->quantity);
+    return app(CartService::class)->originalPrice($this->cart->products);
   }
 
   public function increment($productId)
@@ -61,15 +50,27 @@ new class extends Component {
     if (!$this->cart) {
       return;
     }
-    $product = $this->cart->products()->find($productId);
-    $newQuantity = $product->pivot->quantity + 1;
-    $cart = auth()->user()->cart;
-    if ($newQuantity > 20) {
-      throw Illuminate\Validation\ValidationException::withMessages(["20" => ["You can't add more than 20 products"]]);
+
+    // ✅ Use firstWhere on the already-loaded collection (NO QUERY!)
+    $product = $this->cart->products->firstWhere('id', $productId);
+
+    if (!$product) {
+      return;
     }
-    $cart->products()->updateExistingPivot($productId, [
+
+    $newQuantity = $product->pivot->quantity + 1;
+
+    if ($newQuantity > 20) {
+      throw \Illuminate\Validation\ValidationException::withMessages([
+        "quantity" => ["You can't add more than 20 products"]
+      ]);
+    }
+
+    // ✅ Use $this->cart directly (NO EXTRA QUERY!)
+    $this->cart->products()->updateExistingPivot($productId, [
       'quantity' => $newQuantity,
     ]);
+
     unset($this->cart);
     $this->dispatch("cart-updated");
   }
@@ -79,54 +80,71 @@ new class extends Component {
     if (!$this->cart) {
       return;
     }
-    $product = $this->cart->products()->find($productId);
-    $newQuantity = $product->pivot->quantity - 1;
-    if ($newQuantity <= 0) {
-      $cart = $this->cart->products()->detach($productId);
-      unset($this->cart);
+
+    // ✅ Use firstWhere on the already-loaded collection (NO QUERY!)
+    $product = $this->cart->products->firstWhere('id', $productId);
+
+    if (!$product) {
       return;
     }
 
+    $newQuantity = $product->pivot->quantity - 1;
 
-    if ($product) {
-      $cart = auth()->user()->cart;
-      $cart->products()->updateExistingPivot($productId, [
-        'quantity' => $newQuantity,
-      ]);
+    if ($newQuantity <= 0) {
+      $this->cart->products()->detach($productId);
+      unset($this->cart);
       $this->dispatch("cart-updated");
-
+      return;
     }
+
+    // ✅ Use $this->cart directly (NO EXTRA QUERY!)
+    $this->cart->products()->updateExistingPivot($productId, [
+      'quantity' => $newQuantity,
+    ]);
+
     unset($this->cart);
+    $this->dispatch("cart-updated");
   }
+
   #[On('cart-updated')]
   public function refreshCart()
   {
+    // ✅ Just unset - Livewire will reload it automatically when accessed
     unset($this->cart);
-    if ($this->cart) {
-      $this->cart->load("products");
-    }
   }
+
   public function deleteProduct(Product $product)
   {
+    if (!$this->cart) {
+      return;
+    }
+
     $this->cart->products()->detach($product->id);
-    flash()->success(" $product->name has deleted Succefully");
+
+    unset($this->cart);
     $this->dispatch("cart-updated");
   }
-};
+
+
+}
 ?>
 <div>
   <ul class="eccart-pro-items">
     @if($this->cart)
       @foreach($this->cart->products as $product)
         <li wire:key='{{ $product->id }}'>
-          <a href="{{ route("showProduct", $product->id) }}" class="sidekka_pro_img" ><img
-            height="100px" width="150px"  src="{{ asset($product->image) }}" alt="product"></a>
+          <a href="{{ route("showProduct", $product->id) }}" class="sidekka_pro_img"><img height="100px" width="150px"
+              src="{{ asset($product->image) }}" alt="product"></a>
           <div class="ec-pro-content d-grid ">
             <div class="row">
               <div>
-                <a href="{{ route("showProduct", $product->id) }}" class="cart_pro_title">{{ $product->name }}</a>
-                <span class="cart-price"><span>{{ $product->discount_price }}</span> X
-                  {{ $product->pivot->quantity}}</span>
+                <div class="d-flex justify-between">
+                  <a href="{{ route("showProduct", $product->id) }}"
+                    class="cart_pro_title">{{ Str::limit($product->name, 10) }}</a>
+                  <button wire:click='deleteProduct({{ $product->id }})' class="text-danger">×</button>
+                </div>
+                <span class="cart-price"><span>{{ $product->discount_price }}</span>
+                  </span>
                 <div class="d-flex align-items-center gap-2 mt-2 mb-3">
                   <small class="text-danger me-2"></small>
                   <button wire:click="decrement({{ $product->id }})" class="btn btn-sm text-black  px-2 py-1" type="button">
@@ -140,8 +158,7 @@ new class extends Component {
                   </button>
                 </div>
               </div>
-              
-                <button wire:click='deleteProduct({{ $product->id }})' class="text-danger">×</button>
+
             </div>
           </div>
         </li>
@@ -153,19 +170,18 @@ new class extends Component {
       <table class="table cart-table">
         <tbody>
           <tr>
-            <td class="text-left">Original Price :</td>
-            <td class="text-right">{{ $this->originalPrice() }}</td>
+            <td class="text-left">{{ __("home.original") }} :</td>
+            <td class="text-right">${{ $this->originalPrice }}</td>
           </tr>
           <tr>
-            <td class="text-left">Total :</td>
-            <td class="text-right primary-color">{{ $this->totalPrice() }}</td>
+            <td class="text-left">{{ __("home.total") }} :</td>
+            <td class="text-right primary-color">${{ $this->totalPrice }}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="cart_btn">
-      <a href="{{ route("checkout") }}" class="btn btn-primary">View Cart</a>
-      <a href="checkout.html" class="btn btn-secondary">Checkout</a>
+      <a href="{{ route("checkout") }}" class="btn btn-primary">{{ __("home.viewCart") }}</a>
     </div>
   </div>
 </div>

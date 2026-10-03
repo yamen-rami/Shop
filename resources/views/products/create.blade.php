@@ -2,7 +2,7 @@
   Create Product
 @endsection
 <x-main-layout>
-  <div class="row mb-6 gy-6">
+  <div class="row mb-6 gy-6" style="overflow: hidden ;">
     <!-- Basic Layout -->
     <div class="col-xxl">
       <div class="card">
@@ -22,18 +22,26 @@
             <x-form.input type="number" step="any" value="Int Price" feild="int_price"></x-form.input>
 
             <x-form.input type="number" value="Quantity" feild="quantity"></x-form.input>
+            <div class="row mb-6">
+              <label class="col-sm-2 col-form-label" for="basic-default-name">Featured</label>
+              <div class="col-sm-10">
+                <input class="text-light bg-primary" type="checkbox" name="featured">
+                @error("featured")
+                  <p class="text-danger">{{ $message }}</p>
+                @enderror
+              </div>
+            </div>
+
 
             <x-form.input type="file" value="Image" feild="image"></x-form.input>
-            <div class="row mb-6">
+            <div class="row mb-6  " >
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Tags</label>
 
-              <div class="col-sm-10">
+              <div class="col-sm-10 col-lg-4 select2Primary" >
                 <div>
-
-                  <select class="bg-black text-white" name="tags[]" multiple>
-                    <option value="">Select Tags</option>
+                  <select class="form-select select-tag  select2Primary " name="tags[]" multiple>
                     @foreach ($tags as $tag)
-                      <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                      <option class="form-select" value="{{ $tag->id }}">{{ $tag->name }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -49,7 +57,7 @@
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Catagory</label>
               <div class="col-sm-10">
                 <div>
-                  <select class="bg-black text-white" name="catagory_id">
+                  <select class="form-select text-white selectCategory" name="catagory_id">
                     <option value="">Select Catagory </option>
                     @foreach ($catagories as $catagory)
                       <option value="{{ $catagory->id }}">{{ $catagory->name }}</option>
@@ -63,7 +71,6 @@
                 @enderror
               </div>
             </div>
-
         </div>
 
 
@@ -79,4 +86,12 @@
   <!-- Basic with Icons -->
 
   </div>
+  
 </x-main-layout>
+
+@script
+  <script type="text/javascript">
+  $(".select-tag").select2();
+  $(".selectCategory").select2();
+  </script>
+@endScript

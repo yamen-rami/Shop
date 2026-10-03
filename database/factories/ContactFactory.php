@@ -23,7 +23,7 @@ class ContactFactory extends Factory
             "title"=> fake()->realText(10),
             "email"=>fake()->email() ,
             "desc" =>fake()->realText(10) ,
-            "user_id" => 10,
+            "user_id" => User::factory(1)->create(),
         ];
     }
 }

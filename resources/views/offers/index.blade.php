@@ -60,11 +60,11 @@
                 <span class="fw-medium">{{ $offer->name }}</span>
               </td>
               <td class="small">
-                @if($offer->catagory)
+                @if($offer->catagories)
                   <a href="{{ route("catagory.show", $offer->catagory->id) }}"
                     class="fw-medium">{{ $offer->catagory->name ?? " " }}</a>
                 @else
-                  <span class="fw-medium">{{ $offer->catagory->name ?? " " }}</span>
+                  <span class="fw-medium">{{ $offer->catagories->name ?? " " }}</span>
                 @endif
               </td>
               <td class=" text-green small">{{ $offer->code }}</td>
@@ -72,7 +72,11 @@
                 <span class="fw-medium">{{ $offer->discount_type }}</span>
               </td>
               <td>
+                @if($offer->discount_type === "percentage")
+                <span class="fw-medium">{{ $offer->discount_value * 100 }}</span>
+                @else
                 <span class="fw-medium">{{ $offer->discount_value }}</span>
+                @endif
               </td>
               <td>
                 <span class="fw-medium">{{ $offer->start_date }}</span>
@@ -80,11 +84,10 @@
               <td>
                 <span class="fw-medium">{{ $offer->end_date }}</span>
               </td>
-              @if($offer->start_date <= date("Y-m-d") && date("Y-m-d") < $offer->end_date)
+              @if($offer->start_date <= date("Y-m-d") && date("Y-m-d") <= $offer->end_date)
                 <td><span class="badge bg-label-primary me-1">Active</span></td>
               @else
                 <td><span class="badge bg-label-danger me-1">Not Active</span></td>
-
               @endif
               <td>
                 <div class="dropdown">

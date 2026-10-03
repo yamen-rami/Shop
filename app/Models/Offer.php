@@ -18,23 +18,31 @@ class Offer extends Model
         "start_date",
         "end_date",
         "catagory_id",
-        "is_active"
+        "is_active",
+        "type"
     ];
-    public function catagory()
+    public function products(){
+        return $this->belongsToMany(Product::class,"products_offer");
+    }
+    public function categories()
     {
-        return $this->belongsTo(Catagory::class, "catagory_id");
+        return $this->belongsToMany(Catagory::class, "categories_offer");
     }
     public function scopeCoupons(EloquentBuilder $query): EloquentBuilder
     {
-        return $query->whereNotNull("code");
+        return $query->where('type' , "coupon");
+    }
+    public function scopeTypeProducts(EloquentBuilder $query): EloquentBuilder
+    {
+        return $query->where('type' , "products");
     }
     public function scopeGlobal(EloquentBuilder $query): EloquentBuilder
     {
-        return $query->whereNull("code")->whereNull("catagory_id");
+        return $query->where("type","global");
     }
     public function scopeCatagory(EloquentBuilder $query): EloquentBuilder
     {
-        return $query->whereNotNull("catagory_id");
+        return $query->where("type" , "catagories");
     }
     public function scopeActive($query)
     {

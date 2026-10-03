@@ -1,17 +1,28 @@
 <?php
 
 use Livewire\Component;
-use Livewire\Attributes\On;
-use App\Models\{Product, Cart};
+use Livewire\Attributes\{Computed ,On};
+use App\Services\OfferService;
+use App\Models\{Product, Cart , Offer};
 new class extends Component {
     //
     public ?Product $selectedProduct = null;
     public ?Cart $cart = null;
+    public function offers(){
+        return Offer::active()->get();
+    }
+    #[Computed]
+    public function cart(){
+        return auth()->user()->cart()->with("products")->first();
+    }
     #[On('loadProduct')]
     public function loadProduct($id)
     {
         // $this->cart = auth()->user()->cart()->first();
         $this->selectedProduct = Product::findOrFail($id);
+    }
+    public function getValue($product){
+        return app(OfferService::class)->getDiscount($product , $this->offers());
     }
     public function addCart(Product $product)
     {
@@ -69,17 +80,12 @@ new class extends Component {
                                             <span>Desc : {{ Str::limit($this->selectedProduct->desc, 100) }}</span>
                                         </div>
                                         <div class="ec-quickview-price">
-                                            @if($this->selectedProduct->price === $this->selectedProduct->discount_price)
-                                                <span class="new-price">${{ $this->selectedProduct->discount_price }}</span>
-                                            @else
                                                 <span class="old-price">${{ $this->selectedProduct->price }}</span>
-                                                <span class="new-price">${{ $this->selectedProduct->discount_price }}</span>
-                                            @endif
+                                                <span class="new-price">${{ $this->getValue($this->selectedProduct)["best"] ?? null }}</span>
                                         </div>
                                         <div class="ec-quickview-price">
-
                                             <livewire:increment_decrement :key="'modal-product-' . $this->selectedProduct->id"
-                                                :product="$this->selectedProduct" />
+                                                :product="$this->selectedProduct" :globalCart="$this->cart()"/>
                                         </div>
 
                                         <div class="ec-quickview-cart ">

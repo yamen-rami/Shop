@@ -19,7 +19,7 @@ class Checkout
         if(!Auth::check()){
             return redirect()->route("login");
         }
-        $cart = auth()->user()->cart ; 
+        $cart = auth()->user()->cart()->valid()->first() ; 
         if(!$cart || $cart->count() === 0 || $cart->products()->count() === 0){
             return redirect()->route("home");
         }

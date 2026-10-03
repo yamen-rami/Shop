@@ -11,11 +11,12 @@
                 <h4 class="ec-footer-heading">Contact us</h4>
                 <div class="ec-footer-links">
                   <ul class="align-items-center">
-                    <li class="ec-footer-link">71 Pilgrim Avenue Chevy Chase, east california.</li>
-                    <li class="ec-footer-link"><span>Call Us:</span><a href="tel:+440123456789">+44
-                        0123 456 789</a></li>
+                    <li class="ec-footer-link">Gaza Aidia Street</li>
+                    <li class="ec-footer-link"><span>Call Us:</span><a href="tel:+440123456789">
+                      +972 59 760 8722
+                    </a></li>
                     <li class="ec-footer-link"><span>Email:</span><a
-                        href="mailto:example@ec-email.com">+example@ec-email.com</a></li>
+                        href="mailto:example@ec-email.com">yamenramiabuwarda@gmail.com</a></li>
                   </ul>
                 </div>
               </div>
@@ -27,8 +28,7 @@
                   <ul class="align-items-center">
                     <li class="ec-footer-link"><a href="about-us.html">About us</a></li>
                     <li class="ec-footer-link"><a href="faq.html">FAQ</a></li>
-                    <li class="ec-footer-link"><a href="#">Delivery Information</a></li>
-                    <li class="ec-footer-link"><a href="contact-us.html">Contact us</a></li>
+                    <li class="ec-footer-link"><a href="{{ route("contact.create") }}">{{ __("home.contact us") }}</a></li>
                   </ul>
                 </div>
               </div>
@@ -84,46 +84,6 @@
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <div class="container">
-          <div class="row align-items-center">
-            <!-- Footer social Start -->
-            <div class="col text-left footer-bottom-left">
-              <div class="footer-bottom-social">
-                <span class="social-text text-upper">Follow us on:</span>
-                <ul class="mb-0">
-                  <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a>
-                  </li>
-                  <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a>
-                  </li>
-                  <li class="list-inline-item"><a class="hdr-instagram" href="#"><i
-                        class="ecicon eci-instagram"></i></a></li>
-                  <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- Footer social End -->
-            <!-- Footer Copyright Start -->
-            <div class="col text-center footer-copy">
-              <div class="footer-bottom-copy ">
-                <div class="ec-copy">Copyright © <span id="copyright_year"></span> <a class="site-name text-upper"
-                    href="#">ekka<span>.</span></a>. All Rights Reserved</div>
-              </div>
-            </div>
-            <!-- Footer Copyright End -->
-            <!-- Footer payment -->
-            <div class="col footer-bottom-right">
-              <div class="footer-bottom-payment d-flex justify-content-end">
-                <div class="payment-link">
-                  <img src="assets/images/icons/payment.png" alt="">
-                </div>
-
-              </div>
-            </div>
-            <!-- Footer payment -->
-          </div>
-        </div>
-      </div>
+   
     </div>
   </footer>

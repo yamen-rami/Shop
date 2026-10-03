@@ -14,6 +14,6 @@ class Catagory extends Model
        return $this->hasMany(Product::class); 
     }
     public function offer(){
-        return $this->hasOne(Offer::class);
+        return $this->belongsToMany(Offer::class , "categories_offer");
     }
 }

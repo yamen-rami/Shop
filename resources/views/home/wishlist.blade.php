@@ -62,7 +62,7 @@
             <div class="ec-compare-inner">
               <div class="row margin-minus-b-30">
                 @foreach($favoraites as $d)
-                  <livewire:wishlist_cards :product="$d->product" />
+                  <livewire:wishlist_cards :product="$d->product" :products_offer="$products_offers" />
                 @endforeach
                 {{ $favoraites->links() }}
               </div>

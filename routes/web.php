@@ -2,14 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{CartController, CatagoryController, CompanyController, ContactController, CouponController, HomeController, OfferController, OrderController, ProductController, ProfileController, TagController};
+use App\Http\Controllers\{CartController, CatagoryController, CompanyController, ContactController, CouponController, DashboardController, HomeController, LocaleController, OfferController, OrderController, ProductController, ProfileController, TagController};
 use App\Http\Middleware\{AdminCheck, Checkout};
 
 Route::get('/', [HomeController::class, "home"]);
+// ? Localization 
+Route::get("locale/{lang}", [LocaleController::class, "setLocale"]);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', "admin", 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class , "index"])->middleware(['auth', "admin", 'verified'])->name('dashboard');
 // Admin Middleware
 Route::middleware(["auth", "admin"])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -19,6 +19,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::resource('company', CompanyController::class);
     Route::resource('offer', OfferController::class);
     Route::resource('tag', TagController::class);
+    Route::get("productsOffer", [OfferController::class, 'productsOffer'])->name("productsOffer");
     Route::resource('catagory', CatagoryController::class);
     Route::get("catagories/products/{catagory}", [ProductController::class, "catagoryProducts"])->name('getProducts');
     Route::delete("tag/delete/{tag}", [TagController::class, "destroy"])->name("tag.delete");
@@ -28,18 +29,21 @@ Route::middleware("auth")->group(function () {
     Route::resource('contact', ContactController::class);
     Route::resource("order", OrderController::class);
     Route::get("addCart/{product}", [CartController::class, "addCart"])->name('addCart');
-    Route::get("checkout/", [CartController::class, "show"])->name("checkout");
+    Route::get("checkout/", [CartController::class, "show"])->name("checkout")->middleware(Checkout::class);
     Route::delete("cart/destory/{product}", [CartController::class, "destroy"])->name("cart.destroy");
     Route::get("cart/getOffer/", [CartController::class, "getOffer"])->name("getOffer");
     Route::get("offerCoupons", [CouponController::class, "index"])->name("offerCoupons");
     Route::get("catagoryOffers", [CouponController::class, "catagory"])->name("catagoryOffers");
     Route::get("home.wishlist", [HomeController::class, "wishlist"])->name("wishlist");
+    Route::delete("deleteCartItem/{id}", [CartController::class, "delete"])->name("deleteCartItem");
 });
 Route::get("products", [HomeController::class, "products"])->name("products");
 Route::get("home", [HomeController::class, "home"])->name("home");
 Route::get("products", [HomeController::class, "products"])->name("products");
 Route::get("home/product/{product}", [HomeController::class, "showProduct"])->name("showProduct");
 Route::get("home/catgory", [HomeController::class, "categories"])->name("categories");
-
+Route::get("home/offers", [HomeController::class, "offers"])->name("home.offers");
+// Route::resource("home/tags", HomeTagController::class);
+Route::fallback([HomeController::class, "notFound"]);
 
 require __DIR__ . '/auth.php';

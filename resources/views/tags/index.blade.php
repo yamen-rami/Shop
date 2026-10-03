@@ -3,12 +3,12 @@
     tags
   </x-slot:title>
   <x-slot:header>
-    tag
+    Tags
   </x-slot:header>
   <div class="card">
     <div class="d-flex justify-between items-center">
       <div>
-        <h5 class="card-header">tag Tabel</h5>
+        <h5 class="card-header">Tag Tabel</h5>
       </div>
       <div>
         <form action="{{ route("tag.index") }}" method="get">
@@ -30,7 +30,7 @@
         <div class="mx-3">
 
           <button class="btn btn-primary mr-4">
-            <a class="text-white" href="{{ route('tag.create') }}">Create A New Product </a>
+            <a class="text-white" href="{{ route('tag.create') }}">Create A New Tag </a>
           </button>
         </div>
       </div>

@@ -8,32 +8,38 @@ new class extends Component {
     
     public int $productId;
     public int $quantity = 0;
-
-    public function mount(Product $product)
+    public ?Cart $globalCart ;
+    public function mount(Product $product , ?Cart $globalCart)
     {
+        $this->globalCart = $globalCart ;
         $this->productId = $product->id;
         $this->updateQuantityState();
     }
 
-    // 🔴 THE CRITICAL FIX: Update state when a new product is selected in the modal
     #[On('loadProduct')]
     public function handleProductChanged($id)
     {
         $this->productId = (int) $id;
+        // Clear computed cache only when the product ID changes explicitly
+        unset($this->cart); 
         $this->updateQuantityState();
     }
 
+    #[On("cart-updated")]
+    public function resetQuantity(){
+        unset($this->cart);
+        $this->updateQuantityState();
+
+    }
     #[Computed()]
     public function cart()
     {
-        return Cart::with(['products' => function($query) {
-            $query->withPivot('quantity');
-        }])->valid()->first();
+        // Eloquent automatically loads pivot details when accessing via belongsToMany relationships
+        return $this->globalCart ;
     }
+
     public function updateQuantityState()
     {
-        unset($this->cart);
-
         if ($this->cart) {
             $cartProduct = $this->cart->products->firstWhere('id', $this->productId);
             if ($cartProduct && $cartProduct->pivot) {
@@ -48,11 +54,9 @@ new class extends Component {
     public function increment()
     {
         if (!$this->cart) return;
-        // $cart = auth()->user()->cart ;
-        $cart = Cart::with("products")->where("user_id" , auth()->id())->first();
 
-        $cartProduct = $this->cart->products()->find($this->productId);
-        
+        // Fix: Read from the preloaded collection array in memory instead of calling ->products()
+        $cartProduct = $this->cart->products->firstWhere('id', $this->productId);
 
         if ($cartProduct) {
             $newQuantity = $cartProduct->pivot->quantity + 1;
@@ -63,6 +67,7 @@ new class extends Component {
                 ]);
             }
 
+            // Perform direct background sync mutation 
             $this->cart->products()->updateExistingPivot($this->productId, [
                 'quantity' => $newQuantity,
             ]);
@@ -70,6 +75,8 @@ new class extends Component {
             $this->cart->products()->attach($this->productId, ['quantity' => 1]);
         }
 
+        // Force a fresh reload of the cart relationship state array for UI consistency
+        unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
     }
@@ -78,7 +85,8 @@ new class extends Component {
     {
         if (!$this->cart) return;
 
-        $cartProduct = $this->cart->products()->find($this->productId);
+        // Fix: Read from memory array cache
+        $cartProduct = $this->cart->products->firstWhere('id', $this->productId);
 
         if (!$cartProduct) return;
 
@@ -92,6 +100,7 @@ new class extends Component {
             ]);
         }
 
+        unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
     }

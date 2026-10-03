@@ -1,0 +1,74 @@
+<?php
+
+use Livewire\Component;
+use App\Models\{Cart, Product};
+use Livewire\Attributes\{On, Computed};
+use App\Services\OfferService;
+new class extends Component {
+
+    public $globalCart;
+    public $offers;
+    public $code;
+    public $quantity  = 0 ;
+    public function mount($globalCart, $offers)
+    {
+        $this->offers = $offers;
+        $this->globalCart = $globalCart;
+    }
+    #[Computed]
+    public function calc()
+    {
+        $offerService = app(OfferService::class);
+        
+        $prices = [];
+        foreach ($this->globalCart->products as $product) {
+            $prices[$product->id] = $offerService->getCoupon($product, $this->offers, $this->code);
+        }
+        return $prices;
+    }
+
+    // Call this whenever the code or cart changes
+    #[On("code-applied")]
+    
+    public function updateCoupon($code = null)
+    {
+        $this->code = $code;
+        unset($this->calc);
+    }
+}
+
+?>
+@inject("offerService", "App\Services\OfferService")
+<tbody>
+    {{-- @dd($this->calc) --}}
+    {{-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison --}}
+    @foreach($this->globalCart->products as $product)
+        <tr wire:key="product-{{ $product->id }}">
+            <td  ><a href="product-left-sidebar.html"><img
+                        class="ec-cart-pro-img mr-4" height="60px" src="{{ asset($product->image) }}"
+                        alt="" />{{ $product->name }}</a></td>
+            <td data-label="Price" class="ec-cart-pro-price"><span class="amount">${{ $product->price}}</span></td>
+            <td class="fs-6" data-label="Quantity" class="ec-cart-pro-qty" style="text-align: center;">
+                <livewire:increment_decrement :product="$product->id" :globalCart="$this->globalCart" />
+                     
+            </td>
+            @php 
+            $calc = $this->calc ;
+            @endphp
+            <td data-label="Offer Price" class="ec-cart-pro-subtotal">
+                ${{ $calc[$product->id]['best'] }}
+            </td>
+            <td data-label="Total" class="ec-cart-pro-subtotal">
+                {{ $offerService->offerType($calc[$product->id]["offer"]) ?? __("home.noOffer") }}
+            </td>
+            <form action="{{ route("deleteCartItem", $product->id) }}" method="POST">
+                @method("DELETE")
+                @csrf
+                <td data-label="Remove"class="ec-cart-pro-remove">
+                    <button type="delete"><i class="ecicon eci-trash-o"></i></button>
+                </td>
+            </form>
+
+        </tr>
+    @endforeach
+</tbody>
