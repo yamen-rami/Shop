@@ -1,11 +1,13 @@
 @section("title")
   Edit Product {{ $product->name }}
 @endsection
-<x-main-layout>
+@extends('admin')
 
-  <x-slot:header>
-    Editing {{ $product->name }}
-  </x-slot:header>
+@section('content')
+
+@section('header')
+Editing {{ $product->name }}
+@endsection
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -15,7 +17,7 @@
           <small class="text-body-secondary float-end">Product</small>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route("product.update", $product) }}" enctype="multipart/form-data">
+          <form method="POST" action="{{ route("product.update", $product) }}" enctype="multipart/form-data" x-data="{ imagePreview: null }">
             @csrf
             @method("PATCH")
             <div class="d-flex justify-content-between">
@@ -25,11 +27,10 @@
                 </h5>
               </div>
               <div>
-                <img width="100px" class="img" src="{{ asset($product->image) }}" alt="The Image Not Found">
+                <img width="100px" class="img" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="The Image Not Found">
               </div>
               <div></div>
             </div>  
-            @csrf
             {{-- ? Name --}}
             <x-form.input type="text" edit="{{ $product->name }}" value="Name" feild="name"></x-form.input>
 
@@ -43,11 +44,13 @@
             {{-- The Edit refrese to the actual value cause of the name that i have created before --}}
             <x-form.input type="number" edit="{{ $product->quantity }}" value="Quantity"
               feild="quantity"></x-form.input>
-            <x-form.input type="file" value="Image" feild="image"></x-form.input>
+            <x-form.input type="file" value="Image" feild="image" accept="image/*"
+                x-on:change="if (imagePreview) URL.revokeObjectURL(imagePreview); imagePreview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null" />
+            <img x-cloak x-show="imagePreview" x-bind:src="imagePreview" alt="Selected image preview" class="rounded mb-4" width="120">
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Featured</label>
               <div class="col-sm-10">
-                <input class="text-light bg-primary" type="checkbox" {{ $product->featured === "on" ? "checked" : "" }} name="featured">
+                <input class="form-check-input" type="checkbox" name="featured" value="1" @checked(old('featured', $product->featured))>
                 @error("featured")
                   <p class="text-danger">{{ $message }}</p>
                 @enderror
@@ -59,11 +62,7 @@
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Tags</label>
               <div class="col-sm-10">
-                <select class="select-tag select2Primary" name="tags[]" multiple>
-                  @foreach ($tags as $tag)
-                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                  @endforeach
-                </select>
+                <x-form.remote-select resource="tags" name="tags[]" multiple :selected="old('tags', $selectedTags ?? [])" placeholder="Search tags" />
                 @error("tags")
                   <p class="text-danger">
                     {{ $message }}
@@ -76,12 +75,7 @@
               <label class="col-sm-2 col-form-label " for="basic-default-name">Select Catagory</label>
               <div class="col-sm-10">
                 <div>
-                  <select class="bg-black text-white selectCategory" name="catagory_id">
-                    <option value="">{{ $product->catagory->name ?? "Select Products" }}</option>
-                    @foreach ($catagories as $catagory)
-                      <option value="{{ $catagory->id }}">{{ $catagory->name }}</option>
-                    @endforeach
-                  </select>
+                  <x-form.remote-select resource="categories" name="catagory_id" :selected="old('catagory_id', $product->catagory_id)" placeholder="Search categories" />
                 </div>
                 @error("catagory_id")
                   <p class="text-danger">
@@ -104,11 +98,5 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
-@script
-<script type="text/javascript">
-  $(".select-tag").select2();
-  $(".selectCategory").select2();
-</script>
-
-@endScript
+@endsection
+@include('partials.select2-assets')

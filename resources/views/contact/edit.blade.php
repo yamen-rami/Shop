@@ -1,13 +1,13 @@
-@extends('layouts.storefront')
+@extends(auth()->user()->role === 'admin' ? 'admin' : 'layouts.storefront')
 
 @section('header')
-Editing {{ $contact->name }}
+Editing {{ $contact->title }}
 @endsection
 @section("title")
-  Edit contact {{ $contact->name }}
+  Edit contact {{ $contact->title }}
 @endsection
 @section('content')
-  <x-home.navbar />
+  @if(auth()->user()->role !== 'admin')<x-home.navbar />@endif
   <main class="container section-space-p">
     @hasSection('header')
       <h1>@yield('header')</h1>
@@ -31,7 +31,7 @@ Editing {{ $contact->name }}
             {{-- ? Desc --}}
             <x-form.textarea type="text" edit="{{ $contact->desc }}" value="Description" feild="desc"></x-form.textarea>
             {{-- ? Price --}}
-            <x-form.textarea type="email" edit="{{ $contact->email }}" value="Email" feild="email"></x-form.textarea>
+            <x-form.input type="email" edit="{{ $contact->email }}" value="Email" feild="email"></x-form.input>
 
             <div class="row justify-content-end">
               <div class="col-sm-10">
@@ -46,8 +46,7 @@ Editing {{ $contact->name }}
 
   </div>
   </main>
-  <x-footer />
-  <x-home.menu />
+  @if(auth()->user()->role !== 'admin')<x-footer /><x-home.menu />@endif
 @endsection
 
 @push('styles')

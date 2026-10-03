@@ -25,8 +25,8 @@ class UpdateOrderRequest extends FormRequest
     {
         return [
             "name" => ['required' , "string"],
-            "price" => ['required' , "integer"],
-            "quantity" => ['required' , "integer"],
+            "price" => ['nullable', 'numeric', 'min:0'],
+            "quantity" => ['required', 'integer', 'min:1'],
             "location" => ['required' , "string"],
             "product_id" => ['required' , "exists:products,id"]
             // "quantity" => 'required|integer',

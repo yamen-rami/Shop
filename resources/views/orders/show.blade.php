@@ -1,4 +1,4 @@
-@extends('layouts.storefront')
+@extends(auth()->user()->role === 'admin' ? 'admin' : 'layouts.storefront')
 
 @section('header')
 Showing {{ $order->name }}
@@ -7,7 +7,7 @@ Showing {{ $order->name }}
   Showing Order {{ $order->name }}
 @endsection
 @section('content')
-  <x-home.navbar />
+  @if(auth()->user()->role !== 'admin')<x-home.navbar />@endif
   <main class="container section-space-p">
     @hasSection('header')
       <h1>@yield('header')</h1>
@@ -45,8 +45,7 @@ Showing {{ $order->name }}
     </div>
   </div>
   </main>
-  <x-footer />
-  <x-home.menu />
+  @if(auth()->user()->role !== 'admin')<x-footer /><x-home.menu />@endif
 @endsection
 
 @push('styles')

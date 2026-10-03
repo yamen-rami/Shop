@@ -20,7 +20,7 @@
                   @csrf
                   <span class="ec-contact-wrap">
                     <label>{{ __("home.title") }}</label>
-                    <input type="text" name="title" placeholder="{{ __("home.title") }}" required />
+                    <input type="text" name="title" value="{{ old('title') }}" placeholder="{{ __("home.title") }}" required />
                   </span>
                   @error("title")
                     <p class="text-danger">{{ $message }}</p>
@@ -28,7 +28,7 @@
                  
                   <span class="ec-contact-wrap">
                     <label>{{ __("home.email") }}</label>
-                    <input type="email" name="email" placeholder="{{ __("home.email") }}" required />
+                    <input type="email" name="email" value="{{ old('email', auth()->user()?->email) }}" placeholder="{{ __("home.email") }}" required />
                   </span>
                   @error("email")
                     <p class="text-danger">{{ $message }}</p>
@@ -36,7 +36,7 @@
                  
                   <span class="ec-contact-wrap">
                     <label>{{  __("home.problem")}}</label>
-                    <textarea name="desc" placeholder="{{ __("home.problem") }}"></textarea>
+                    <textarea name="desc" placeholder="{{ __("home.problem") }}">{{ old('desc') }}</textarea>
                   </span>
                   @error("desc")
                     <p class="text-danger">{{ $message }}</p>

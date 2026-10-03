@@ -1,16 +1,18 @@
 @section("title")
   Showing Company {{ $company->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Showing {{ $company->name }}
-  </x-slot:header>
+@extends('admin')
+
+@section('content')
+@section('header')
+Showing {{ $company->name }}
+@endsection
   <div class="row mb-12 g-6">
     <div class="col-md">
       <div class="card">
         <div class="row">
           <div class="col-md-4  ">
-            <img class="card-img card-img-left"  src="{{ asset($company->image) }}" alt="Card image" />
+            <img class="card-img card-img-left"  src="{{ str_starts_with($company->image ?? '', 'assets/') ? asset($company->image) : asset('storage/' . $company->image) }}" alt="Card image" />
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -28,4 +30,4 @@
       </div>
     </div>
   </div>
-</x-main-layout>
+@endsection

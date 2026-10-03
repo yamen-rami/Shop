@@ -22,6 +22,11 @@ class Product extends Model
         "original_price",
         'catagory_id'
     ];
+    protected function casts(): array
+    {
+        return ['featured' => 'boolean'];
+    }
+
     public function companies()
     {
         return $this->belongsToMany(Company::class, "company_product");

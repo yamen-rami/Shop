@@ -28,11 +28,16 @@ class StoreProductRequest extends FormRequest
             "catagory_id" => 'nullable|exists:catagories,id',
             "tags" => 'nullable|array',
             "tags.*" => 'exists:tags,id',
-            "int_price" => 'required|numeric',
-            "price" => 'required|numeric',
-            "featured" => 'nullable',
+            "int_price" => 'required|numeric|min:0|lt:price',
+            "price" => 'required|numeric|gt:0',
+            "featured" => 'required|boolean',
             "quantity" => 'required|integer|min:1',
             "image" => 'required|image',
         ];
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $this->merge(['featured' => $this->boolean('featured'), 'tags' => $this->input('tags', [])]);
     }
 }

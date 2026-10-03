@@ -55,7 +55,7 @@
             <div class="single-pro-inner">
               <div class="row">
                 <div class="single-pro-img">
-                  <img class="img-responsive" src="{{ asset($product->image) }}" alt="">
+                  <img class="img-responsive" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="">
                 </div>
                 <div class="single-pro-desc">
                   <div class="single-pro-content">

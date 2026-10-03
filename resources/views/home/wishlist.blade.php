@@ -65,10 +65,7 @@ Wishlist
           <div class="ec-compare-content">
             <div class="ec-compare-inner">
               <div class="row margin-minus-b-30">
-                @foreach($favoraites as $d)
-                  <livewire:wishlist_cards :product="$d->product" :products_offer="$products_offers" />
-                @endforeach
-                {{ $favoraites->links() }}
+                <livewire:catalog :wishlist="true" />
               </div>
             </div>
           </div>
@@ -90,7 +87,7 @@ Wishlist
     <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
       <div class="header-icon"><i class="fi-rr-shopping-basket"></i>
       </div>
-      <span class="ec-cart-count cart-count-lable">3</span>
+      <span class="ec-cart-count cart-count-lable"><livewire:count /></span>
     </a>
   </div>
   <!-- Cart Floating Button end -->
@@ -99,3 +96,4 @@ Wishlist
 
   <x-category></x-category>
 @endsection
+@include('partials.select2-assets')

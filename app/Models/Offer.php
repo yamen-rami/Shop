@@ -42,7 +42,7 @@ class Offer extends Model
     }
     public function scopeCatagory(EloquentBuilder $query): EloquentBuilder
     {
-        return $query->where("type" , "catagories");
+        return $query->where("type" , "categories");
     }
     public function scopeActive($query)
     {

@@ -61,21 +61,8 @@
             <p class="sub-title">{{ __("home.browse") }}</p>
           </div>
         </div>
-        <div class="d-grid justify-content-center col-lg-12">
-          <form action="{{ route("products") }}">
-
-            <div class="header-search d-flex mb-5">
-
-              <input type="text" class="form-control ec-search-bar border-none" placeholder="{{ __("home.search") }}"
-                name="search">
-              <button class="text-light bg-primary">{{ __("home.buttonSearch") }}</button>
-            </div>
-          </form>
-
-        </div>
-        <livewire:cards :products="$products->getCollection()" :products_offer="$offers" />
+        <livewire:catalog />
       </div>
-      {{ $products->links() }}
     </div>
   </section>
 
@@ -91,3 +78,4 @@
   <x-footer></x-footer>
   <x-home.menu></x-home.menu>
 @endsection
+@include('partials.select2-assets')

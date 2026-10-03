@@ -12,6 +12,7 @@ class StorefrontData
     private ?Collection $offers = null;
     private ?Collection $categories = null;
     private ?int $favoriatesCount = null;
+    private array $coupons = [];
 
     public function cart(): ?Cart
     {
@@ -39,6 +40,15 @@ class StorefrontData
     public function offers(): Collection
     {
         return $this->offers ??= Offer::with(['products', 'categories'])->active()->get();
+    }
+
+    public function coupon(string $code): ?Offer
+    {
+        if (! array_key_exists($code, $this->coupons)) {
+            $this->coupons[$code] = Offer::where('code', $code)->active()->latest()->first();
+        }
+
+        return $this->coupons[$code];
     }
 
 

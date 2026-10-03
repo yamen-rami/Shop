@@ -40,6 +40,8 @@ return [
   "newArrival" => "New Arrival" , 
   "go_back" => "Back To Home" ,
   "pageDesc" => "There is no page with this url ", 
-  "error" => "Error 404" ,
+  "error" => "Error 404" ,  "darkMode" => "Switch to dark mode",
+  "lightMode" => "Switch to light mode",
 
-  ];  
+
+  ];

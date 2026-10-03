@@ -1,7 +1,9 @@
 @section("title")
   Create Comapny
 @endsection
-<x-main-layout>
+@extends('admin')
+
+@section('content')
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -28,4 +30,4 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+@endsection

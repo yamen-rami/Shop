@@ -46,7 +46,7 @@ class OfferService
     if (!auth()->check()) {
       return redirect()->route("login");
     }
-    $products = auth()->user()->cart->products;
+    $products = app(StorefrontData::class)->cart()?->products ?? collect();
     foreach ($products as $product) {
       $this->getCoupon($product, $offers, $code);
     }
@@ -55,7 +55,7 @@ class OfferService
   public function getCoupon(Product $product, EloquentCollection $offers, ?string $code = null)
   {
     if (!blank($code)) {
-      $couponOffer = Offer::where("code", $code)->active()->latest()->first();
+      $couponOffer = app(StorefrontData::class)->coupon($code);
       if (!empty($couponOffer)) {
 
         $couponResult = $this->discountPrice($product, $couponOffer);
@@ -69,10 +69,7 @@ class OfferService
         }
       }
     }
-    return [
-      "best" =>  $this->getDiscount($product, $offers)["best"],
-      "offer" => $this->getDiscount($product, $offers)["offer"],
-    ];
+    return $this->getDiscount($product, $offers);
   }
 
   /* 

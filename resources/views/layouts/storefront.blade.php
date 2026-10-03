@@ -34,13 +34,16 @@
     <link rel="stylesheet" href="{{ asset('assets/css/demo1.css')}}" />
   @endif
   <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" />
+  <link rel="stylesheet" id="storefront-dark-styles" href="{{ asset('assets/css/dark.css') }}" media="not all">
   <link rel="stylesheet" href="{{ asset('assets/css/responsive.css')}}" />
   <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/css/backgrounds/bg-4.css')}}">
   @livewireStyles
   @stack('styles')
+  <link rel="stylesheet" href="{{ asset('assets/css/storefront-theme.css') }}">
+  <script src="{{ asset('assets/js/storefront-theme.js') }}"></script>
 </head>
 
-<body>
+<body class="storefront-layout">
   <!-- Feature tools end -->
   @yield('content')
   <!-- Vendor JS -->

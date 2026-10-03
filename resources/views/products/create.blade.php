@@ -1,8 +1,10 @@
 @section("title")
   Create Product
 @endsection
-<x-main-layout>
-  <div class="row mb-6 gy-6" style="overflow: hidden ;">
+@extends('admin')
+
+@section('content')
+  <div class="row mb-6 gy-6" >
     <!-- Basic Layout -->
     <div class="col-xxl">
       <div class="card">
@@ -11,7 +13,7 @@
           <small class="text-body-secondary float-end">Product</small>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route("product.store") }}" enctype="multipart/form-data">
+          <form method="POST" action="{{ route("product.store") }}" enctype="multipart/form-data" x-data="{ imagePreview: null }">
             @csrf
             {{-- ? Name --}}
             <x-form.input type="text" value="Name" feild="name"></x-form.input>
@@ -25,7 +27,8 @@
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Featured</label>
               <div class="col-sm-10">
-                <input class="text-light bg-primary" type="checkbox" name="featured">
+                <input class="form-check-input" type="checkbox" name="featured" value="1"
+                    @checked(old('featured', false))>
                 @error("featured")
                   <p class="text-danger">{{ $message }}</p>
                 @enderror
@@ -33,17 +36,15 @@
             </div>
 
 
-            <x-form.input type="file" value="Image" feild="image"></x-form.input>
+            <x-form.input type="file" value="Image" feild="image" accept="image/*"
+                x-on:change="if (imagePreview) URL.revokeObjectURL(imagePreview); imagePreview = $event.target.files[0] ? URL.createObjectURL($event.target.files[0]) : null" />
+            <img x-cloak x-show="imagePreview" x-bind:src="imagePreview" alt="Selected image preview" class="rounded mb-4" width="120">
             <div class="row mb-6  " >
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Tags</label>
 
-              <div class="col-sm-10 col-lg-4 select2Primary" >
+              <div class="col-sm-10 col-lg-4 select2-primary" >
                 <div>
-                  <select class="form-select select-tag  select2Primary " name="tags[]" multiple>
-                    @foreach ($tags as $tag)
-                      <option class="form-select" value="{{ $tag->id }}">{{ $tag->name }}</option>
-                    @endforeach
-                  </select>
+                  <x-form.remote-select resource="tags" name="tags[]" multiple :selected="old('tags', [])" placeholder="Search tags" />
                 </div>
                 @error("tags")
                   <p class="text-danger">
@@ -57,14 +58,9 @@
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Catagory</label>
               <div class="col-sm-10">
                 <div>
-                  <select class="form-select text-white selectCategory" name="catagory_id">
-                    <option value="">Select Catagory </option>
-                    @foreach ($catagories as $catagory)
-                      <option value="{{ $catagory->id }}">{{ $catagory->name }}</option>
-                    @endforeach
-                  </select>
+                  <x-form.remote-select resource="categories" name="catagory_id" :selected="old('catagory_id', null)" placeholder="Search categories" />
                 </div>
-                @error("catagory")
+                @error("catagory_id")
                   <p class="text-danger">
                     {{ $message }}
                   </p>
@@ -87,11 +83,6 @@
 
   </div>
   
-</x-main-layout>
+@endsection
 
-@script
-  <script type="text/javascript">
-  $(".select-tag").select2();
-  $(".selectCategory").select2();
-  </script>
-@endScript
+@include('partials.select2-assets')

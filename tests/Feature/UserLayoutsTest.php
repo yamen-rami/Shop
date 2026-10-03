@@ -38,8 +38,8 @@ test('storefront does not load page-specific select2 assets by default', functio
     expect($html)->not->toContain('/select2/select2.js', '/select2/select2.css', '/assets/css/auth.css');
 });
 
-test('every user page directly extends the storefront layout', function () {
-    $directories = ['home', 'auth', 'profile', 'orders', 'contact', 'coupons', 'catagory_offer'];
+test('pages directly extend the appropriate storefront or Vuexy layout', function () {
+    $directories = ['home', 'auth', 'profile', 'orders', 'contact'];
     foreach ($directories as $directory) {
         foreach (glob(resource_path("views/$directory/*.blade.php")) as $path) {
             if (in_array(basename($path), ['page-start.blade.php', 'page-end.blade.php'])) {
@@ -47,9 +47,15 @@ test('every user page directly extends the storefront layout', function () {
             }
 
             $source = file_get_contents($path);
-            expect($source)->toContain("@extends('layouts.storefront'")
+            expect(str_contains($source, "@extends('layouts.storefront'") || str_contains($source, "@extends(auth()->user()->role"))->toBeTrue();
+            expect($source)
                 ->not->toContain('<x-main-layout>', '<x-app-layout>', '<x-auth-layout>', '<x-guest-layout>', '<x-app>');
         }
+    }
+    foreach (['coupons/index', 'catagory_offer/index'] as $page) {
+        expect(file_get_contents(resource_path("views/$page.blade.php")))
+            ->toContain("@extends('admin')")
+            ->not->toContain('<x-home.navbar', '<x-home.menu', '<x-footer');
     }
 });
 
@@ -123,6 +129,9 @@ test('password update displays its named validation errors', function () {
 
 test('signed-in user listings and forms render the shared layout', function (string $viewName) {
     $user = \App\Models\User::factory()->create();
+    if (in_array($viewName, ['coupons.index', 'catagory_offer.index'])) {
+        $user->forceFill(['role' => 'admin'])->save();
+    }
     $this->actingAs($user);
     // Direct view rendering bypasses the middleware that normally shares errors.
     view()->share('errors', new \Illuminate\Support\ViewErrorBag);
@@ -143,10 +152,15 @@ test('signed-in user listings and forms render the shared layout', function (str
         'contact' => $contact,
     ])->render();
 
-    expect($html)->toContain('/assets/css/style.css', 'ec-header')
-        ->not->toContain('layout-content-navbar');
+    if (in_array($viewName, ['coupons.index', 'catagory_offer.index'])) {
+        expect($html)->toContain('/assets/vendor/css/core.css', 'layout-content-navbar')
+            ->not->toContain('/assets/css/style.css', 'ec-header');
+    } else {
+        expect($html)->toContain('/assets/css/style.css', 'ec-header')
+            ->not->toContain('layout-content-navbar');
+    }
 
-    if (in_array($viewName, ['orders.create', 'orders.edit', 'contact.create'])) {
+    if (in_array($viewName, ['orders.create', 'orders.edit'])) {
         expect(substr_count($html, '/select2/select2.js'))->toBe(1);
         expect(strpos($html, '/select2/select2.js'))->toBeGreaterThan(strpos($html, '/jquery-3.5.1.min.js'));
         expect(strpos($html, '/user-selects.js'))->toBeGreaterThan(strpos($html, '/select2/select2.js'));

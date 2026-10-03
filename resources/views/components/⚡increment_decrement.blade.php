@@ -25,7 +25,6 @@ new class extends Component {
 
     #[On("cart-updated")]
     public function resetQuantity(){
-        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         $this->updateQuantityState();
 
@@ -70,13 +69,13 @@ new class extends Component {
             $this->cart->products()->updateExistingPivot($this->productId, [
                 'quantity' => $newQuantity,
             ]);
+            $cartProduct->pivot->quantity = $newQuantity;
         } else {
             $this->cart->products()->attach($this->productId, ['quantity' => 1]);
+            app(\App\Services\StorefrontData::class)->forgetCart();
+            unset($this->cart);
         }
 
-        // Force a fresh reload of the cart relationship state array for UI consistency
-        app(\App\Services\StorefrontData::class)->forgetCart();
-        unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
     }
@@ -94,14 +93,16 @@ new class extends Component {
 
         if ($newQuantity <= 0) {
             $this->cart->products()->detach($this->productId);
+            $this->cart->setRelation('products', $this->cart->products->reject(
+                fn ($product) => $product->id === $this->productId
+            )->values());
         } else {
             $this->cart->products()->updateExistingPivot($this->productId, [
                 'quantity' => $newQuantity,
             ]);
+            $cartProduct->pivot->quantity = $newQuantity;
         }
 
-        app(\App\Services\StorefrontData::class)->forgetCart();
-        unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
     }

@@ -16,17 +16,7 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        // Get all the companies
-        $sort = $request->sort ?? "desc";
-        $companies = Company::with("products")
-            ->orderBy("id", $sort)
-            ->where("name", "like", "%" . $request->search . "%")
-            ->orWhere("desc", "like", "%" . $request->search . "%")
-            ->latest()->paginate(30);
-        return view("companies.index", [
-            "companies" => $companies,
-            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc"
-        ]);
+        return view('companies.index');
     }
 
     /**
@@ -34,11 +24,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
-        $products = Product::all();
-        return view("companies.create", [
-            "products" => $products,
-        ]);
+        return view('companies.create');
     }
 
     /**
@@ -49,16 +35,13 @@ class CompanyController extends Controller
         //
         $data = $request->validated();
 
-        if ($data["image"]) {
+        if ($request->hasFile("image")) {
             $path = $data["image"]->store("companies", "public");
             $data["image"] = $path;
         }
         $company = Company::create(SupportArr::except($data, "product_id"));
         flash()->success("Company Created Succefully");
-        $product = Product::where("id", $data["product_id"])->first();
-        $productName = $product->name;
-        $company->products()->attachOrFail($data["product_id"]);
-        flash()->success("It's Been Linked to the Product : $productName");
+        $company->products()->sync([$data["product_id"]]);
         return redirect()->route("company.index");
     }
 
@@ -78,11 +61,7 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        $products = Product::all();
-        return view('companies.edit', [
-            "company" => $company,
-            "products" => $products,
-        ]);
+        return view('companies.edit', ['company' => $company, 'selectedProduct' => $company->products()->value('products.id')]);
         //
     }
 
@@ -96,13 +75,14 @@ class CompanyController extends Controller
 
             if ($data['image']) {
                 if ($company->image) {
-                    Storage::disk()->delete($company->image);
+                    Storage::disk("public")->delete($company->image);
                 }
                 $path = $data['image']->store("companies", "public");
                 $data["image"] = $path;
             }
         }
-        $c = $company->update(SupportArr::except($data, "product_id"));
+        if (!$request->hasFile('image')) { unset($data['image']); }
+        $company->update(SupportArr::except($data, "product_id"));
         //
         $company->products()->sync($data['product_id']);
         return redirect()->route("company.index");
@@ -114,6 +94,6 @@ class CompanyController extends Controller
     {
         // deleting company
         $company->delete();
-        return redirect()->route("product.index");
+        return redirect()->route("company.index");
     }
 }

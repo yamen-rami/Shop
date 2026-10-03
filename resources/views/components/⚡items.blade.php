@@ -6,12 +6,12 @@ use Livewire\Attributes\{On, Computed};
 use App\Services\OfferService;
 new class extends Component {
 
-    public $offers;
     public $code;
     public $quantity  = 0 ;
-    public function mount($globalCart, $offers)
+    #[Computed]
+    public function offers()
     {
-        $this->offers = $offers;
+        return app(\App\Services\StorefrontData::class)->offers();
     }
     #[Computed]
     public function globalCart()
@@ -21,14 +21,13 @@ new class extends Component {
     #[On('cart-updated')]
     public function refreshCart()
     {
-        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->globalCart, $this->calc);
     }
     #[Computed]
     public function calc()
     {
         $offerService = app(OfferService::class);
-        
+
         $prices = [];
         foreach ($this->globalCart?->products ?? [] as $product) {
             $prices[$product->id] = $offerService->getCoupon($product, $this->offers, $this->code);
@@ -38,7 +37,7 @@ new class extends Component {
 
     // Call this whenever the code or cart changes
     #[On("code-applied")]
-    
+
     public function updateCoupon($code = null)
     {
         $this->code = $code;
@@ -58,10 +57,10 @@ new class extends Component {
                         alt="" />{{ $product->name }}</a></td>
             <td data-label="Price" class="ec-cart-pro-price"><span class="amount">${{ $product->price}}</span></td>
             <td class="fs-6" data-label="Quantity" class="ec-cart-pro-qty" style="text-align: center;">
-                <livewire:increment_decrement :product="$product->id" :globalCart="$this->globalCart" />
-                     
+                <livewire:increment_decrement :product="$product->id" :key="'checkout-quantity-'.$product->id" />
+
             </td>
-            @php 
+            @php
             $calc = $this->calc ;
             @endphp
             <td data-label="Offer Price" class="ec-cart-pro-subtotal">

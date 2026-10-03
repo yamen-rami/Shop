@@ -1,10 +1,12 @@
-@section("title")
-  Showing catagory {{ $catagory->name }}
+@extends('admin')
+
+@section('content')
+@section('title')
+Category {{ $catagory->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Showing {{ $catagory->name }}
-  </x-slot:header>
+@section('header')
+Showing {{ $catagory->name }}
+@endsection
   <div class="row mb-12 g-6">
     <div class="col-md">
       <div class="card">
@@ -61,14 +63,14 @@
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach ($products as $product)
+        @forelse ($products as $product)
           <tr>
             <td>{{ $product->id}}</td>
             <td>
               <span class="fw-medium">{{ $product->name }}</span>
             </td>
             <td>
-              <span class="fw-medium">{{ $product->catagory->name }}</span>
+              <span class="fw-medium">{{ $catagory->name }}</span>
 
             </td>
             <td>
@@ -119,9 +121,11 @@
               </div>
             </td>
           </tr>
-        @endforeach
+        @empty
+          <tr><td colspan="10" class="text-center py-4">No products use this category.</td></tr>
+        @endforelse
       </tbody>
     </table>
     {{ $products->links()}}
   </div>
-</x-main-layout>
+@endsection

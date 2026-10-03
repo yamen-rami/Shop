@@ -16,11 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Product::factory(1000)->create();
+        // Product::factory(1000)->create();
         User::factory()->create([
             "name" => "yamen rami abuwarda",
-            "email" => "yamenrami@gmail.com",
-            "password" => 12345678 ,  
+            "email" => "admin@gmail.com",
+            "password" => "admin" ,
+            "role" => "admin",
         ]);
         // Catagory::factory(1000)->create();
         // Tag::factory(1000)->create();

@@ -1,7 +1,9 @@
 @section("title")
   Create Comapny
 @endsection
-<x-main-layout>
+@extends('admin')
+
+@section('content')
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -25,12 +27,8 @@
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Products</label>
               <div class="col-sm-10">
-                <select class="select-product" name="product_id">
-                  <option value="">Select Products</option>
-                  @foreach ($products as $product )
-                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                  @endforeach
-                </select>
+                <x-form.remote-select resource="products" name="product_id" :selected="old('product_id', null)" placeholder="Search products" />
+                @error('product_id')<p class="text-danger">{{ $message }}</p>@enderror
               </div>
             </div>
 
@@ -46,10 +44,5 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
-@script 
-  <script type="text/javascript" >
-    $(".select-product").select2();
-  </script> 
-
-@endScript
+@endsection
+@include('partials.select2-assets')

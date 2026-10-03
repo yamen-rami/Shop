@@ -1,0 +1,165 @@
+.storefront-layout {
+    --storefront-accent: #262522;
+    --storefront-accent-hover: #46433c;
+    --storefront-link: #46433c;
+    --storefront-gradient: linear-gradient(135deg, #514d44, #262522);
+    --storefront-gradient-hover: linear-gradient(135deg, #686154, #38352f);
+    --bs-primary: #262522;
+    --bs-primary-rgb: 38, 37, 34;
+}
+
+html[data-storefront-theme="dark"] .storefront-layout {
+    --storefront-accent: #c9c0af;
+    --storefront-accent-hover: #f2f0eb;
+    --storefront-link: #d8d1c3;
+    --storefront-gradient: linear-gradient(135deg, #615a4e, #38352f);
+    --storefront-gradient-hover: linear-gradient(135deg, #787060, #49443a);
+}
+
+html .storefront-layout :is(.btn-primary, .btn-secondary, .bg-primary, .ec-coupan-btn, .ec-newsletter-btn, .ec-subscribe-btn, .ec-pro-actions .add-to-cart, .ec-btn-group:hover, .ec-header-count, .ec-cart-noti, .page-item.active .page-link, .ec-pro-image .percentage, .ec-pro-image .flags span, .ec-pro-image .new, .ec-ellipsis div) {
+    background: var(--storefront-gradient) !important;
+    border-color: #514d44 !important;
+    color: #fff !important;
+    box-shadow: none;
+}
+
+html .storefront-layout .bg-dark {
+    background: #302f2c !important;
+}
+
+html .storefront-layout :is(.btn-primary, .btn-secondary, .ec-coupan-btn, .ec-newsletter-btn, .ec-subscribe-btn, .ec-pro-actions .add-to-cart):hover {
+    background: var(--storefront-gradient-hover) !important;
+    border-color: #686154 !important;
+}
+
+html .storefront-layout :is(.text-primary, .page-link, .ec-footer a, .ec-login-form a, .ec-register-form a, .ec-breadcrumb-list a, .ec-breadcrumb-item.active, .menu_title) {
+    color: var(--storefront-link) !important;
+}
+
+html .storefront-layout .ec-search-bar {
+    border-color: var(--storefront-accent);
+}
+
+.storefront-layout ::selection {
+    background: #514d44;
+    color: #fff;
+}
+
+html .storefront-layout :is(a:hover, .ec-main-menu ul li.active a, .ec-main-menu ul li a:hover, .ec-mobile-menu a:hover, .ec-pro-title a:hover, .ec-pro-tab-nav .nav-item .nav-link.active, .ec-pro-tab-nav .nav-item .nav-link:hover) {
+    color: var(--storefront-accent) !important;
+}
+
+html .storefront-layout :is(input, textarea, select, button, a):focus-visible {
+    outline-color: var(--storefront-accent);
+}
+
+html .storefront-layout :is(.form-control, .form-select, .ec-search-bar):focus {
+    border-color: var(--storefront-accent);
+    box-shadow: 0 0 0 3px rgb(128 119 102 / 20%);
+}
+
+html .storefront-layout :is(input[type="checkbox"], input[type="radio"]) {
+    accent-color: #514d44;
+}
+
+html .storefront-layout .form-check-input:checked {
+    background-color: #514d44;
+    border-color: #514d44;
+}
+
+html .storefront-layout .select2-container--default .select2-results__option--highlighted[aria-selected] {
+    background: var(--storefront-gradient);
+    color: #fff;
+}
+
+html .storefront-layout .select2-container--default :is(.select2-selection--single, .select2-selection--multiple) {
+    --bs-select-active-border-color: var(--storefront-accent);
+    --bs-select-active-box-shadow: 0 0 0 3px rgb(128 119 102 / 20%);
+}
+
+.storefront-layout :is(.header-logo, .ec-footer-logo) img {
+    filter: grayscale(1);
+}
+
+.storefront-theme-toggle {
+    flex-shrink: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #262522;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.storefront-theme-toggle:hover {
+    background: rgb(128 128 128 / 15%);
+}
+
+.storefront-theme-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+.storefront-theme-toggle .theme-icon-sun,
+html[data-storefront-theme="dark"] .storefront-theme-toggle .theme-icon-moon {
+    display: none;
+}
+
+html[data-storefront-theme="dark"] .storefront-theme-toggle .theme-icon-sun {
+    display: block;
+}
+
+html[data-storefront-theme="dark"] {
+    color-scheme: dark;
+    background: #262522;
+    --storefront-background: #262522;
+    --storefront-surface: #302f2c;
+    --storefront-border: #4b4943;
+    --storefront-text: #f2f0eb;
+}
+
+html[data-storefront-theme="dark"] .storefront-layout {
+    background: var(--storefront-background);
+    color: var(--storefront-text);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(#ec-overlay, .ec-header, .header-top, .ec-header-bottom, .sticky-nav, .ec-breadcrumb, .ec-footer, .footer-top, .footer-bottom, .ec-nav-toolbar) {
+    background: var(--storefront-background);
+    border-color: var(--storefront-border);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(.ec-product-inner, .ec-pro-content, .ec-sidebar-wrap, .ec-cart-inner, .ec-mobile-menu, .ec-sidebar, .ec-login-container, .ec-register-container, .card, .modal-content, .dropdown-menu) {
+    background: var(--storefront-surface);
+    color: var(--storefront-text);
+    border-color: var(--storefront-border);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(.form-control, .form-select, .ec-search-bar, .ec-login-form input, .ec-register-form input, .ec-contact-form input, .ec-contact-form textarea, .ec-coupan, .select2-selection, .select2-dropdown, .select2-search__field) {
+    background: var(--storefront-surface);
+    color: var(--storefront-text);
+    border-color: var(--storefront-border);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(input, textarea)::placeholder {
+    color: #b9b5ab;
+    opacity: 1;
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(.storefront-theme-toggle, label, .ec-pro-title a, .ec-pro-title, .section-title .ec-title, .ec-breadcrumb-title, .ec-new-price, .dropdown-item, .select2-selection__rendered, .ec-cart-summary span, .cart-table td, .table) {
+    color: var(--storefront-text);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout :is(.dropdown-item:hover, .select2-results__option--highlighted[aria-selected]) {
+    background: #46433c;
+    color: #fff;
+}
+
+html[data-storefront-theme="dark"] .storefront-layout .select2-selection__choice {
+    background: #46433c;
+    color: var(--storefront-text);
+    border-color: var(--storefront-border);
+}
+
+html[data-storefront-theme="dark"] .storefront-layout .ec-auth-error {
+    color: #ff9f9f;
+}

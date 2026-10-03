@@ -5,11 +5,11 @@ use App\Models\{Offer, Product, Cart};
 use App\Services\{CartService, OfferService};
 use Livewire\Attributes\{Computed, On};
 new class extends Component {
-    public $globalOffer;
     public $code = null;
-    public function mount($globalCart, $globalOffer)
+    #[Computed]
+    public function globalOffer()
     {
-        $this->globalOffer = $globalOffer;
+        return app(\App\Services\StorefrontData::class)->offers();
     }
     #[Computed]
     public function globalCart()
@@ -48,7 +48,6 @@ new class extends Component {
     #[on('cart-updated')]
     public function resetAll()
     {
-        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->globalCart);
         unset($this->totalPrice);
         unset($this->discountTotal);

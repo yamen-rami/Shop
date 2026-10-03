@@ -111,9 +111,9 @@ new class extends Component {
   #[On('cart-updated')]
   public function refreshCart()
   {
-    app(\App\Services\StorefrontData::class)->forgetCart();
     // ✅ Just unset - Livewire will reload it automatically when accessed
     unset($this->cart);
+    unset($this->getCount, $this->totalPrice, $this->originalPrice);
   }
 
   public function deleteProduct(Product $product)

@@ -13,16 +13,7 @@ class ContactController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        $sort = $request->sort ?? "desc";
-        $contacts = Contact::with("user")
-        ->where("title" , 'LIKE' , "%" . $request->search . "%")
-        ->orderBy("id" , $sort)
-        ->paginate(30)->withQueryString();
-        return view("contact.index" , [
-            "contacts" => $contacts ,
-            "sort"=> $sort === "desc" ? $sort = 'asc' : $sort = "desc",
-        ]);
+        return view('contact.index');
     }
 
     /**
@@ -31,7 +22,7 @@ class ContactController extends Controller
     public function create()
     {
         //
-        return view("home.contact");
+        return view(auth()->user()->role === 'admin' ? 'contact.create' : 'home.contact');
     }
 
     /**
@@ -48,7 +39,7 @@ class ContactController extends Controller
         $data['user_id'] = auth()->id();
         Contact::create($data);
         flash()->success("The Contact Has Sent Succefully");
-        return redirect()->route("home");
+        return redirect()->route(auth()->user()->role === 'admin' ? 'contact.index' : 'home');
     }
 
     /**
@@ -56,6 +47,7 @@ class ContactController extends Controller
      */
     public function show(Contact $contact)
     {
+        $this->authorizeContact($contact);
         //
         return view("contact.show" , [
             'contact' => $contact ,
@@ -67,6 +59,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $this->authorizeContact($contact);
         //
         return view("contact.edit" , compact("contact"));
     }
@@ -76,6 +69,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+        $this->authorizeContact($contact);
         //
         $data= $request->validate([
             "title" => ['required' , 'string' , "min:2"],
@@ -94,10 +88,15 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+        $this->authorizeContact($contact);
         
         $contact->delete();
         flash()->error("Contact Has Deleted $contact->title" );
         return redirect()->back();
         //
+    }
+    private function authorizeContact(Contact $contact): void
+    {
+        abort_unless(auth()->user()->role === 'admin' || $contact->user_id === auth()->id(), 403);
     }
 }

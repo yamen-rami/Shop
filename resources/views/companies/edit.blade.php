@@ -1,10 +1,12 @@
 @section("title")
   Edit company {{ $company->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Editing {{ $company->name }}
-  </x-slot:header>
+@extends('admin')
+
+@section('content')
+@section('header')
+Editing {{ $company->name }}
+@endsection
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -24,11 +26,10 @@
                 </h5>
               </div>
               <div>
-                <img width="100px" class="img" src="{{ asset($company->image) }}" alt="The Image Not Found">
+                <img width="100px" class="img" src="{{ str_starts_with($company->image ?? '', 'assets/') ? asset($company->image) : asset('storage/' . $company->image) }}" alt="The Image Not Found">
               </div>
               <div></div>
             </div>
-            @csrf
             {{-- ? Name --}}
             <x-form.input type="text" edit="{{ $company->name }}" value="Name" feild="name"></x-form.input>
             {{-- ? Desc --}}
@@ -38,19 +39,8 @@
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Products</label>
               <div class="col-sm-10 col-lg-4">
-                <select class="select-product" name="product_id">
-                  @if($company->products)
-                    @foreach ($company->products as $product)
-                      <option value="{{ $product->id ?? null }}">{{ $product->name ?? "There Is No Previous Records" }}
-                      </option>
-                    @endforeach
-                  @else
-                    <option value="">There Is No Records</option>
-                  @endif
-                  @foreach ($products as $product)
-                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                  @endforeach
-                </select>
+                <x-form.remote-select resource="products" name="product_id" :selected="old('product_id', $selectedProduct ?? null)" placeholder="Search products" />
+                @error('product_id')<p class="text-danger">{{ $message }}</p>@enderror
               </div>
             </div>
 
@@ -67,9 +57,5 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
-@script
-  <script type="text/javascript" >
-    $(".select-product").select2();
-  </script>
-@endScript
+@endsection
+@include('partials.select2-assets')

@@ -59,10 +59,9 @@ test('cart components render safely without a cart', function (bool $authenticat
     if ($authenticated) {
         $this->actingAs(User::factory()->create());
     }
-    $offers = new \Illuminate\Database\Eloquent\Collection;
-    Livewire::test('items', ['globalCart' => null, 'offers' => $offers])
+    Livewire::test('items')
         ->assertSee('Cart Empty');
-    Livewire::test('receipt', ['globalCart' => null, 'globalOffer' => $offers])
+    Livewire::test('receipt')
         ->assertSet('totalPrice', 0)
         ->assertSet('originalPrice', 0)
         ->assertSet('discountTotal', 0);

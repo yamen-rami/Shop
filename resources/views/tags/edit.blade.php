@@ -1,10 +1,12 @@
 @section("title")
   Edit tag {{ $tag->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Editing {{ $tag->name }}
-  </x-slot:header>
+@extends('admin')
+
+@section('content')
+@section('header')
+Editing {{ $tag->name }}
+@endsection
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -31,4 +33,4 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+@endsection

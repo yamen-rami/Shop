@@ -1,10 +1,12 @@
 @section("title")
   Edit catagory {{ $catagory->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Editing {{ $catagory->name }}
-  </x-slot:header>
+@extends('admin')
+
+@section('content')
+@section('header')
+Editing {{ $catagory->name }}
+@endsection
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -33,4 +35,4 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+@endsection

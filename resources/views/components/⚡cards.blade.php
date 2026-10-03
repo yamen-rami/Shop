@@ -9,9 +9,12 @@ new class extends Component {
     #[Locked]
     public Collection $products;
     #[Locked]
+    public bool $wishlist = false;
+    #[Locked]
     public Collection $products_offer;
-    public function mount(Collection $products, Collection $products_offer)
+    public function mount(Collection $products, Collection $products_offer, bool $wishlist = false)
     {
+        $this->wishlist = $wishlist;
         $this->products = $products;
         $this->products_offer = $products_offer;
     }
@@ -32,6 +35,9 @@ new class extends Component {
         $cart = Cart::firstOrCreate([
             "user_id" => auth()->id(),
         ]);
+        if ($cart->created_at->lte(now()->subDay())) {
+            $cart->forceFill(['created_at' => now()])->save();
+        }
         $exsistingProduct = $cart->products()->where("product_id", $product->id)->first();
         if ($exsistingProduct) {
             $cart->products()->updateExistingPivot($product->id, [
@@ -59,6 +65,14 @@ new class extends Component {
         flash()->success("Product Has Added To Which List");
     }
 
+    public function deleteFromFavoriate(Product $product)
+    {
+        abort_unless(auth()->check(), 403);
+        auth()->user()->favoriates()->where('product_id', $product->id)->delete();
+        $this->products = $this->products->reject(fn ($item) => $item->id === $product->id)->values();
+        app(\App\Services\StorefrontData::class)->forgetFavoriates();
+        $this->dispatch('wishlist-updated');
+    }
 };
 ?>
 
@@ -74,9 +88,9 @@ new class extends Component {
     <div class="ec-product-inner">
         <div class="ec-pro-image-outer">
             <div class="ec-pro-image">
-                <a href="product-left-sidebar.html" class="image">
-                    <img class="main-image" height="300px" src="{{ asset($product->image) }}" alt="Product" />
-                    <img class="hover-image" height="300px" src="{{ asset($product->image) }}" alt="Product" />
+                <a href="{{ route('showProduct', $product) }}" class="image">
+                    <img class="main-image" height="300px" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="Product" />
+                    <img class="hover-image" height="300px" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="Product" />
                 </a>
                 @if($offer)
                     <span class="percentage">{{ $this->offerService->offerType($offer)   }}</span>
@@ -89,15 +103,15 @@ new class extends Component {
                             class="fi fi-rr-arrows-repeat"></i></a>
                     <button wire:click="addCart({{ $product->id }})" class="add-to-cart"><i
                             class="fi-rr-shopping-basket"></i></button>
-                    <button class="ec-btn-group wishlist" wire:click='addFavoriate({{ $product->id }})'
-                        title="Wishlist">
+                    <button class="ec-btn-group wishlist" wire:click="{{ $wishlist ? 'deleteFromFavoriate' : 'addFavoriate' }}({{ $product->id }})"
+                        title="{{ $wishlist ? 'Remove from wishlist' : 'Add to wishlist' }}">
                         <i class="fi-rr-heart"></i>
                     </button>
                 </div>
             </div>
         </div>
         <div class="ec-pro-content">
-            <h5 class="ec-pro-title"><a wire:navigate    href="{{ route("showProduct", $product->id) }}">{{ $product->name }}</a></h5>
+            <h5 class="ec-pro-title"><a href="{{ route("showProduct", $product->id) }}">{{ $product->name }}</a></h5>
             <div class="d-flex align-items-center">
                 <span  class="new-price fs-6">{{ __("home.price") }} :</span>
                 <span class="ec-price">

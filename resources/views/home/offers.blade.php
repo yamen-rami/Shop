@@ -57,41 +57,11 @@
       <div class="row">
         <div class="col-md-12 text-center">
           <div class="section-title">
-            <h2 class="ec-bg-title">There should be Something that mroe ip</h2>
+            <h2 class="ec-bg-title">Current offers</h2>
           </div>
         </div>
-        <div class="">
-          @forelse($offers as $offer)
-            <div>
-
-              <h6 class="text-center font-bold ec-bg-title ">{{ $offer->name }}</h6>
-              @if($offer->type === "global")
-                <p class="text-center mb-5 ">
-                  <strong>
-                    {{ $offer->discount_type === "percentage" ? "%" . $offer->discount_value * 100 : "$" . $offer->discount_value }}
-                  </strong>
-                  <span>For All The Products</span>
-                </p>
-              @endif
-            </div>
-
-            @if($offer->type === "products")
-              <div class="row">
-                <p class="text-center">
-                  <strong>
-                    {{ $offer->discount_type === "percentage" ? "%" . $offer->discount_value * 100 : "$" . $offer->discount_value }}
-                  </strong>
-                  <span>For The below Products </span>
-                </p>
-                <livewire:cards :products="$offer->products" :products_offer="$products_offers" :key="'offer-cards-'.$offer->id" />
-              </div>
-            @endif
-            @empty
-              <p class="text-center text-dark fs-4 py-5">No Available Offers</p>
-          @endforelse
-        </div>
+        <livewire:public-offers />
       </div>
-      {{ $offers->links() }}
     </div>
   </section>
 

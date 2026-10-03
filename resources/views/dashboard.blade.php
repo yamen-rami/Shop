@@ -1,7 +1,9 @@
-<x-main-layout>
-  <x-slot:title>
-    Dashborad
-  </x-slot:title>
+@extends('admin')
+
+@section('content')
+@section('title')
+Dashborad
+@endsection
   <div class="row g-6">
     <!-- Source Visit -->
     <div class="col-xxl-4 col-md-6 col-12">
@@ -44,4 +46,4 @@
     
     <!--/ Projects table -->
   </div>
-</x-main-layout>
+@endsection

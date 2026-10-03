@@ -17,59 +17,18 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $sort = $request->sort;
-        // ? Get all the products 
-        if ($request->featured) {
-            $trueOrFalse = $request->featured === "featured";
-            $products = Product::with(["catagory", 'tags', "companies"])->where("featured", "=", $trueOrFalse ?"on" : 0)
-                ->orderBy("id", $request->sort ?? "desc")
-                ->paginate(30)->withQueryString();
-            $catagories = Catagory::with("products")->limit(10)->get();
-            return view("products.index", [
-                "products" => $products,
-                "catagories" => $catagories,
-                "featured" => $request->featured === "not" ? $featured = "featured" : $featured = "not",
-                "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
-            ]);
-        }
-        $products = Product::query()->with(["catagory", 'tags', "companies"])
-            ->where("name", 'LIKE', "%" . $request->search . "%")->orWhere("desc", "LIKE", "%" . $request->search . "%")
-            ->orWhere("quantity", "LIKE", "%" . $request->search . "%")
-            ->orWhere('price', "LIKE", "%" . $request->search . "%")
-            ->orWhere("int_price", "LIKE", "%" . $request->search . "%")
-            ->orderBy("id", $request->sort ?? "desc")
-            ->paginate(30)->withQueryString();
-        $catagories = Catagory::with("products")->limit(10)->get();
-
-        return view("products.index", [
-            "products" => $products,
-            "catagories" => $catagories,
-            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
-        ]);
+        return view('products.index');
     }
     public function catagoryProducts(Catagory $catagory)
     {
-        $products = Product::with(['companies', "tags", "catagory"])
-            ->where("catagory_id", $catagory->id)->paginate(30)->withQueryString();
-
-        flash()->success("Products Has Filtered");
-        $catagories = Catagory::with("products")->limit(10)->get();
-        return view("products.index", [
-            "products" => $products,
-            "catagories" => $catagories,
-            "sort" =>  "desc"
-        ]);
+        return redirect()->route('product.index', ['category' => $catagory->id]);
     }
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        // Get The Tags
-        $tags = Tag::all();
-        $catagories = Catagory::all();
-
-        return view("products/create", compact("tags", "catagories"));
+        return view('products.create');
     }
 
     /**
@@ -91,15 +50,7 @@ class ProductController extends Controller
         $validatedData["image"] = $image->store('products', "public");
         $product = Product::create(Arr::except($validatedData, "tags"));
         // Attach Tag To Product
-        if (empty($validatedData["tags"])) {
-            $validatedData["tags"] = [];
-        }
-        if ($validatedData["tags"]) {
-            $tags = $validatedData["tags"];
-            foreach ($tags as $tag) {
-                $product->tag($tag);
-            }
-        }
+        $product->tags()->sync($validatedData['tags'] ?? []);
         flash()->success('Product created successfully!');
         return redirect()->route("product.index");
     }
@@ -112,8 +63,9 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         // $products = Product::with("tags")->where("id" , $product->id)
-        $tags = Tag::all();
-        $catagories = Catagory::all();
+        $product->load('catagory', 'tags', 'companies');
+        $tags = collect();
+        $catagories = collect();
         return view("products.show", [
             "product" => $product,
             "tags" => $tags,
@@ -126,11 +78,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
-        $tags = Tag::all();
-        $catagories = Catagory::all();
-
-        return view('products.edit', compact("product", "tags", "catagories"));
+        return view('products.edit', ['product' => $product, 'selectedTags' => $product->tags()->pluck('tags.id')->toArray()]);
     }
 
     /**
@@ -147,22 +95,10 @@ class ProductController extends Controller
             $path = $validateData["image"]->store('products', 'public');
             $validateData["image"] = $path;
         }
-        if (!$request->featured) {
-            $validateData["featured"] = false;
-        }
-        $P = $product->update(Arr::except($validateData, "tags"));
-        $tags = $validateData["tags"] ?? [];
-        if (empty($tags)) {
-            $validateData["tags"] = [];
-        }
-        if ($validateData["tags"]) {
-            if ($product->tags->count() > 0) {
-                $product->tags()->detach();
-            }
-            foreach ($tags as $tag) {
-                $product->tags()->attach($tag);
-            }
-        }
+        if (!$request->hasFile('image')) { unset($validateData['image']); }
+        $validateData['original_price'] = $validateData['price'];
+        $product->update(Arr::except($validateData, "tags"));
+        $product->tags()->sync($validateData['tags'] ?? []);
         flash()->info('Product Updated successfully!');
 
         return redirect()->route("product.index");
@@ -176,7 +112,6 @@ class ProductController extends Controller
         // dd($product);
 
         $product->delete();
-        $product->tags()->detach($product->id);
         Storage::disk("public")->delete($product->image);
         flash()->error('Product Deleted Succesfully!');
 

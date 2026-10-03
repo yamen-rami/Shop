@@ -11,13 +11,7 @@ class CatagoryController extends Controller
     //
     public function index(Request $request)
     {
-        $sort = $request->sort ?? "desc";
-        $catagores  = Catagory::where("name", "LIKE", "%" . $request->search . "%")
-            ->orWhere("desc", "LIKE", "%" . $request->search . "%")->orderBy('id', $sort)->paginate(30);
-        return view("catagory.index", [
-            "catagores" => $catagores,
-            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
-        ]);
+        return view('catagory.index');
     }
     public function edit(Catagory $catagory)
     {
@@ -25,8 +19,8 @@ class CatagoryController extends Controller
     }
     public function show(Catagory $catagory)
     {
-        $offer = Offer::active()->where("catagory_id" , $catagory->id)->latest()->first();
-        $products = Product::where("catagory_id", $catagory->id)->paginate(30);
+        $offer = $catagory->offer()->active()->where('type', 'categories')->latest('offers.id')->first();
+        $products = $catagory->products()->with('tags')->orderByDesc('id')->paginate(10);
         return view("catagory.show", [
             "catagory" => $catagory,
             "products" => $products,

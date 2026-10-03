@@ -2,117 +2,112 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\{StoreOrderRequest, UpdateOrderRequest};
+use App\Models\{Order, Product};
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-
-use App\Models\{Order, Product, User};
-use App\Http\Requests\{StoreOrderRequest, UpdateOrderRequest};
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $sort = $request->sort ?? "desc";
-        $orders = Order::with(["products" , "user"])
-            ->where("name", "LIKE", "%" . $request->search . "%")
-            ->orWhere("qunatity", $request->search)->orderBy("id", $sort)->paginate(30);
-        return view(
-            "orders.index",
-            [
-                "orders" => $orders,
-                "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
-            ]
-        );
+        return view('orders.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
-        $products = Product::all();
-        return view("orders.create", [
-            "products" => $products,
-        ]);
+        return view('orders.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreOrderRequest $request)
     {
-        // get the validated data
         $data = $request->validated();
-        // creating order except the product_id cause the belongsToMany pivot table
-        $order = Order::create(Arr::except($data, "product_id"));
-        $product = Product::findOrFail($data["product_id"]);
-        if ($data["quantity"] > $product->quantity) {
-            throw ValidationException::withMessages([
-                "quantity" => ["Sorry there is only $product->quantity for $product->name "],
+        DB::transaction(function () use ($data) {
+            $product = Product::whereKey($data['product_id'])->lockForUpdate()->firstOrFail();
+            $this->checkStock($product, (int) $data['quantity']);
+            $order = Order::create([
+                ...Arr::except($data, ['product_id', 'price']),
+                'price' => round($product->price * $data['quantity'], 2),
             ]);
-        } else {
-            $quantity = $product->quantity - $order->quantity;
-            $product->update([
-                "quantity" => $quantity,
-            ]);
-            // define the auth user
-            $user = auth()->user();
-            // attach it in the pivot table
-            $order->user()->attach($user->id);
-            // attach the product table 
-            $order->products()->attach($data["product_id"]);
+            $order->user()->attach(auth()->id());
+            $order->products()->attach($product->id);
+            $product->decrement('quantity', $data['quantity']);
+        });
 
-            // todo flash messaging success 
-            return redirect()->route("order.index");
-        }
+        flash()->success('Order created successfully.');
+        return redirect()->route('order.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Order $order)
     {
-        // todo flash messaging
-        return view("orders.show", compact("order"));
-        //
+        $this->authorizeOrder($order);
+        $order->load('products', 'user');
+        return view('orders.show', compact('order'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Order $order)
     {
-        // sending data into edit
-        $products = Product::all();
-        return view("orders.edit", ["order" => $order, "products" => $products]);
+        $this->authorizeOrder($order);
+        return view('orders.edit', ['order' => $order, 'selectedProduct' => $order->products()->value('products.id')]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(UpdateOrderRequest $request, Order $order)
     {
+        $this->authorizeOrder($order);
         $data = $request->validated();
-        $order->update(Arr::except($data, "product_id"));
-        $order->user()->sync(auth()->user()->id);
-        $order->products()->sync($data["product_id"]);
-        // todo flash messaging 
-        return redirect()->route("order.index");
+        DB::transaction(function () use ($order, $data) {
+            $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            $oldIds = $order->products()->pluck('products.id');
+            $products = Product::whereIn('id', $oldIds->push((int) $data['product_id'])->unique())
+                ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            foreach ($order->products as $previous) {
+                $products[$previous->id]->quantity += (int) $order->quantity;
+            }
+            $product = $products->get((int) $data['product_id']);
+            abort_unless($product, 404);
+            $this->checkStock($product, (int) $data['quantity']);
+            $product->quantity -= (int) $data['quantity'];
+            foreach ($products as $changed) {
+                $changed->save();
+            }
+            $order->update([
+                ...Arr::except($data, ['product_id', 'price']),
+                'price' => round($product->price * $data['quantity'], 2),
+            ]);
+            $order->products()->sync([$product->id]);
+        });
+
+        flash()->success('Order updated successfully.');
+        return redirect()->route('order.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Order $order)
     {
-        //
-        $order->delete();
-        // todo flash message
-        return redirect()->route("order.index");
+        $this->authorizeOrder($order);
+        DB::transaction(function () use ($order) {
+            $order = Order::whereKey($order->id)->lockForUpdate()->firstOrFail();
+            $products = $order->products()->orderBy('products.id')->lockForUpdate()->get();
+            foreach ($products as $product) {
+                $product->increment('quantity', (int) $order->quantity);
+            }
+            $order->delete();
+        });
+
+        flash()->success('Order deleted and stock restored.');
+        return redirect()->route('order.index');
+    }
+
+    private function authorizeOrder(Order $order): void
+    {
+        abort_unless(auth()->user()->role === 'admin' || $order->user()->whereKey(auth()->id())->exists(), 403);
+    }
+
+    private function checkStock(Product $product, int $quantity): void
+    {
+        if ($quantity > $product->quantity) {
+            throw ValidationException::withMessages(['quantity' => "Only {$product->quantity} units of {$product->name} are available."]);
+        }
     }
 }

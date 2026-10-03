@@ -13,18 +13,22 @@ new class extends Component {
         $cart = Cart::firstOrCreate([
             "user_id" => auth()->id(),
         ]);
+        if ($cart->created_at->lte(now()->subDay())) {
+            $cart->forceFill(['created_at' => now()])->save();
+        }
         $exsistingProduct = $cart->products()->where("product_id", $product->id)->first();
         if ($exsistingProduct) {
             $cart->products()->updateExistingPivot($product->id, [
                 "quantity" => $exsistingProduct->pivot->quantity + 1,
             ]);
-            flash()->success("Product Has Added To The Cart for the " . $exsistingProduct->pivot->quantity + 1);
+            flash()->success("Product Has Added To The Cart for the " . ($exsistingProduct->pivot->quantity + 1));
         } else {
             $cart->products()->attach($product->id, [
                 "quantity" => 1
             ]);
             flash()->success("Product Has Added To The Cart");
         }
+        app(\App\Services\StorefrontData::class)->forgetCart();
         $this->dispatch("cart-updated");
 
         // Tell every page to rerender itslef

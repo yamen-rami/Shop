@@ -46,6 +46,7 @@
         <!-- Header Top responsive Action -->
         <div class="col d-lg-none ">
           <div class="ec-header-bottons">
+            <x-home.theme-toggle />
             <!-- Header User Start -->
             <div class="ec-header-user dropdown">
               <button class="dropdown-toggle ml-3" data-bs-toggle="dropdown"><i class="fi-rr-user"></i></button>
@@ -123,6 +124,7 @@
           <!-- Ec Header Button Start -->
           <div class="align-self-center">
             <div class="ec-header-bottons">
+              <x-home.theme-toggle />
 
               <!-- Header User Start -->
               <div class="ec-header-user dropdown">

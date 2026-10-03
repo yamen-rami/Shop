@@ -18,7 +18,6 @@ new class extends Component {
     #[on("cart-updated")]
     public function refreshCart()
     {
-        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         unset($this->getCount);
     }

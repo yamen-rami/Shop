@@ -1,7 +1,4 @@
 
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+// Livewire starts its bundled Alpine instance in the shared layouts.
+// Register application JavaScript here without starting a second Alpine instance.

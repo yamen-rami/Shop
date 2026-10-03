@@ -12,13 +12,7 @@ class TagController extends Controller
 
     public function index(Request $request)
     {
-        $sort = $request->sort ?? "desc";
-
-        $tags = Tag::where("name", "LIKE", "%" . $request->search . "%")->orderBy('id', $sort)->paginate(30);
-        return view("tags.index", [
-            "tags" => $tags,
-            "sort" => $sort === "desc" ? $sort = "asc" : $sort = "desc",
-        ]);
+        return view('tags.index');
     }
     public function edit(Tag $tag)
     {
@@ -49,7 +43,6 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
-        $tag->products()->detach($tag->id);
         flash()->error("Tag Has Delete in All Related Products");
         return redirect()->route("tag.index");
     }

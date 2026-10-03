@@ -37,6 +37,7 @@
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
   @vite(['resources/css/app.css', "resources/js/app.js"])
+  @livewireStyles
 
 </head>
 
@@ -328,6 +329,7 @@
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
     <script src="{{ asset('assets/js/main.js')}}"></script>
 
+    @livewireScripts
 </body>
 
 </html>

@@ -136,7 +136,7 @@ test('offers pagination shares offer queries and keeps discounts from other page
         ->assertSee('Public sale 1<', false)->assertDontSee('Public sale 11<', false)
         ->assertDontSee('Coupon sale<', false)->assertDontSee('Expired sale<', false)
         ->assertDontSee('Inactive sale<', false)->assertSee('$10')
-        ->assertSee('page=2');
+        ->assertSee("wire:click=\"gotoPage(2, 'page')\"", false);
 
     $queries = DB::getQueryLog();
     foreach (['from "offers"', 'inner join "products_offer"', 'inner join "categories_offer"'] as $table) {
