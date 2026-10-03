@@ -1,9 +1,10 @@
-@extends('layouts.auth')
+@extends('layouts.storefront', ['storefrontDemoStyles' => false])
 
 @section('title', __('Reset Password'))
 @section('auth-description', __('Choose a new password for your account.'))
 
-@section('auth-content')
+@section('content')
+    @include('auth.page-start')
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
@@ -15,4 +16,9 @@
             <a href="{{ route('login') }}" class="btn btn-secondary">{{ __('Back to Login') }}</a>
         </span>
     </form>
+    @include('auth.page-end')
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endpush

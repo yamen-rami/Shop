@@ -148,14 +148,7 @@ new class extends Component {
 }
 ?>
 <div>
-  <x-app>
 
-  <x-home.navbar>
-  </x-home.navbar>
-
-    <x-slot:title>
-      Checkout
-    </x-slot:title>
     <div class="pt-5"></div>
     <div class="pt-5 mt-5">
       <div id="wizard-checkout" class="bs-stepper wizard-icons wizard-icons-example">
@@ -342,6 +335,6 @@ new class extends Component {
           </div>
         </div>
       </div>
-  </x-app>
+
 
 </div>

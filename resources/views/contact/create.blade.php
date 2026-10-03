@@ -1,7 +1,14 @@
+@extends('layouts.storefront')
+
 @section("title")
   Create Comapny
 @endsection
-<x-main-layout>
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -25,7 +32,7 @@
             <div class="row mb-6">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Products</label>
               <div class="col-sm-10">
-                <select class="bg-black text-white" name="product_id">
+                <select data-user-select2 class="bg-black text-white" name="product_id">
                   <option value="">Select Products</option>
                   @foreach ($products as $product )
                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -46,4 +53,20 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}">
+@endpush
+
+@push('scripts')
+  <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+  <script src="{{ asset('assets/js/user-selects.js') }}"></script>
+@endpush

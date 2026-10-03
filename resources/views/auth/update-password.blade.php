@@ -1,9 +1,10 @@
-@extends('layouts.auth')
+@extends('layouts.storefront', ['storefrontDemoStyles' => false])
 
 @section('title', __('Update Password'))
 @section('auth-description', __('Ensure your account uses a long, random password to stay secure.'))
 
-@section('auth-content')
+@section('content')
+    @include('auth.page-start')
     <form method="POST" action="{{ route('password.update') }}">
         @csrf
         @method('PUT')
@@ -15,4 +16,9 @@
             <a href="{{ route('home') }}" class="btn btn-secondary">{{ __('home.home') }}</a>
         </span>
     </form>
+    @include('auth.page-end')
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endpush

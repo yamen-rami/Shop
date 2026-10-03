@@ -1,4 +1,4 @@
-@extends('layouts.auth')
+@extends('layouts.storefront')
 
 @section('content')
   {{ $slot }}

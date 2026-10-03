@@ -1,15 +1,23 @@
+@extends('layouts.storefront')
+
+@section('header')
+Showing {{ $contact->title }}
+@endsection
 @section("title")
   Showing Contact {{ $contact->title }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Showing {{ $contact->title }}
-  </x-slot:header>
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
   <div class="row mb-12 g-6">
     <div class="col-md">
       <div class="card">
         <div class="row">
-         
+
           <div class="col-md-8">
             <div class="card-body">
               <h1 class="card-title fs-4">Title : {{ $contact->title }}</h1>
@@ -27,4 +35,11 @@
       </div>
     </div>
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush

@@ -1,10 +1,18 @@
+@extends('layouts.storefront')
+
+@section('header')
+Editing {{ $contact->name }}
+@endsection
 @section("title")
   Edit contact {{ $contact->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Editing {{ $contact->name }}
-  </x-slot:header>
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -37,4 +45,11 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush

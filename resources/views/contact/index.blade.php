@@ -1,11 +1,20 @@
+@extends('layouts.storefront')
 
-<x-main-layout>
-  <x-slot:title>
-    Contacts
-  </x-slot:title>
-  <x-slot:header >
-    contact 
-  </x-slot:header>
+@section('title')
+Contacts
+@endsection
+
+@section('header')
+contact
+@endsection
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
+
   <div class="card">
     <div class="d-flex justify-between items-center">
       <div>
@@ -50,13 +59,13 @@
               <td>
                 <span class="fw-medium">{{ $contact->title }}</span>
               </td>
-              
+
               <td>{{ Str::limit($contact->desc, 40) }}</td>
               <td>{{ $contact->email }}</td>
               <td>
                 {{ $contact->user->name }}</td>
 
-            
+
               <td>
                 <div class="dropdown">
                   <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -88,4 +97,11 @@
       {{ $contacts->links()}}
     </div>
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush

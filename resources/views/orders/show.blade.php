@@ -1,10 +1,18 @@
+@extends('layouts.storefront')
+
+@section('header')
+Showing {{ $order->name }}
+@endsection
 @section("title")
   Showing Order {{ $order->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Showing {{ $order->name }}
-  </x-slot:header>
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
   <div class="row mb-12 g-6">
     <div class="col-md">
       <div class="card">
@@ -36,4 +44,11 @@
       </div>
     </div>
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush

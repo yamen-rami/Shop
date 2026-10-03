@@ -1,8 +1,9 @@
-@extends('layouts.auth')
+@extends('layouts.storefront', ['storefrontDemoStyles' => false])
 
 @section('title', __('Register'))
 
-@section('auth-content')
+@section('content')
+    @include('auth.page-start')
     <form method="POST" action="{{ route('register') }}">
         @csrf
         <x-auth.field name="name" :label="__('Name')" :value="old('name')" autocomplete="name" :placeholder="__('Enter your name')" autofocus />
@@ -14,4 +15,9 @@
             <a href="{{ route('login') }}" class="btn btn-secondary">{{ __('Login') }}</a>
         </span>
     </form>
+    @include('auth.page-end')
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endpush

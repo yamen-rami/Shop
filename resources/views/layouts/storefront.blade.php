@@ -36,7 +36,6 @@
   <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}" />
   <link rel="stylesheet" href="{{ asset('assets/css/responsive.css')}}" />
   <link rel="stylesheet" id="bg-switcher-css" href="{{ asset('assets/css/backgrounds/bg-4.css')}}">
-  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
   @livewireStyles
   @stack('styles')
 </head>
@@ -61,7 +60,6 @@
   <script src="{{asset('assets/js/plugins/slick.min.js')}}"></script>
   <script src="{{asset('assets/js/plugins/infiniteslidev2.js')}}"></script>
   <script src="{{asset('assets/js/main.js')}}"></script>
-  <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
   @livewireScripts
   @stack('scripts')
 </body>

@@ -1,10 +1,18 @@
+@extends('layouts.storefront')
+
+@section('header')
+Editing {{ $order->name }}
+@endsection
 @section("title")
   Edit Order {{ $order->name }}
 @endsection
-<x-main-layout>
-  <x-slot:header>
-    Editing {{ $order->name }}
-  </x-slot:header>
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
   <div class="row mb-6 gy-6">
     <!-- Basic Layout -->
     <div class="col-xxl">
@@ -33,7 +41,7 @@
             <div class="col-sm-10">
               <label class="col-sm-2 col-form-label" for="basic-default-name">Select Product</label>
 
-              <select class="bg-black text-white mx-10 rounded mb-10" name="product_id">
+              <select data-user-select2 class="bg-black text-white mx-10 rounded mb-10" name="product_id">
                 @if($order->products)
                   @forelse($order->products as $product)
                     <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -61,4 +69,20 @@
     <!-- Basic with Icons -->
 
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}">
+@endpush
+
+@push('scripts')
+  <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+  <script src="{{ asset('assets/js/user-selects.js') }}"></script>
+@endpush

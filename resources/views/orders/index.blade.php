@@ -1,10 +1,20 @@
-<x-main-layout>
-  <x-slot:title>
-    Orders
-  </x-slot:title>
-  <x-slot:header>
-    Order
-  </x-slot:header>
+@extends('layouts.storefront')
+
+@section('title')
+Orders
+@endsection
+
+@section('header')
+Order
+@endsection
+@section('content')
+  <x-home.navbar />
+  <main class="container section-space-p">
+    @hasSection('header')
+      <h1>@yield('header')</h1>
+    @endif
+
+
   <div class="card">
     <div class="d-flex justify-between items-center">
       <div>
@@ -108,4 +118,11 @@
       {{ $orders->links()}}
     </div>
   </div>
-</x-main-layout>
+  </main>
+  <x-footer />
+  <x-home.menu />
+@endsection
+
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/iconify-icons.css') }}">
+@endpush

@@ -1,7 +1,4 @@
-@extends('layouts.storefront', ['storefrontDemoStyles' => false])
-
-@section('content')
-    <x-loader />
+<x-loader />
     <x-home.navbar />
     <div class="ec-side-cart-overlay"></div>
     <div id="ec-side-cart" class="ec-side-cart">
@@ -9,7 +6,7 @@
             <div class="ec-cart-top">
                 <div class="ec-cart-title">
                     <span class="cart_title">{{ __('My Cart') }}</span>
-                    <button type="button" class="ec-close" aria-label="{{ __('Close cart') }}">×</button>
+                    <button type="button" class="ec-close" aria-label="{{ __('Close cart') }}">&times;</button>
                 </div>
                 <p>{{ auth()->check() ? __('View your cart and complete your order at checkout.') : __('Log in to view your cart.') }}</p>
             </div>
@@ -55,17 +52,3 @@
                             @if (session('status'))
                                 <p class="alert alert-success" role="status">{{ session('status') === 'password-updated' ? __('Your password has been updated.') : session('status') }}</p>
                             @endif
-                            @yield('auth-content')
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <x-footer />
-    <x-home.menu />
-@endsection
-
-@push('styles')
-    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
-@endpush

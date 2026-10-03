@@ -1,8 +1,9 @@
-@extends('layouts.auth')
+@extends('layouts.storefront', ['storefrontDemoStyles' => false])
 
 @section('title', __('Log In'))
 
-@section('auth-content')
+@section('content')
+    @include('auth.page-start')
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <x-auth.field name="email" :label="__('Email Address')" type="email" :value="old('email')" autocomplete="username" :placeholder="__('Enter your email address')" autofocus />
@@ -24,4 +25,9 @@
             <a href="{{ route('register') }}" class="text-center pt-2"> don't have an account ? {{ __('Register') }}</a>
 
     </form>
+    @include('auth.page-end')
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/auth.css') }}">
+@endpush

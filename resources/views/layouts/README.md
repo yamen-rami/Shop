@@ -1,10 +1,14 @@
 # User page layouts
 
-User pages extend `layouts.storefront`. Login, registration, forgot-password,
-reset-password, and update-password pages extend `layouts.auth`, which shares
-the Ekka storefront assets and chrome. Their forms use the `auth-content`
-section. Password confirmation and email verification currently extend
-`layouts.user-guest`.
+All user-facing pages extend `layouts.storefront` directly and define a
+`content` section. This includes the storefront, authentication, profile,
+orders, contacts, and offer listings available to signed-in users.
+Authentication pages reuse `auth.page-start` and `auth.page-end` markup
+partials and push `auth.css` themselves. There is no separate authentication
+layout. The admin dashboard continues to use its existing main component.
+
+Page-specific assets belong in the `styles` and `scripts` stacks. Select2
+loads only on forms that use it, after the shared jQuery dependency.
 
 ```blade
 @extends('layouts.storefront')

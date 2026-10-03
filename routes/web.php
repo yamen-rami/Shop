@@ -12,9 +12,6 @@ Route::get("locale/{lang}", [LocaleController::class, "setLocale"]);
 Route::get('/dashboard', [DashboardController::class , "index"])->middleware(['auth', "admin", 'verified'])->name('dashboard');
 // Admin Middleware
 Route::middleware(["auth", "admin"])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource("product", ProductController::class);
     Route::resource('company', CompanyController::class);
     Route::resource('offer', OfferController::class);
@@ -26,6 +23,9 @@ Route::middleware(["auth", "admin"])->group(function () {
 });
 // TODO Auth Routes  
 Route::middleware("auth")->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('contact', ContactController::class);
     Route::resource("order", OrderController::class);
     Route::get("addCart/{product}", [CartController::class, "addCart"])->name('addCart');
