@@ -7,13 +7,12 @@ use App\Models\{Product, Cart , Offer};
 new class extends Component {
     //
     public ?Product $selectedProduct = null;
-    public ?Cart $cart = null;
     public function offers(){
-        return Offer::active()->get();
+        return app(\App\Services\StorefrontData::class)->offers();
     }
     #[Computed]
     public function cart(){
-        return auth()->user()->cart()->with("products")->first();
+        return app(\App\Services\StorefrontData::class)->cart();
     }
     #[On('loadProduct')]
     public function loadProduct($id)

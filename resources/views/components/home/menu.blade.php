@@ -18,7 +18,7 @@
       </div>
       <div class="ec-nav-panel-icons">
         <a href="{{ route("wishlist") }}" class="ec-header-btn"><i class="fi-rr-heart"></i><span
-            class="ec-cart-noti">{{ auth()->check() ? auth()->user()->favoriates()->count() : 0 }}</span></a>
+            class="ec-cart-noti">{{ $favoriatesCount }}</span></a>
       </div>
       <div class="ec-nav-panel-icons">
 

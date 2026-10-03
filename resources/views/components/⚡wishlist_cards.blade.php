@@ -35,6 +35,7 @@ new class extends Component {
     {
         $wishlist = auth()->user()->favoriates()->where("product_id", $product->id)->first();
         $wishlist->delete();
+        app(\App\Services\StorefrontData::class)->forgetFavoriates();
         flash()->success("Product Has Been Deleted");
     }
 };

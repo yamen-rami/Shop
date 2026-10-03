@@ -6,14 +6,23 @@ use Livewire\Attributes\{On, Computed};
 use App\Services\OfferService;
 new class extends Component {
 
-    public $globalCart;
     public $offers;
     public $code;
     public $quantity  = 0 ;
     public function mount($globalCart, $offers)
     {
         $this->offers = $offers;
-        $this->globalCart = $globalCart;
+    }
+    #[Computed]
+    public function globalCart()
+    {
+        return app(\App\Services\StorefrontData::class)->cart();
+    }
+    #[On('cart-updated')]
+    public function refreshCart()
+    {
+        app(\App\Services\StorefrontData::class)->forgetCart();
+        unset($this->globalCart, $this->calc);
     }
     #[Computed]
     public function calc()
@@ -21,7 +30,7 @@ new class extends Component {
         $offerService = app(OfferService::class);
         
         $prices = [];
-        foreach ($this->globalCart->products as $product) {
+        foreach ($this->globalCart?->products ?? [] as $product) {
             $prices[$product->id] = $offerService->getCoupon($product, $this->offers, $this->code);
         }
         return $prices;
@@ -42,7 +51,7 @@ new class extends Component {
 <tbody>
     {{-- @dd($this->calc) --}}
     {{-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison --}}
-    @foreach($this->globalCart->products as $product)
+    @forelse($this->globalCart?->products ?? [] as $product)
         <tr wire:key="product-{{ $product->id }}">
             <td  ><a href="product-left-sidebar.html"><img
                         class="ec-cart-pro-img mr-4" height="60px" src="{{ asset($product->image) }}"
@@ -70,5 +79,7 @@ new class extends Component {
             </form>
 
         </tr>
-    @endforeach
+    @empty
+        <tr><td colspan="6">Cart Empty</td></tr>
+    @endforelse
 </tbody>

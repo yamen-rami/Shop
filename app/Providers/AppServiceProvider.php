@@ -3,12 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\{DB, Gate, Log, View as FacadesView};
+use Illuminate\Support\Facades\View as FacadesView;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Model;
-
-use App\Models\{Cart, Catagory, Offer};
-use Pest\Support\View;
+use App\Services\StorefrontData;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->scoped(StorefrontData::class);
     }
 
     /**
@@ -25,40 +22,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        FacadesView::composer(["products.index" , "home.checkout", "home.wishlist" ,"home.checkout" ,"home.offers" , "products.show" , "home.product"], function ($view) {
-            $products_offers = Offer::with(["products" , "categories"])->active()->get();
-            $view->with("products_offers", $products_offers);
+        FacadesView::composer(["products.index", "home.checkout", "home.wishlist", "products.show", "home.product"], function ($view) {
+            $view->with('products_offers', app(StorefrontData::class)->offers());
         });
-        FacadesView::composer("*", function ($view) {
-            if (auth()->check()) {
-                $cartCount = once(function () {
-                    $cart = Cart::with("products")->valid()->first();
-                    return $cart ? $cart->products->sum("pivot.quantity") : 0;
-                });
-                $view->with("cartCount", $cartCount);
-            } else {
-                $view->with("cartCount", 0);
-            }
-        });
-        FacadesView::composer('*', function ($view) {
-            // Fetch categories once per request with all nested relationships pre-loaded
-            $globalCategories = once(function () {
-                return Catagory::with(["products"])->limit(10)
-                    ->get();
-            });
 
-            $view->with('globalCategories', $globalCategories);
+        FacadesView::composer(['components.cart', 'components.home.navbar', 'components.home.menu'], function ($view) {
+            $view->with('cartCount', app(StorefrontData::class)->cartCount());
+        });
+        FacadesView::composer('components.category', function ($view) {
+            $view->with('globalCategories', app(StorefrontData::class)->categories());
+        });
+        FacadesView::composer(['components.home.navbar', 'components.home.menu'], function ($view) {
+            $view->with('favoriatesCount', app(StorefrontData::class)->favoriates());
         });
         FacadesView::composer(["home.home", "home.wishlist", "home.products", "home.checkout" , "home.product"], function ($view) {
-            if (auth()->check()) {
-                // "once" ensures this query runs EXACTLY once per page load
-                $globalCart = once(function () {
-                    return Cart::with(["products"])->where("user_id" , auth()->id())->valid()->first();
-                });
-                $view->with('globalCart', $globalCart);
-            } else {
-                $view->with('globalCart', null);
-            }
+            $view->with('globalCart', app(StorefrontData::class)->cart());
         });
         Paginator::defaultView('vendor.pagination.bootstrap-5');
     }

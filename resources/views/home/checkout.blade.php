@@ -99,9 +99,7 @@
         </div>
       </div>
       <div class="row">
-        @foreach ($products as $product)
-          <livewire:cards :product="$product" :products_offer="$products_offers" />
-        @endforeach
+        <livewire:cards :products="$products" :products_offer="$products_offers" />
       </div>
     </div>
   </section>

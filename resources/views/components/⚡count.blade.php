@@ -8,27 +8,17 @@ new class extends Component {
     #[Computed()]
     public function cart()
     {
-        return Cart::with("products")->valid()->first();
+        return app(\App\Services\StorefrontData::class)->cart();
     }
     #[Computed()]
     public function getCount()
     {
-        if (!auth()->check()) {
-            return 0;
-        }
-
-        if (!$this->cart) {
-            return 0;
-        }
-        if ($this->cart->products->count() > 0) {
-            return $this->cart->products->sum(function ($product) {
-                return $product->pivot->quantity;
-            });
-        }
+        return app(\App\Services\StorefrontData::class)->cartCount();
     }
     #[on("cart-updated")]
     public function refreshCart()
     {
+        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         unset($this->getCount);
     }

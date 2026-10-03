@@ -5,15 +5,16 @@ use App\Models\{Offer, Product, Cart};
 use App\Services\{CartService, OfferService};
 use Livewire\Attributes\{Computed, On};
 new class extends Component {
-    public $globalCart;
     public $globalOffer;
-    public $product;
     public $code = null;
     public function mount($globalCart, $globalOffer)
     {
         $this->globalOffer = $globalOffer;
-        $this->globalCart = $globalCart;
-        $this->product = auth()->user()->cart->products()->first();
+    }
+    #[Computed]
+    public function globalCart()
+    {
+        return app(\App\Services\StorefrontData::class)->cart();
     }
     public function addCoupon()
     {
@@ -22,16 +23,16 @@ new class extends Component {
     #[Computed]
     public function totalPrice()
     {
-        if (!$this->globalCart->products) {
-            return;
+        if (!$this->globalCart || $this->globalCart->products->isEmpty()) {
+            return 0;
         }
         return app(CartService::class)->totalPrice($this->globalCart->products, $this->globalOffer , $this->code);
     }
     #[Computed]
     public function originalPrice()
     {
-        if (!$this->globalCart->products) {
-            return;
+        if (!$this->globalCart || $this->globalCart->products->isEmpty()) {
+            return 0;
         }
         return app(CartService::class)->originalPrice($this->globalCart->products);
     }
@@ -39,14 +40,16 @@ new class extends Component {
     public function discountTotal()
     {
 
-        if (!$this->globalCart->products) {
-            return;
+        if (!$this->globalCart || $this->globalCart->products->isEmpty()) {
+            return 0;
         }
         return app(CartService::class)->discountTotal($this->globalCart->products, $this->globalOffer , $this->code);
     }
     #[on('cart-updated')]
     public function resetAll()
     {
+        app(\App\Services\StorefrontData::class)->forgetCart();
+        unset($this->globalCart);
         unset($this->totalPrice);
         unset($this->discountTotal);
         unset($this->originalPrice);

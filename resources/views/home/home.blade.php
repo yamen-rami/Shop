@@ -87,9 +87,7 @@
                   <!-- 1st Product tab start -->
                   <div class="tab-pane fade show active" id="tab-pro-for-all">
                     <div class="row">
-                      @foreach ($products as $product)
-                        <livewire:cards :product="$product" :products_offer="$offers"/>
-                      @endforeach
+                      <livewire:cards :products="$products->getCollection()" :products_offer="$offers" />
                     </div>
                   </div>
                 </div>

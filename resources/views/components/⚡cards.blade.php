@@ -1,18 +1,23 @@
 <?php
 
 use Livewire\Component;
-use Livewire\Attributes\Computed;
+use Livewire\Attributes\{Computed, Locked};
 use App\Services\OfferService;
-use App\Models\{Product, Cart, Favoriate, Offer};
+use App\Models\{Product, Cart};
+use Illuminate\Database\Eloquent\Collection;
 new class extends Component {
-    public $product;
-    public $favoriate;
-    public $products;
-    public $products_offer;
-    public function mount($products_offer , $product)
+    #[Locked]
+    public Collection $products;
+    #[Locked]
+    public Collection $products_offer;
+    public function mount(Collection $products, Collection $products_offer)
     {
-        $this->product = $product; 
+        $this->products = $products;
         $this->products_offer = $products_offer;
+    }
+    public function hydrate()
+    {
+        $this->products_offer->loadMissing(['products', 'categories']);
     }
     #[Computed]
     public function offerService()
@@ -32,13 +37,14 @@ new class extends Component {
             $cart->products()->updateExistingPivot($product->id, [
                 "quantity" => $exsistingProduct->pivot->quantity + 1,
             ]);
-            flash()->success("Product Has Added To The Cart for the " . $exsistingProduct->pivot->quantity + 1);
+            flash()->success("Product Has Added To The Cart for the " . ($exsistingProduct->pivot->quantity + 1));
         } else {
             $cart->products()->attach($product->id, [
                 "quantity" => 1
             ]);
             flash()->success("Product Has Added To The Cart");
         }
+        app(\App\Services\StorefrontData::class)->forgetCart();
         $this->dispatch("cart-updated");
     }
     public function addFavoriate(Product $product)
@@ -49,18 +55,22 @@ new class extends Component {
         auth()->user()->favoriates()->firstOrCreate([
             "product_id" => $product->id,
         ]);
+        app(\App\Services\StorefrontData::class)->forgetFavoriates();
         flash()->success("Product Has Added To Which List");
     }
 
 };
 ?>
 
+<div class="col-12">
+<div class="row">
+@foreach($this->products as $product)
 @php
     $result = $this->offerService->getDiscount($product, $this->products_offer);
     $price = $result["best"];
     $offer = $result["offer"];
 @endphp
-<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" wire:key="{{ $product->id }}">
+<div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" wire:key="card-{{ $product->id }}">
     <div class="ec-product-inner">
         <div class="ec-pro-image-outer">
             <div class="ec-pro-image">
@@ -99,7 +109,14 @@ new class extends Component {
                     @endif
                 </span>
             </div>
-            <livewire:add-to-cart :product="$product" />
+            <div class="ec-quickview-cart">
+                <button type="button" class="btn btn-primary" wire:click="addCart({{ $product->id }})">
+                    <i class="fi-rr-shopping-basket"></i><span class="ml-3">{{ __("home.addToCart") }}</span>
+                </button>
+            </div>
         </div>
     </div>
+</div>
+@endforeach
+</div>
 </div>

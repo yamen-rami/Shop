@@ -19,8 +19,8 @@ class Checkout
         if(!Auth::check()){
             return redirect()->route("login");
         }
-        $cart = auth()->user()->cart()->valid()->first() ; 
-        if(!$cart || $cart->count() === 0 || $cart->products()->count() === 0){
+        $cart = app(\App\Services\StorefrontData::class)->cart();
+        if (!$cart || $cart->products->isEmpty()) {
             return redirect()->route("home");
         }
         return $next($request);

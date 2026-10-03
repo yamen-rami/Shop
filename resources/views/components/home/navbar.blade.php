@@ -68,14 +68,14 @@
             <!-- Header Cart Start -->
             <a href="{{ route("wishlist") }}" class="ec-header-btn ec-header-wishlist">
               <div class="header-icon"><i class="fi-rr-heart"></i></div>
-              <span class="ec-header-count"></span>
+              <span class="ec-header-count">{{ $favoriatesCount }}</span>
             </a>
             <!-- Header Cart End -->
             <!-- Header Cart Start -->
             <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
               <div class="header-icon"><i class="fi-rr-shopping-bag"></i></div>
               <span class="ec-header-count cart-count-lable">
-                {{ $cartCount }}
+                <livewire:count />
               </span>
             </a>
             <!-- Header Cart End -->
@@ -156,11 +156,7 @@
 
                 </div>
                 <span class="ec-header-count">
-                  @if(auth()->check())
-                    {{ auth()->user()->favoriates()->count() }}
-                  @else
-                    0
-                  @endif</span>
+                  {{ $favoriatesCount }}</span>
               </a>
               <!-- Header wishlist End -->
               <!-- Header Cart Start -->

@@ -38,11 +38,7 @@ new class extends Component {
     // Getting the Cart Count
     public function getCount()
     {
-        $cart = Cart::with("products")
-            ->where("user_id", auth()->id())
-            ->where("created_at", ">=", now()->subDay())
-            ->first();
-        $this->count = $cart->products->count();
+        $this->count = app(\App\Services\StorefrontData::class)->cartCount();
         // foreach ($cart->products as $product) {
 
         // }

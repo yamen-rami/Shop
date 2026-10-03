@@ -6,7 +6,7 @@ use App\Http\Controllers\{CartController, CatagoryController, CompanyController,
 use App\Http\Middleware\{AdminCheck, Checkout};
 
 Route::get('/', [HomeController::class, "home"]);
-// ? Localization 
+// ? Localization
 Route::get("locale/{lang}", [LocaleController::class, "setLocale"]);
 
 Route::get('/dashboard', [DashboardController::class , "index"])->middleware(['auth', "admin", 'verified'])->name('dashboard');
@@ -21,7 +21,7 @@ Route::middleware(["auth", "admin"])->group(function () {
     Route::get("catagories/products/{catagory}", [ProductController::class, "catagoryProducts"])->name('getProducts');
     Route::delete("tag/delete/{tag}", [TagController::class, "destroy"])->name("tag.delete");
 });
-// TODO Auth Routes  
+// TODO Auth Routes
 Route::middleware("auth")->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

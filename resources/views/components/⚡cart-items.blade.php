@@ -7,7 +7,6 @@ new class extends Component {
     public $offers ;
     public function mount($globalCart , $offers)
     {
-        dd("hello");
         $this->offers = $offers ;
         $this->globalCart = $globalCart;
     }
@@ -17,7 +16,7 @@ new class extends Component {
 {{-- @inject("offerService", "App\Services\OfferService")/ --}}
 <div>
     {{-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison --}}
-    @foreach($this->globalCart->products as $product)
+    @foreach($this->globalCart?->products ?? [] as $product)
         <tr>
             <button wire:click='there'>THere</button>
             <td data-label="Product" class="ec-cart-pro-name"><a href="product-left-sidebar.html"><img
@@ -25,7 +24,7 @@ new class extends Component {
                         alt="" />{{ $product->name }}</a></td>
             <td data-label="Price" class="ec-cart-pro-price"><span class="amount">${{ $product->price}}</span></td>
             <td data-label="Quantity" class="ec-cart-pro-qty" style="text-align: center;">
-                <livewire:increment_decrement :product="$product->id" />
+                <livewire:increment_decrement :product="$product->id" :globalCart="$this->globalCart" />
             </td>
             <td data-label="Total" class="ec-cart-pro-subtotal">${{ $offerService->getDiscount($product , $this->offers) }}</td>
             <td data-label="Remove" wire:click='deleteProduct({{ $product->id }})' class="ec-cart-pro-remove">

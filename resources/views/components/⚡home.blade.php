@@ -9,8 +9,7 @@ new class extends Component {
   #[Computed]
   public function cart()
   {
-    return Cart::with("products")->where("user_id", auth()->id())
-      ->valid()->first();
+    return app(\App\Services\StorefrontData::class)->cart();
   }
 
   #[Computed]
@@ -29,7 +28,7 @@ new class extends Component {
     if (!$this->cart) {
       return 0;
     }
-    $offers = Offer::with("products")->active()->get();
+    $offers = app(\App\Services\StorefrontData::class)->offers();
     return app(CartService::class)->totalPrice($this->cart->products, $offers);
     // ✅ Use collection sum with closure
     return $this->cart->products->sum(fn($product) => $product->discount_price * $product->pivot->quantity);
@@ -71,6 +70,7 @@ new class extends Component {
       'quantity' => $newQuantity,
     ]);
 
+    app(\App\Services\StorefrontData::class)->forgetCart();
     unset($this->cart);
     $this->dispatch("cart-updated");
   }
@@ -92,6 +92,7 @@ new class extends Component {
 
     if ($newQuantity <= 0) {
       $this->cart->products()->detach($productId);
+      app(\App\Services\StorefrontData::class)->forgetCart();
       unset($this->cart);
       $this->dispatch("cart-updated");
       return;
@@ -102,6 +103,7 @@ new class extends Component {
       'quantity' => $newQuantity,
     ]);
 
+    app(\App\Services\StorefrontData::class)->forgetCart();
     unset($this->cart);
     $this->dispatch("cart-updated");
   }
@@ -109,6 +111,7 @@ new class extends Component {
   #[On('cart-updated')]
   public function refreshCart()
   {
+    app(\App\Services\StorefrontData::class)->forgetCart();
     // ✅ Just unset - Livewire will reload it automatically when accessed
     unset($this->cart);
   }
@@ -121,6 +124,7 @@ new class extends Component {
 
     $this->cart->products()->detach($product->id);
 
+    app(\App\Services\StorefrontData::class)->forgetCart();
     unset($this->cart);
     $this->dispatch("cart-updated");
   }

@@ -5,14 +5,12 @@ use App\Models\{Cart, Product};
 use Livewire\Attributes\{Computed, On};
 
 new class extends Component {
-    
+
     public int $productId;
     public int $quantity = 0;
-    public ?Cart $globalCart ;
-    public function mount(Product $product , ?Cart $globalCart)
+    public function mount(Product|int $product , ?Cart $globalCart = null)
     {
-        $this->globalCart = $globalCart ;
-        $this->productId = $product->id;
+        $this->productId = $product instanceof Product ? $product->id : $product;
         $this->updateQuantityState();
     }
 
@@ -21,12 +19,13 @@ new class extends Component {
     {
         $this->productId = (int) $id;
         // Clear computed cache only when the product ID changes explicitly
-        unset($this->cart); 
+        unset($this->cart);
         $this->updateQuantityState();
     }
 
     #[On("cart-updated")]
     public function resetQuantity(){
+        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         $this->updateQuantityState();
 
@@ -35,7 +34,7 @@ new class extends Component {
     public function cart()
     {
         // Eloquent automatically loads pivot details when accessing via belongsToMany relationships
-        return $this->globalCart ;
+        return app(\App\Services\StorefrontData::class)->cart();
     }
 
     public function updateQuantityState()
@@ -60,14 +59,14 @@ new class extends Component {
 
         if ($cartProduct) {
             $newQuantity = $cartProduct->pivot->quantity + 1;
-            
+
             if ($newQuantity > 20) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     "quantity" => ["You can't add more than 20 products"]
                 ]);
             }
 
-            // Perform direct background sync mutation 
+            // Perform direct background sync mutation
             $this->cart->products()->updateExistingPivot($this->productId, [
                 'quantity' => $newQuantity,
             ]);
@@ -76,6 +75,7 @@ new class extends Component {
         }
 
         // Force a fresh reload of the cart relationship state array for UI consistency
+        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
@@ -100,11 +100,12 @@ new class extends Component {
             ]);
         }
 
+        app(\App\Services\StorefrontData::class)->forgetCart();
         unset($this->cart);
         $this->updateQuantityState();
         $this->dispatch("cart-updated");
     }
-}; 
+};
 ?>
 
 <div>

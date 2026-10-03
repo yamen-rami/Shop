@@ -83,9 +83,7 @@
                   </strong>
                   <span>For The below Products </span>
                 </p>
-                @foreach($offer->products as $product)
-                  <livewire:cards :product="$product" :products_offer="$products_offers" />
-                @endforeach
+                <livewire:cards :products="$offer->products" :products_offer="$products_offers" :key="'offer-cards-'.$offer->id" />
               </div>
             @endif
             @empty

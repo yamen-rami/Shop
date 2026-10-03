@@ -9,9 +9,8 @@
   <x-loader>
 
   </x-loader>
-  <x-home.navbar>
+  <x-home.navbar />
 
-  </x-home.navbar>
 
   <!-- ekka Cart Start -->
   <div class="ec-side-cart-overlay"></div>
@@ -74,9 +73,7 @@
           </form>
 
         </div>
-        @foreach($products as $product)
-          <livewire:cards :product="$product" :products_offer="$offers" wire:key='$product->id' />
-        @endforeach
+        <livewire:cards :products="$products->getCollection()" :products_offer="$offers" />
       </div>
       {{ $products->links() }}
     </div>

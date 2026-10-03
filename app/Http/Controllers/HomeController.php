@@ -15,16 +15,15 @@ class HomeController extends Controller
         $products = Product::with("offers")->where("quantity", ">", 0)->where('featured', "on")
             ->simplePaginate(8);
 
-        // 2. Pure memory extraction! Slice the first 3 items out for the slider (0 database queries!)
-        $slider = $products->getCollection()->take(3);
-        return view("home.home", ['products' => $products, "slider" => $slider ,  "offers" => Offer::with("products")->active()->get()]);
+        $slider = $products->take(3);
+        return view("home.home", ['products' => $products, "slider" => $slider , "offers" => app(\App\Services\StorefrontData::class)->offers()]);
     }
-   
+
     public  function products(Request $request)
     {
         $search = $request->search ?? "" ;
         $products = Product::with(["offers"])->where("name" , "LIKE" , "%" . $search ."%" )->where("quantity", ">", 1)->paginate(32);
-        return view("home.products", ["products" => $products , "offers" => Offer::with(["products" , "categories"])->active()->get()]);
+        return view("home.products", ["products" => $products , "offers" => app(\App\Services\StorefrontData::class)->offers()]);
     }
     public function showProduct(Product $product)
     {
@@ -50,8 +49,18 @@ class HomeController extends Controller
 
     public function offers(Request $request)
     {
-        $offers = Offer::with(["products", "categories"])->active()->whereNull("code")->paginate(10);
-        return view("home.offers",  compact("offers"));
+        $products_offers = app(\App\Services\StorefrontData::class)->offers();
+        $publicOffers = $products_offers->whereNull('code')->values();
+        $page = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
+        $offers = new \Illuminate\Pagination\LengthAwarePaginator(
+            $publicOffers->forPage($page, 10)->values(),
+            $publicOffers->count(),
+            10,
+            $page,
+            ['path' => $request->url(), 'query' => $request->query()],
+        );
+
+        return view('home.offers', compact('offers', 'products_offers'));
     }
     public function notFound(){
         return view("home.notfound");
