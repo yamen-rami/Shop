@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Models\{Company, Product};
 use App\Http\Requests\{StoreCompanyRequest, UpdateCompanyRequest};
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -50,7 +51,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        // ? show company 
+        // ? show company
         return view("companies.show", [
             'company' => $company,
         ]);
@@ -93,7 +94,12 @@ class CompanyController extends Controller
     public function destroy(Company $company)
     {
         // deleting company
-        $company->delete();
+        DB::transaction(function () use ($company){
+            if ($company->image) {
+                Storage::disk("public")->delete($company->image);
+            }
+            $company->delete();
+        });
         return redirect()->route("company.index");
     }
 }

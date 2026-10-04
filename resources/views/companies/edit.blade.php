@@ -26,7 +26,7 @@ Editing {{ $company->name }}
                 </h5>
               </div>
               <div>
-                <img width="100px" class="img" src="{{ str_starts_with($company->image ?? '', 'assets/') ? asset($company->image) : asset('storage/' . $company->image) }}" alt="The Image Not Found">
+                <x-record-image :src="$company->image" :alt="$company->name" width="100px" class="img" />
               </div>
               <div></div>
             </div>

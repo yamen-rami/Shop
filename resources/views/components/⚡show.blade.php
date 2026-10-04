@@ -65,7 +65,7 @@ new class extends Component {
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-5">
-                                <img class="img-fluid" src="{{ str_starts_with($selectedProduct->image, 'assets/') ? asset($selectedProduct->image) : asset('storage/' . $selectedProduct->image) }}" alt="{{ $selectedProduct->name }}">
+                                <x-record-image :src="$selectedProduct->image" :alt="$selectedProduct->name" class="img-fluid" />
                             </div>
                             <div class="col-md-7">
                                 <h5>{{ $selectedProduct->name }}</h5>

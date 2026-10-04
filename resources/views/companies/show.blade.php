@@ -12,7 +12,7 @@ Showing {{ $company->name }}
       <div class="card">
         <div class="row">
           <div class="col-md-4  ">
-            <img class="card-img card-img-left"  src="{{ str_starts_with($company->image ?? '', 'assets/') ? asset($company->image) : asset('storage/' . $company->image) }}" alt="Card image" />
+            <x-record-image :src="$company->image" :alt="$company->name" class="card-img card-img-left" />
           </div>
           <div class="col-md-8">
             <div class="card-body">

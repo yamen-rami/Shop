@@ -27,7 +27,7 @@ Editing {{ $product->name }}
                 </h5>
               </div>
               <div>
-                <img width="100px" class="img" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="The Image Not Found">
+                <x-record-image :src="$product->image" :alt="$product->name" width="100px" class="img" />
               </div>
               <div></div>
             </div>  

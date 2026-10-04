@@ -89,8 +89,8 @@ new class extends Component {
         <div class="ec-pro-image-outer">
             <div class="ec-pro-image">
                 <a href="{{ route('showProduct', $product) }}" class="image">
-                    <img class="main-image" height="300px" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="Product" />
-                    <img class="hover-image" height="300px" src="{{ str_starts_with($product->image, 'assets/') ? asset($product->image) : asset('storage/' . $product->image) }}" alt="Product" />
+                    <x-record-image :src="$product->image" :alt="$product->name" class="main-image" height="300px" />
+                    <x-record-image :src="$product->image" :alt="$product->name" class="hover-image" height="300px" />
                 </a>
                 @if($offer)
                     <span class="percentage">{{ $this->offerService->offerType($offer)   }}</span>

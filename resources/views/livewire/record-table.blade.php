@@ -1,4 +1,11 @@
-<div class="card" x-data>
+<div class="card" x-data="{ deleteUrl: '', deleteName: '' }">
+    @php
+        $useDeleteModal = auth()->user()->role === 'admin' && in_array($resource, [
+            'products', 'tags', 'companies', 'orders', 'offers',
+            'product-offers', 'coupon-offers', 'category-offers',
+        ], true);
+        $deleteModalId = 'delete-record-' . $this->getId();
+    @endphp
     <div class="card-header d-flex flex-wrap gap-3 align-items-center">
         <label class="flex-grow-1">Search
             <input type="search" class="form-control" wire:model.live.debounce.300ms="search" placeholder="Search {{ str_replace('-', ' ', $resource) }}">
@@ -59,7 +66,7 @@
                         @if($resource === 'products')
                             @php($discount = app(\App\Services\OfferService::class)->getDiscount($record, $offers))
                             <td>{{ $record->catagory?->name ?? '—' }}</td>
-                            <td><img src="{{ str_starts_with($record->image ?? '', 'assets/') ? asset($record->image) : asset('storage/' . $record->image) }}" alt="{{ $record->name }}" width="40" height="40" class="rounded object-fit-cover"></td>
+                            <td><x-record-image :src="$record->image" :alt="$record->name" width="40" height="40" class="rounded object-fit-cover" /></td>
                             <td>{{ Str::limit($record->desc, 60) }}</td><td>{{ $record->featured ? 'Yes' : 'No' }}</td><td>{{ $record->quantity }}</td>
                             <td>{{ $record->int_price }}</td><td>{{ $record->price }}</td><td>{{ $discount['best'] }}</td>
                             <td>{{ app(\App\Services\OfferService::class)->offerType($discount['offer']) }}</td>
@@ -81,10 +88,20 @@
                             <div class="d-flex gap-2">
                                 @if($resource !== 'tags')<a class="btn btn-sm btn-outline-primary" href="{{ route($routePrefix . '.show', $record) }}">Show</a>@endif
                                 <a class="btn btn-sm btn-outline-secondary" href="{{ route($routePrefix . '.edit', $record) }}">Edit</a>
-                                <form method="POST" action="{{ route($routePrefix . '.destroy', $record) }}" x-on:submit="if (!confirm('Delete this record?')) $event.preventDefault()">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
-                                </form>
+                                @if($useDeleteModal)
+                                    <button class="btn btn-sm btn-outline-danger" type="button"
+                                        data-bs-toggle="modal" data-bs-target="#{{ $deleteModalId }}"
+                                        data-delete-url="{{ route($routePrefix . '.destroy', $record) }}"
+                                        data-delete-name="{{ $record->name ?? $record->title }} (#{{ $record->id }})"
+                                        x-on:click="deleteUrl = $el.dataset.deleteUrl; deleteName = $el.dataset.deleteName">
+                                        Delete
+                                    </button>
+                                @else
+                                    <form method="POST" action="{{ route($routePrefix . '.destroy', $record) }}" x-on:submit="if (!confirm('Delete this record?')) $event.preventDefault()">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger" type="submit">Delete</button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -95,4 +112,31 @@
         </table>
     </div>
     <div class="px-6 py-3">{{ $records->links() }}</div>
+    @if($useDeleteModal)
+        <div class="modal fade" id="{{ $deleteModalId }}" tabindex="-1"
+            aria-labelledby="{{ $deleteModalId }}-title" aria-describedby="{{ $deleteModalId }}-description"
+            aria-hidden="true" wire:ignore>
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="{{ $deleteModalId }}-title">Confirm deletion</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="{{ $deleteModalId }}-description">
+                        <p>Are you sure you want to delete <strong x-text="deleteName"></strong>?</p>
+                        <p class="mb-0 text-body-secondary">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <form method="POST" x-bind:action="deleteUrl"
+                            x-on:submit="if (!deleteUrl) $event.preventDefault()">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" x-bind:disabled="!deleteUrl">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>

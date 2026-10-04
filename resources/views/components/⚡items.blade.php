@@ -52,9 +52,7 @@ new class extends Component {
     {{-- I have not failed. I've just found 10,000 ways that won't work. - Thomas Edison --}}
     @forelse($this->globalCart?->products ?? [] as $product)
         <tr wire:key="product-{{ $product->id }}">
-            <td  ><a href="product-left-sidebar.html"><img
-                        class="ec-cart-pro-img mr-4" height="60px" src="{{ asset($product->image) }}"
-                        alt="" />{{ $product->name }}</a></td>
+            <td  ><a href="product-left-sidebar.html"><x-record-image :src="$product->image" :alt="$product->name" class="ec-cart-pro-img mr-4" height="60px" />{{ $product->name }}</a></td>
             <td data-label="Price" class="ec-cart-pro-price"><span class="amount">${{ $product->price}}</span></td>
             <td class="fs-6" data-label="Quantity" class="ec-cart-pro-qty" style="text-align: center;">
                 <livewire:increment_decrement :product="$product->id" :key="'checkout-quantity-'.$product->id" />

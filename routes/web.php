@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\{CartController, CatagoryController, CompanyController, ContactController, CouponController, DashboardController, HomeController, LocaleController, OfferController, OrderController, ProductController, ProfileController, TagController};
-use App\Http\Middleware\{AdminCheck, Checkout};
+use App\Http\Middleware\Checkout;
 
 Route::get('/select-options/{resource}', [\App\Http\Controllers\SelectOptionsController::class, 'index'])
     ->whereIn('resource', ['categories', 'companies', 'products', 'tags'])->name('select-options');
@@ -44,7 +44,6 @@ Route::get("products", [HomeController::class, "products"])->name("products");
 Route::get("home/product/{product}", [HomeController::class, "showProduct"])->name("showProduct");
 Route::redirect("home/catgory", "/products")->name("categories");
 Route::get("home/offers", [HomeController::class, "offers"])->name("home.offers");
-// Route::resource("home/tags", HomeTagController::class);
 Route::fallback([HomeController::class, "notFound"]);
 
 require __DIR__ . '/auth.php';

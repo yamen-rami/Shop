@@ -56,7 +56,8 @@ new class extends Component {
 };
 ?>
 
-<div class="card">
+<div class="card" x-data="{ deleteUrl: '', deleteName: '' }">
+    @php($deleteModalId = 'delete-category-' . $this->getId())
     <div class="card-header d-flex flex-wrap align-items-end gap-3">
         <div class="flex-grow-1">
             <label for="category-search" class="form-label">Search categories</label>
@@ -97,11 +98,13 @@ new class extends Component {
                             <div class="d-flex gap-2">
                                 <a class="btn btn-sm btn-outline-primary" href="{{ route('catagory.show', $catagory) }}">Show</a>
                                 <a class="btn btn-sm btn-outline-secondary" href="{{ route('catagory.edit', $catagory) }}">Edit</a>
-                                <form action="{{ route('catagory.destroy', $catagory) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
+                                <button type="button" class="btn btn-sm btn-outline-danger"
+                                    data-bs-toggle="modal" data-bs-target="#{{ $deleteModalId }}"
+                                    data-delete-url="{{ route('catagory.destroy', $catagory) }}"
+                                    data-delete-name="{{ $catagory->name }} (#{{ $catagory->id }})"
+                                    x-on:click="deleteUrl = $el.dataset.deleteUrl; deleteName = $el.dataset.deleteName">
+                                    Delete
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -112,4 +115,29 @@ new class extends Component {
         </table>
     </div>
     <div class="card-footer">{{ $catagores->links() }}</div>
+    <div class="modal fade" id="{{ $deleteModalId }}" tabindex="-1"
+        aria-labelledby="{{ $deleteModalId }}-title" aria-describedby="{{ $deleteModalId }}-description"
+        aria-hidden="true" wire:ignore>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="{{ $deleteModalId }}-title">Confirm deletion</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="{{ $deleteModalId }}-description">
+                    <p>Are you sure you want to delete <strong x-text="deleteName"></strong>?</p>
+                    <p class="mb-0 text-body-secondary">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form method="POST" x-bind:action="deleteUrl"
+                        x-on:submit="if (!deleteUrl) $event.preventDefault()">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" x-bind:disabled="!deleteUrl">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

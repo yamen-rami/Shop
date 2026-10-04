@@ -85,7 +85,7 @@ class RecordTable extends Component
             if ($this->status === 'active') {
                 $query->active();
             } elseif ($this->status === 'inactive') {
-                $query->where(fn ($query) => $query->where('is_active', false)
+                $query->where(fn($query) => $query->where('is_active', false)
                     ->orWhere('start_date', '>', now())->orWhere('end_date', '<', now()));
             }
         } elseif ($model === Product::class) {
@@ -94,7 +94,7 @@ class RecordTable extends Component
                 $query->where('catagory_id', (int) $this->categoryId);
             }
             if ($this->companyId !== '') {
-                $query->whereHas('companies', fn ($query) => $query->whereKey((int) $this->companyId));
+                $query->whereHas('companies', fn($query) => $query->whereKey((int) $this->companyId));
             }
             if (in_array($this->featured, ['1', '0'], true)) {
                 $query->where('featured', $this->featured === '1');
@@ -109,7 +109,7 @@ class RecordTable extends Component
         } elseif ($model === Order::class) {
             $query->with(['products', 'user']);
             if (auth()->user()->role !== 'admin') {
-                $query->whereHas('user', fn ($query) => $query->whereKey(auth()->id()));
+                $query->whereHas('user', fn($query) => $query->whereKey(auth()->id()));
             }
         } elseif ($model === Contact::class) {
             $query->with('user');
@@ -128,8 +128,9 @@ class RecordTable extends Component
         $sortBy = in_array($this->sortBy, $sortable, true) ? $this->sortBy : 'id';
         $sort = in_array($this->sort, ['asc', 'desc'], true) ? $this->sort : 'desc';
         return view('livewire.record-table', [
-            'records' => $query->orderBy($sortBy, $sort)->when($sortBy !== 'id', fn ($query) => $query->orderBy('id', $sort))->paginate(30),
-            'routePrefix' => $route, 'sortable' => $sortable,
+            'records' => $query->orderBy($sortBy, $sort)->when($sortBy !== 'id', fn($query) => $query->orderBy('id', $sort))->paginate(30),
+            'routePrefix' => $route,
+            'sortable' => $sortable,
             'isOffer' => $model === Offer::class,
             'offers' => $model === Product::class ? app(\App\Services\StorefrontData::class)->offers() : collect(),
         ]);
