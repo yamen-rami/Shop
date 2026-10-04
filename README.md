@@ -68,15 +68,29 @@ On a fresh local database:
 php artisan db:seed
 ```
 
-The current [DatabaseSeeder](database/seeders/DatabaseSeeder.php) creates one admin:
+[DatabaseSeeder](database/seeders/DatabaseSeeder.php) creates one admin and calls [StoreCatalogSeeder](database/seeders/StoreCatalogSeeder.php) to create 22 clothing products, 6 categories, 4 fictional suppliers, 8 tags, and 4 active promotions. Product names match the bundled photos. Prices and descriptions are realistic sample data for this portfolio, not verified supplier inventory. No fake customers, orders, or messages are created.
 
-| Email | Password | Role |
-| --- | --- | --- |
-| `admin@gmail.com` | `admin` | Admin |
+The default admin email is `admin@example.com`. Set `SEED_ADMIN_EMAIL` to your own email in `.env`. Set `SEED_ADMIN_PASSWORD` to a password of at least 12 characters, or leave it empty to generate a secure password that is displayed once during seeding. Existing administrator passwords and existing product prices/stock are preserved when running the seed again.
 
-These are local demo credentials; change them before public deployment. The seeder does not create a complete catalog and is not designed to run repeatedly on the same database.
+Offers include a 5% global sale, 15% knitwear sale, $10 off selected jackets, and the `WELCOME10` coupon (10%). New offers run from yesterday through 90 days after seeding. Rerunning the seed does not extend existing offers.
 
-Register a separate customer at `/register`. Use admin pages to create categories, tags, products, companies, and offers. Give products stock and mark some featured to populate the home page.
+Register a separate customer at `/register` to try the cart and wishlist.
+
+### Moving the seeded shop to a server
+
+The catalog uses relative asset paths, so photos work with the server's `APP_URL`. Upload the application and `public/assets`, configure the server's `.env`, install dependencies, and build assets. On a fresh server database:
+
+```sh
+php artisan migrate --force
+php artisan db:seed --force
+php artisan storage:link
+```
+
+Set `APP_ENV=production`, `APP_DEBUG=false`, your HTTPS `APP_URL`, and real database/mail credentials. Run the scheduler and configure the web root as `public`. Keep `.env`, database backups, and passwords out of Git.
+
+The prepared local snapshot is `database/exports/store.sqlite` (ignored by Git). If transferring this SQLite database, copy it privately to `database/database.sqlite` and configure the SQLite connection on the server; the web process needs write access to the database file and its directory. SQLite exports cannot be imported directly into MySQL: use migrations and seeders for a MySQL server. Transfer `storage/app/public` as well if you add uploaded photos later. Retain the same `APP_KEY` when moving existing encrypted application data; generate one only for a new installation. The snapshot is a point-in-time copy: create a new export if you change the catalog before deployment.
+
+`php artisan migrate:fresh --seed` deletes all existing tables and records. Use it only when intentionally resetting a database, never as a normal server update command.
 
 ### Background tasks and mail
 
@@ -231,7 +245,7 @@ This portfolio application is under active development. Priorities are:
 - Add a manual offer active/inactive control; saving currently sets an offer active.
 - Strengthen stock checks across every cart interaction and prevent duplicate submissions.
 - Decide whether coupons need usage limits, minimum spend, or customer restrictions; these are not implemented.
-- Add complete demo data, screenshots, and deployment instructions as the purchase flow becomes complete.
+- Add screenshots and expand deployment instructions as the purchase flow becomes complete.
 
 ## Cleanup
 

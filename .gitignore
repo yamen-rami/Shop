@@ -28,3 +28,7 @@ Homestead.json
 .env.production
 .phpactor.json
 auth.json
+
+# Local database snapshots and credentials must not be published.
+/database/backups/
+/database/exports/
