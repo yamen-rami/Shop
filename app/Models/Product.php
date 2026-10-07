@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Product extends Model
 {
@@ -22,6 +23,7 @@ class Product extends Model
         "original_price",
         'catagory_id'
     ];
+
     protected function casts(): array
     {
         return ['featured' => 'boolean'];
@@ -62,5 +64,9 @@ class Product extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, "product_tags");
+    }
+    public function images(): MorphMany
+    {
+        return $this->morphMany(Image::class, 'imageable');
     }
 }
