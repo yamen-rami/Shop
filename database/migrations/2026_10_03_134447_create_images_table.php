@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string("path");
             $table->morphs('imageable');
+            $table->foreignId('color_id');
+            $table->foreignId('product_id')->nullable()->constrained()->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

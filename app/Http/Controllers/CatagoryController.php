@@ -20,7 +20,7 @@ class CatagoryController extends Controller
     public function show(Catagory $catagory)
     {
         $offer = $catagory->offer()->active()->where('type', 'categories')->latest('offers.id')->first();
-        $products = $catagory->products()->with('tags')->orderByDesc('id')->paginate(10);
+        $products = $catagory->products()->with('tags', 'image')->orderByDesc('id')->paginate(10);
         return view("catagory.show", [
             "catagory" => $catagory,
             "products" => $products,

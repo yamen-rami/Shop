@@ -33,7 +33,7 @@ class CartController extends Controller
 
     // add To Cart 
     public function show(){
-        return view("home.checkout" , ['products' => Product::with("offers")->latest()->limit(4)->get()]);
+        return view("home.checkout" , ['products' => Product::with('offers', 'image')->latest()->limit(4)->get()]);
     }
     public function delete(int $productId){
         $globalCart = app(\App\Services\StorefrontData::class)->cart();

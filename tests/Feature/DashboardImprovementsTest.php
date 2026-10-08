@@ -11,11 +11,15 @@ function dashboardUser(bool $admin = true): User
 
 function dashboardProduct(array $attributes = []): Product
 {
-    return Product::create(array_merge([
+    $product = Product::create(array_merge([
         'name' => 'Coffee product', 'desc' => 'Fresh coffee beans', 'price' => 12.35,
         'int_price' => 8, 'original_price' => 12.35, 'quantity' => 10,
-        'image' => 'assets/images/test.png', 'featured' => true,
+        'featured' => true,
     ], $attributes));
+    $color = \App\Models\Color::firstOrCreate(['name' => 'Brown']);
+    $product->images()->create(['path' => 'assets/images/test.png', 'color_id' => $color->id]);
+
+    return $product;
 }
 
 test('admin listings use Vuexy and live filters', function (string $route) {
@@ -165,7 +169,7 @@ test('product updates can clear tags and featured while retaining the existing i
         'price' => 15.5, 'int_price' => 8, 'quantity' => 0])->assertRedirect(route('product.index'));
     expect($product->fresh()->tags)->toHaveCount(0);
     expect($product->fresh()->featured)->toBeFalse();
-    expect($product->fresh()->image)->toBe('assets/images/test.png');
+    expect($product->fresh()->image->path)->toBe('assets/images/test.png');
     expect((float) $product->fresh()->original_price)->toBe(15.5);
 });
 
@@ -212,9 +216,11 @@ test('product edit retains validation input including cleared tags and checkbox'
     $product = dashboardProduct();
     $tag = Tag::create(['name' => 'Previous tag']);
     $product->tags()->attach($tag);
-    $this->withSession(['_old_input' => ['name' => 'Submitted name', 'desc' => 'Submitted description', 'featured' => false, 'tags' => []]])
+    $response = $this->withSession(['_old_input' => ['name' => 'Submitted name', 'desc' => 'Submitted description', 'featured' => false, 'tags' => []]])
         ->get(route('product.edit', $product))->assertOk()->assertSee('value="Submitted name"', false)
-        ->assertSee('Submitted description')->assertDontSee('checked', false)->assertDontSee('selected', false);
+        ->assertSee('Submitted description')->assertDontSee('checked', false);
+    preg_match('/<select\b[^>]*name="tags\[\]"[^>]*>(.*?)<\/select>/s', $response->getContent(), $tags);
+    expect($tags[1])->not->toContain('selected');
 });
 
 test('admin contact create uses its actual fields and stays in the dashboard after saving', function () {

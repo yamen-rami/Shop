@@ -2,7 +2,7 @@
 
 namespace App\Livewire;
 
-use App\Models\{Catagory, Company, Contact, Offer, Order, Product, Tag};
+use App\Models\{Catagory, Color, Company, Contact, Offer, Order, Product, Tag};
 use Livewire\Attributes\{Locked, Url};
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -34,6 +34,7 @@ class RecordTable extends Component
         'products' => [Product::class, 'product', ['name', 'desc'], ['id', 'name', 'price', 'quantity', 'created_at']],
         'companies' => [Company::class, 'company', ['name', 'desc'], ['id', 'name', 'created_at']],
         'tags' => [Tag::class, 'tag', ['name'], ['id', 'name', 'created_at']],
+        'colors' => [Color::class, 'color', ['name'], ['id', 'name', 'created_at']],
         'offers' => [Offer::class, 'offer', ['name', 'code'], ['id', 'name', 'start_date', 'end_date'], 'global'],
         'product-offers' => [Offer::class, 'offer', ['name', 'code'], ['id', 'name', 'start_date', 'end_date'], 'products'],
         'coupon-offers' => [Offer::class, 'offer', ['name', 'code'], ['id', 'name', 'start_date', 'end_date'], 'coupon'],
@@ -89,7 +90,7 @@ class RecordTable extends Component
                     ->orWhere('start_date', '>', now())->orWhere('end_date', '<', now()));
             }
         } elseif ($model === Product::class) {
-            $query->with(['catagory', 'tags', 'companies']);
+            $query->with(['catagory', 'tags', 'companies', 'image']);
             if ($this->categoryId !== '') {
                 $query->where('catagory_id', (int) $this->categoryId);
             }
@@ -104,6 +105,8 @@ class RecordTable extends Component
             } elseif ($this->status === 'out-of-stock') {
                 $query->where('quantity', '<=', 0);
             }
+        } elseif ($model === Color::class) {
+            $query->withCount('images');
         } elseif ($model === Company::class) {
             $query->with('products');
         } elseif ($model === Order::class) {

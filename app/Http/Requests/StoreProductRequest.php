@@ -32,7 +32,10 @@ class StoreProductRequest extends FormRequest
             "price" => 'required|numeric|gt:0',
             "featured" => 'required|boolean',
             "quantity" => 'required|integer|min:1',
-            "image" => 'required|image',
+            'image_count' => ['required', 'integer', 'min:1', 'max:12'],
+            'images' => ['required', 'array', 'min:1', 'max:12', 'size:'.max(1, min(12, $this->integer('image_count')))],
+            'images.*.file' => ['required', 'image', 'max:5120'],
+            'images.*.color_id' => ['required', 'integer', 'exists:colors,id'],
         ];
     }
 

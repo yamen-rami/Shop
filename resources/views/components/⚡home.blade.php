@@ -137,7 +137,7 @@ new class extends Component {
     @if($this->cart)
       @foreach($this->cart->products as $product)
         <li wire:key='{{ $product->id }}'>
-          <a href="{{ route("showProduct", $product->id) }}" class="sidekka_pro_img"><x-record-image :src="$product->image" :alt="$product->name" height="100px" width="150px" /></a>
+          <a href="{{ route("showProduct", $product->id) }}" class="sidekka_pro_img"><x-record-image :src="$product->image?->path" :alt="$product->name" height="100px" width="150px" /></a>
           <div class="ec-pro-content d-grid ">
             <div class="row">
               <div>

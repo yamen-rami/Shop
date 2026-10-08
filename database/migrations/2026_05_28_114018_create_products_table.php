@@ -22,7 +22,6 @@ return new class extends Migration
             $table->decimal("int_price");
             $table->decimal("original_price");
             $table->integer("quantity");
-            $table->string("image");
             $table->boolean("featured")->default(false);
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ class HomeController extends Controller
     //
     public function home()
     {
-        $products = Product::with("offers")->where("quantity", ">", 0)->where('featured', true)
+        $products = Product::with('offers', 'image')->where("quantity", ">", 0)->where('featured', true)
             ->simplePaginate(8);
 
         $slider = $products->take(3);
@@ -25,6 +25,8 @@ class HomeController extends Controller
     }
     public function showProduct(Product $product)
     {
+        $product->load('images.colors', 'tags', 'companies');
+        $product->setRelation('image', $product->images->first());
         return view('home.product', ["product" => $product]);
     }
 

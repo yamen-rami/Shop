@@ -77,7 +77,7 @@ Showing {{ $catagory->name }}
               <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                   class="avatar avatar-xs pull-up" title="{{ $product->name }}">
-                  <x-record-image :src="$product->image" :alt="$product->name" class="rounded-circle" />
+                  <x-record-image :src="$product->image?->path" :alt="$product->name" class="rounded-circle" />
                 </li>
               </ul>
             </td>

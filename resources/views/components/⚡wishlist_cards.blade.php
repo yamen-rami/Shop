@@ -48,8 +48,8 @@ new class extends Component {
             <div class="ec-pro-image-outer">
                 <div class="ec-pro-image">
                     <a href="product-left-sidebar.html" class="image">
-                        <x-record-image :src="$product->image" :alt="$product->name" class="main-image" height="300px" />
-                        <x-record-image :src="$product->image" :alt="$product->name" class="hover-image" height="300px" />
+                        <x-record-image :src="$product->image?->path" :alt="$product->name" class="main-image" height="300px" />
+                        <x-record-image :src="$product->image?->path" :alt="$product->name" class="hover-image" height="300px" />
                     </a>
                     @if($product->has_discount)
                         <span class="percentage">${{ $product->price - $product->discount_price  }}</span>

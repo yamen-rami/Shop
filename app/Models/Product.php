@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Product extends Model
 {
@@ -15,13 +14,12 @@ class Product extends Model
     protected $fillable = [
         'name',
         "desc",
-        "image",
         "price",
         "int_price",
         "quantity",
         "featured",
         "original_price",
-        'catagory_id'
+        'catagory_id',
     ];
 
     protected function casts(): array
@@ -67,6 +65,11 @@ class Product extends Model
     }
     public function images(): MorphMany
     {
-        return $this->morphMany(Image::class, 'imageable');
+        return $this->morphMany(Image::class, 'imageable')->orderBy('id');
+    }
+
+    public function image(): MorphOne
+    {
+        return $this->morphOne(Image::class, 'imageable')->oldestOfMany('id');
     }
 }

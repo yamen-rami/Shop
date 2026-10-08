@@ -84,6 +84,12 @@
               <div>{{ __("dashboard.category") }}</div>
             </a>
           </li>
+          <li @class(['menu-item', 'active' => request()->routeIs('color.*')])>
+            <a href="{{ route('color.index') }}" class="menu-link">
+              <i class="menu-icon icon-base ti tabler-palette"></i>
+              <div>Colors</div>
+            </a>
+          </li>
           <li @class(['menu-item', 'active' => request()->routeIs('product.*')])>
             <a href="{{ route('product.index') }}" class="menu-link">
               <i class="menu-icon icon-base ti tabler-package"></i>

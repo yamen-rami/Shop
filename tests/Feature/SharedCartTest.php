@@ -28,7 +28,8 @@ test('cart reads share one model and one products query', function () {
 
     expect($data->cart())->toBe($sharedCart);
     expect($data->cartCount())->toBe(3);
-    expect(DB::getQueryLog())->toHaveCount(2);
+    expect(DB::getQueryLog())->toHaveCount(3);
+    expect($sharedCart->products->every(fn ($product) => $product->relationLoaded('image')))->toBeTrue();
 
     $cart->products()->updateExistingPivot($product->id, ['quantity' => 4]);
     $data->forgetCart();

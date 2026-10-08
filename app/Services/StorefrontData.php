@@ -18,7 +18,7 @@ class StorefrontData
     {
         if (! $this->cartLoaded) {
             $this->cart = auth()->check()
-                ? Cart::with('products')->valid()->first()
+                ? Cart::with('products.image')->valid()->first()
                 : null;
             $this->cartLoaded = true;
         }

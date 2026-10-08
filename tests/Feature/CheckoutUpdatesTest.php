@@ -98,7 +98,8 @@ test('checkout batches share cart and offers across every cart updated listener'
         $expected = $table === 'from "offers"' && $code !== null ? 2 : 1;
         expect(array_filter($queries, fn ($query) => str_contains($query['query'], $table)))->toHaveCount($expected);
     }
-    expect(count($queries))->toBeLessThanOrEqual(6);
+    expect(count($queries))->toBeLessThanOrEqual(7);
+    expect(array_filter($queries, fn ($query) => str_contains($query['query'], 'from "images"')))->toHaveCount(1);
     foreach ($response->json('components') as $component) {
         $snapshot = json_decode($component['snapshot'], true);
         if ($snapshot['memo']['name'] === 'receipt') {

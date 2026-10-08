@@ -2,7 +2,7 @@
 @php(
     $selectedIds = collect(is_array($selected) || $selected instanceof \Illuminate\Support\Collection ? $selected : [$selected])->filter(fn($id) => $id !== null && $id !== '')->unique()
 )
-<select data-user-select2 data-select2-url="{{ route('select-options', $resource) }}"
+<select data-user-select2 data-select2-url="{{ $resource === 'colors' ? route('color.options') : route('select-options', $resource) }}"
     data-placeholder="{{ $placeholder }}"
     @if ($field) data-livewire-field="{{ $field }}" @endif
     {{ $attributes->merge(['class' => 'select2 form-select']) }}>

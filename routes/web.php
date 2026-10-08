@@ -15,6 +15,8 @@ Route::get("locale/{lang}", [LocaleController::class, "setLocale"]);
 Route::get('/dashboard', [DashboardController::class , "index"])->middleware(['auth', "admin", 'verified'])->name('dashboard');
 // Admin Middleware
 Route::middleware(["auth", "admin"])->group(function () {
+    Route::get('colors/options', [\App\Http\Controllers\ColorController::class, 'options'])->name('color.options');
+    Route::resource('color', \App\Http\Controllers\ColorController::class)->except('show');
     Route::get("offerCoupons", [CouponController::class, "index"])->name("offerCoupons");
     Route::get("catagoryOffers", [CouponController::class, "catagory"])->name("catagoryOffers");
     Route::resource("product", ProductController::class);

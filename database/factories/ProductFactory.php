@@ -28,7 +28,6 @@ class ProductFactory extends Factory
             "original_price" => fake()->numberBetween(10 , 100) , 
             "int_price" => fake()->numberBetween(8 , 80 ), 
             "quantity" => fake()->numberBetween(10 , 100),
-            "image" => asset("assets/images/service/man.png"),
         ];
     }
 }

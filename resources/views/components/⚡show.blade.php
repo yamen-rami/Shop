@@ -18,7 +18,7 @@ new class extends Component {
     public function loadProduct($id)
     {
         // $this->cart = auth()->user()->cart()->first();
-        $this->selectedProduct = Product::findOrFail($id);
+        $this->selectedProduct = Product::with('image')->findOrFail($id);
         $this->dispatch('product-loaded');
     }
     public function getValue($product){
@@ -65,7 +65,7 @@ new class extends Component {
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-5">
-                                <x-record-image :src="$selectedProduct->image" :alt="$selectedProduct->name" class="img-fluid" />
+                                <x-record-image :src="$selectedProduct->image?->path" :alt="$selectedProduct->name" class="img-fluid" />
                             </div>
                             <div class="col-md-7">
                                 <h5>{{ $selectedProduct->name }}</h5>

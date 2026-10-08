@@ -142,7 +142,8 @@ test('offers pagination shares offer queries and keeps discounts from other page
     foreach (['from "offers"', 'inner join "products_offer"', 'inner join "categories_offer"'] as $table) {
         expect(array_filter($queries, fn ($query) => str_contains($query['query'], $table)))->toHaveCount(1);
     }
-    expect(count($queries))->toBeLessThanOrEqual(13);
+    expect(count($queries))->toBeLessThanOrEqual(14);
+    expect(array_filter($queries, fn ($query) => str_contains($query['query'], 'from "images"')))->toHaveCount(2);
 
     $this->get(route('home.offers', ['page' => 2]))->assertOk()
         ->assertSee('Public sale 11<', false)->assertDontSee('Public sale 1<', false);

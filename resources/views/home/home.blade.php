@@ -10,7 +10,7 @@
       <div class="swiper-wrapper">
         @foreach($slider as $s)
           <div class="ec-slide-item  swiper-slide d-flex ec-slide-1"
-            style="background: url('{{ \App\Support\ImageUrl::resolve($s->image) }}') center/cover no-repeat, url('{{ \App\Support\ImageUrl::placeholder() }}') center/cover no-repeat; min-height: 50vh;">
+            style="background: url('{{ \App\Support\ImageUrl::resolve($s->image?->path) }}') center/cover no-repeat, url('{{ \App\Support\ImageUrl::placeholder() }}') center/cover no-repeat; min-height: 50vh;">
             <div class="container align-self-center">
               <div class="row">
                 <div class="col-xl-6 col-lg-7 col-md-7 col-sm-7 align-self-center">

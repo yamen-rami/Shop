@@ -12,10 +12,10 @@ Showing {{ $product->name }}
     <div class="col-md">
       <div class="card">
         <div class="row">
-          <div class="col-md-4  ">
-            <x-record-image :src="$product->image" :alt="$product->name" class="card-img card-img-left" />
+          <div class="col-md-6 p-4">
+            <x-product-gallery :product="$product" />
           </div>
-          <div class="col-md-8">
+          <div class="col-md-6">
             <div class="card-body">
               <h1 class="card-title fs-4">{{ $product->name }}</h1>
               <p class="card-text"><strong>Description : </strong>{{ $product->desc }}</p>

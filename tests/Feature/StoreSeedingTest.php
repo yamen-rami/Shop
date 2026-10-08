@@ -13,6 +13,7 @@ test('store seed builds a complete portable catalog with offers and one administ
 
     $this->assertDatabaseCount('users', 1);
     $this->assertDatabaseCount('products', 22);
+    $this->assertDatabaseCount('images', 22);
     $this->assertDatabaseCount('catagories', 6);
     $this->assertDatabaseCount('companies', 4);
     $this->assertDatabaseCount('tags', 8);
@@ -25,14 +26,15 @@ test('store seed builds a complete portable catalog with offers and one administ
     expect($admin->email_verified_at)->not->toBeNull();
     expect(Hash::check('Portfolio-Test-Password-2026', $admin->password))->toBeTrue();
 
-    foreach (Product::with('catagory', 'companies', 'tags')->get() as $product) {
+    foreach (Product::with('catagory', 'companies', 'tags', 'images')->get() as $product) {
         expect($product->catagory)->not->toBeNull();
         expect($product->companies)->toHaveCount(1);
         expect($product->tags)->toHaveCount(2);
         expect((float) $product->price)->toBeGreaterThan((float) $product->int_price);
         expect($product->quantity)->toBeGreaterThan(0);
-        expect(is_file(public_path($product->image)))->toBeTrue();
-        expect($product->image)->toStartWith('assets/');
+        expect($product->images)->toHaveCount(1);
+        expect(is_file(public_path($product->images->first()->path)))->toBeTrue();
+        expect($product->images->first()->path)->toStartWith('assets/');
     }
     foreach (Company::all() as $company) {
         expect(is_file(public_path($company->image)))->toBeTrue();

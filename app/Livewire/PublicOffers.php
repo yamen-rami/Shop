@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Services\StorefrontData;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -47,8 +48,10 @@ class PublicOffers extends Component
             default => $offers->sortBy('id'),
         };
         $page = $this->getPage();
+        $pageOffers = $offers->forPage($page, 10)->values();
+        (new Collection($pageOffers->where('type', 'products')->flatMap->products->all()))->loadMissing('image');
         return view('livewire.public-offers', [
-            'offers' => new LengthAwarePaginator($offers->forPage($page, 10)->values(), $offers->count(), 10, $page, ['path' => request()->url()]),
+            'offers' => new LengthAwarePaginator($pageOffers, $offers->count(), 10, $page, ['path' => request()->url()]),
             'products_offers' => $allOffers,
         ]);
     }

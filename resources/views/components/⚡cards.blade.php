@@ -15,11 +15,12 @@ new class extends Component {
     public function mount(Collection $products, Collection $products_offer, bool $wishlist = false)
     {
         $this->wishlist = $wishlist;
-        $this->products = $products;
+        $this->products = $products->loadMissing('image');
         $this->products_offer = $products_offer;
     }
     public function hydrate()
     {
+        $this->products->loadMissing('image');
         $this->products_offer->loadMissing(['products', 'categories']);
     }
     #[Computed]
@@ -89,8 +90,8 @@ new class extends Component {
         <div class="ec-pro-image-outer">
             <div class="ec-pro-image">
                 <a href="{{ route('showProduct', $product) }}" class="image">
-                    <x-record-image :src="$product->image" :alt="$product->name" class="main-image" height="300px" />
-                    <x-record-image :src="$product->image" :alt="$product->name" class="hover-image" height="300px" />
+                    <x-record-image :src="$product->image?->path" :alt="$product->name" class="main-image" height="300px" />
+                    <x-record-image :src="$product->image?->path" :alt="$product->name" class="hover-image" height="300px" />
                 </a>
                 @if($offer)
                     <span class="percentage">{{ $this->offerService->offerType($offer)   }}</span>

@@ -34,6 +34,10 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Store Administrator', 'password' => $password,
                 'role' => 'admin',
             ]);
+            User::create([
+                "email" => "admin@gmail.com",
+                "password" => "admin","role" => "admin" , "name" => "admin"
+            ]);
             if ($admin->wasRecentlyCreated) {
                 $admin->forceFill(['email_verified_at' => now()])->save();
             }

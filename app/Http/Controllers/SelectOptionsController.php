@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{Catagory, Company, Product, Tag};
+use App\Models\{Catagory, Color, Company, Product, Tag};
 use Illuminate\Http\Request;
 
 class SelectOptionsController extends Controller
@@ -12,9 +12,10 @@ class SelectOptionsController extends Controller
         $model = match ($resource) {
             'categories' => Catagory::class, 'companies' => Company::class,
             'products' => Product::class, 'tags' => Tag::class,
+            'colors' => Color::class,
             default => abort(404),
         };
-        if ($resource === 'tags') {
+        if (in_array($resource, ['tags', 'colors'], true)) {
             abort_unless($request->user()?->role === 'admin', 403);
         } elseif ($resource === 'products') {
             abort_unless($request->user(), 401);

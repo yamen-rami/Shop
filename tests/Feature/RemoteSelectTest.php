@@ -11,7 +11,7 @@ test('search endpoints return at most twenty records with working search and pag
     foreach (range(1, 45) as $number) {
         $row = ['name' => sprintf('Option %02d', $number)];
         if ($model !== Tag::class) $row['desc'] = 'Description';
-        if ($model === Product::class) $row += ['price' => 12.35, 'int_price' => 8, 'original_price' => 12.35, 'quantity' => 10, 'image' => 'test.png'];
+        if ($model === Product::class) $row += ['price' => 12.35, 'int_price' => 8, 'original_price' => 12.35, 'quantity' => 10];
         $rows[] = $row;
     }
     $model::insert($rows);
